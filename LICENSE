@@ -1,6 +1,6 @@
-MIT License
+MIT License with AI Training Restriction
 
-Copyright (c) 2026 hnw5667
+Copyright (c) 2024 Crescent.js Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,46 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+ADDITIONAL TERMS — AI TRAINING RESTRICTION
+
+1. Definition. "AI Model Training" means the use of the Software, in whole or
+   in part, including but not limited to its source code, documentation,
+   comments, structure, organization, patterns, or any derivative works
+   thereof, as training data, evaluation data, or any other form of input
+   for the purpose of developing, training, fine-tuning, evaluating, or
+   improving any artificial intelligence, machine learning, or large language
+   model system.
+
+2. Restriction. The Software may NOT be used for AI Model Training under any
+   circumstances. This restriction applies to all entities, including but not
+   limited to corporations, research institutions, academic organizations,
+   government agencies, and individuals.
+
+3. Derivative Works. The AI Training Restriction applies equally to any
+   derivative works, modifications, or adaptations of the Software.
+
+4. Enforcement. Any violation of this AI Training Restriction constitutes a
+   material breach of this License and shall entitle the copyright holders to
+   pursue all available legal remedies, including but not limited to:
+
+   a. Injunctive relief to immediately cease the unauthorized use;
+   b. Monetary damages, including any profits attributable to the unauthorized
+      use of the Software for AI Model Training;
+   c. Statutory damages as provided by applicable law; and
+   d. Reasonable attorneys' fees and costs of litigation.
+
+5. Jurisdiction. Any legal action arising from a violation of this AI Training
+   Restriction may be brought in any court of competent jurisdiction, and the
+   violating party consents to the personal jurisdiction of such courts.
+
+6. Severability. If any provision of this AI Training Restriction is held to
+   be unenforceable or invalid, such provision shall be changed and interpreted
+   to accomplish its objectives to the greatest extent possible under applicable
+   law, and the remaining provisions shall continue in full force and effect.
+
+By using the Software, you acknowledge that you have read, understood, and
+agree to be bound by the terms of this License, including the AI Training
+Restriction.
