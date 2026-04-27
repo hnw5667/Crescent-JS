@@ -26,37 +26,41 @@ The Frontend module provides a component-based UI system. You build pages with o
 
 ## Page
 
-The top-level container for your app. Holds all components and renders the full HTML page.
+The top-level container for your app. Holds all Objects and renders the full HTML page.
 
 ### Constructor
 
 ```javascript
-const page = new Page({ title: 'My App' });
+Page_ID/name = {
+      page_bg = layer (or) colour
+      page_url = www.xyz.com/home
+      page_title = xyz
+      page_description = this is the home of www.xyz.com
+      page_type = home
+      page_size = { height: N, width: M }
+      objects = { object_ID_1, object_ID_2 }
+      index = { object_ID_1 = 0, object_ID_2 = 1 }
+      position = { object_ID_1 = (-10,0), object_ID_2 = (-3,3) }
+    }
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `title` | string | Page title (shown in browser tab) |
+| Parameter |Description |
+|-----------|-------------------|
+| `page_bg`| The Backround of a page |
+| `page_description` | The description of a page. Increases SEO optimisation |
+| `page_type` | The type of page it is . Acts Like robot.txt and SEO Optimisation at once |
+| `page_size` | The size of a page. This will change as scaled |
+| `objects` | These are all the objects in a page |
+| `index` | The index of all the objects in a page |
+| `position` | The Position of all the objects in a page . Will be moved to fit scaling |
 
-### Methods
-
-#### `add(component)`
-
-Adds a component (RObject) to the page.
-
-```javascript
-page.add(header);
-page.add(main_content);
-```
-
-#### `render()`
-
-Renders the entire page to an HTML string.
-
-```javascript
-const html = page.render();
-// '<!DOCTYPE html><html><head>...</head><body>...</body></html>'
-```
+### * Ratio-based scaling:
+ - When the page is created, it gets a height and width
+ - This creates two ratios: "height from top : height from bottom" and "width from left : width from right"
+ - When the screen size changes, these ratios are maintained
+ - If a ratio is 0:0, the object resizes to fit the screen in that ratio
+ - The bg layer scales to fill the screen
+ - Object layers scale using the same ratio method
 
 ---
 
@@ -67,46 +71,40 @@ A component that holds layers. Think of it as a `div` — it's the building bloc
 ### Constructor
 
 ```javascript
-const obj = new RObject({ id: 'header' });
+object_ID/name = {
+ *     layers = { layer_ID_1, layer_ID_2 }
+ *     index = { layer_ID_1 = 0, layer_ID_2 = 1 }
+ *     position = { layer_ID_1 = (-10,-2), layer_ID_2 = (5,10) }
+ *     bg_layer = { layer_ID_2 }
+ *     size = {height = n px, width = m px}
+ *   }
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `id` | string | Unique identifier for the component |
-
-### Methods
-
-#### `add_layer(layer)`
-
-Adds a layer to the component. Layers are rendered in order.
-
-```javascript
-obj.add_layer(new BaseLayer({ styles: { background: '#1a1a2e' } }));
-obj.add_layer(new TextLayer({ text: 'Hello!', tag: 'h1' }));
-```
+| Parameter | Description |
+|-----------|-------------------|
+| `layers` | All the Layers in an object |
+| `index` | The index value of all the layers in an object |
+| `position` | the position of all the layers in an object |
+| `bg_layer` | The backround layer for an object |
+| `size` | The height and width of an object |
 
 ---
 
 ## BaseLayer
 
-Base styling layer — background, padding, borders, and any CSS properties.
+The Lowest part of a webpage that builds a webpage.
 
-### Constructor
 
-```javascript
-const base = new BaseLayer({
-  styles: {
-    background: '#1a1a2e',
-    padding: '20px',
-    borderRadius: '8px',
-    border: '1px solid #333'
-  }
-});
-```
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `styles` | object | CSS properties as camelCase keys |
+| Parameter | Description |
+|-----------|-------------------|
+| `layer_id` |This is the ID of the layer  |
+| `layer_type` | This is the type ot layer it is. |
+| `layer_enabled` | This is if the layer is enabled (or) disabled |
+| `colour` | The colour of the layer |
+| `opacity` | The opacity of the layer |
+| `rounded_corners` | This is if the layer has rounded corners and how many pixel it is. |
+| `rotate` | The extent in degrees to which a layer should be rotated. |
+| `size` | The size of the layer. |
 
 ---
 
@@ -117,18 +115,36 @@ Text content with a tag and styling.
 ### Constructor
 
 ```javascript
-const text = new TextLayer({
-  text: 'Welcome!',
-  tag: 'h1',
-  styles: { color: '#ffffff', fontSize: '24px' }
-});
+layer_id/name = {
+   layer_type = text
+   layer_enabled = true
+   .text = "abcdefxx"
+   .colour = 0,0,0
+   .size = 10
+   .spacing = 10 px
+   .font = inter
+   .strike = true
+   .underline = false
+   .highlight = true
+   .bold = true
+   property(abc'de'fxx) = { ... overrides for 'de' ... }
+ }
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `text` | string | The text content |
-| `tag` | string | HTML tag: `'h1'`, `'p'`, `'span'`, `'a'`, etc. |
-| `styles` | object | CSS properties (optional) |
+| Parameter | Description |
+|-----------|-------------------|
+| `layer_type` | This explains the type of layer this is|
+| `layer_enabled` | This explains if the layer is enabled |
+| `.text` | The text inside the  |
+| `.colour` | The colour of the text |
+| `.size` | The size of the font |
+| `.spacing` | The spacing between the letters |
+| `.font` | The font of the text |
+| `.strike` |  If the letter needs to to have a strike through. |
+| `.underline` | If the letter has underline |
+| `.highlight` | If the letter is Highlighted |
+| `.bold` | If the letter is bold  |
+| `property()` | This is the property that changes a part of the whole property , without changing the whole thing |
 
 ---
 
@@ -139,18 +155,28 @@ Image display with source and sizing.
 ### Constructor
 
 ```javascript
-const img = new ImageLayer({
-  src: '/images/logo.png',
-  alt: 'Logo',
-  styles: { width: '200px', borderRadius: '8px' }
-});
+  layer_id/name = {
+   layer_type = image
+   layer_enabled = true
+   image_location = "x_folder/y_image" (or) "www.xfolder.com/y_img"
+   .size = height x width
+   .colour = 0,0,0
+   .opacity = 100%
+   .rounded_corners = 10 px
+   .rotate = 360 deg
+ }
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `src` | string | Image source URL or path |
-| `alt` | string | Alt text for accessibility |
-| `styles` | object | CSS properties (optional) |
+| Parameter | Description |
+|-----------|-------------------|
+| `layer_type` | This will check the type fo layer it is |
+| `layer_enabled` | This will check if the layer is enabled |
+| `layer_location` | This will get thelocation of the image in a codebase (or) use a url |
+| `.size` | The size of the image |
+| `.colour` | The colour of the image |
+| `.opacity` | The opacity of the image |
+| `.rounded_corners` | If the image has rounded corners |
+| `.rotate` | If the image is rotated |
 
 ---
 
@@ -159,84 +185,112 @@ const img = new ImageLayer({
 Shapes with styling — rectangles, circles, etc.
 
 ### Constructor
-
+layer
 ```javascript
-const shape = new ShapeLayer({
-  shape: 'rectangle',
-  styles: { width: '100px', height: '60px', background: '#f97316' }
-});
+  layer_ID/name = {
+    layer_type = shape
+    layer_enabled = true
+    layer_vertices = 4
+    .size = height x width
+    .colour = 0,0,0
+    .opacity = 100%
+    .rounded_corners = 10 px 
+    .rotate =  360 deg
+  }
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `shape` | string | Shape type: `'rectangle'`, `'circle'` |
-| `styles` | object | CSS properties |
-
+| Parameter | Description |
+|-----------|-------------------|
+|`layer_type`| the type of layer this is. |
+|`layer_enabled`| If the layer is enabled |
+|`layer_vertices`| The no.of vertices in a layer |
+|`.size`| the size of the layer |
+|`.colour`| the colour of the layer |
+|`.opacity`| the opacity of the layer |
+|`.rounded_corners`| if the layer has rounded corners |
+|`.rotate`| if the layer is rotated |
 ---
 
 ## InputLayer
 
-Form inputs — text, password, email, and more.
+Form inputs — text box and list
 
 ### Constructor
-
+  - For Text box :
 ```javascript
-const input = new InputLayer({
-  type: 'text',
-  name: 'username',
-  placeholder: 'Enter username',
-  styles: { padding: '10px', borderRadius: '4px' }
-});
+layer_id/name = {
+   layer_type = input
+   layer_enabled = true
+   input_method = text box
+   .rounded_corners = 10 px
+   .box_length = 10
+   .box_inner_text = 'Crescent Moon'
+   .box_inner_text_properties = [underline, strike, bold, italic]
+   .box_inner_text_font = inter
+   .colour_text = 0,0,0
+   .written_inner_text_properties = [underline, strike, bold, italic]
+   .written_inner_text_font = inter
+   .colour_text_written = 0,0,0
+}
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `type` | string | Input type: `'text'`, `'password'`, `'email'`, `'number'`, etc. |
-| `name` | string | Input name attribute |
-| `placeholder` | string | Placeholder text (optional) |
-| `styles` | object | CSS properties (optional) |
+| Parameter | Description |
+|-----------|-------------------|
+| `layer_type` | input layer |
+| `layer_enabled` | if the layer is enabled or disabled |
+| `input_method` | typr of input(text box (or) list) |
+| `.box_lenght` | the lenght of the input box (or) list |
+| `.box_inner_text` | the text that should be inside as a watermark |
+| `.box_inner_text_properties` | the properties of the text inside the box |
+| `.box_inner_text_font` | the font of the text inside the box |
+| `.colour_text` | the colour of the the text |
+| `.written_inner_text_properties` | the inner text properties |
+| `.written_inner_text_font` | the inner written text font |
+| `.colour_text_written` | the colour of the written text |
 
 ---
 
 ## Transition
 
-CSS animations for components.
+This is the animations and effects for this framework .
 
 ### Constructor
 
 ```javascript
-const transition = new Transition({
-  type: 'fade',
-  duration: '0.3s',
-  timing: 'ease'
-});
+transition_property = {
+ import object_ID/name
+ import object_ID_2/name
+ 
+ time = 45 sec
+ change.object_ID/name.layer_1:width = 100
+ change.object_ID_2/name.layer_1:width = 100
+}
 ```
 
 | Parameter | Type | Description |
-|-----------|------|-------------|
-| `type` | string | Animation type: `'fade'`, `'slide'`, `'scale'`, `'rotate'` |
-| `duration` | string | Animation duration (default: `'0.3s'`) |
-| `timing` | string | Timing function: `'ease'`, `'linear'`, `'ease-in-out'` |
+|-----------|-------------------|
+| `change.object_id/name.layer_1` |the layer under going change |
+| `time` | The time for the layer to go from it original state to the modified stage |
 
 ---
 
 ## Trigger
 
-Event handlers for user interactions.
+The event notifiers , these notify when an event like click , hover , scrool and keypress happen, these shoot out boolen like calues that trigger a conditional and do a function.
 
 ### Constructor
 
 ```javascript
-const trigger = new Trigger({
-  event: 'click',
-  action: () => console.log('Clicked!')
-});
+if object_ID/name:clicked = true
+  then play.transition_property
+else
+  then play.transition_property_2
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `event` | string | Event type: `'click'`, `'hover'`, `'focus'`, `'submit'`, etc. |
-| `action` | function | Function to run when the event fires |
+| Parameter | Description |
+|-----------|-------------------|
+|`object_ID/name:`| the object that should be checked |
+|`event`| this is the clicked,hovered,scrolled and keypress |
 
 ---
 
@@ -254,11 +308,11 @@ const responsive = new Responsive({
 });
 ```
 
-| Parameter | Type | Description |
+| Parameter | Max | Description |
 |-----------|------|-------------|
-| `mobile` | string | Mobile breakpoint |
-| `tablet` | string | Tablet breakpoint |
-| `desktop` | string | Desktop breakpoint |
+| `mobile` | 480 | Mobile breakpoint |
+| `tablet` | 768 | Tablet breakpoint |
+| `desktop` | 1200 | Desktop breakpoint |
 
 ---
 
@@ -267,63 +321,57 @@ const responsive = new Responsive({
 Renders pages and components to HTML strings.
 
 ### Constructor
-
-```javascript
-const renderer = new Renderer();
-```
-
-### Methods
-
-#### `render_page(page)`
-
-Renders a full Page object to an HTML string.
-
-```javascript
-const html = renderer.render_page(page);
-```
-
-#### `render_component(component)`
-
-Renders a single RObject component to an HTML string.
-
-```javascript
-const html = renderer.render_component(header);
-```
-
+- Every codebase should have .basehtml and this will be used to render the html and the js
 ---
 
 ## Complete Example
 
 ```javascript
-const { Page, Object: RObj, TextLayer, BaseLayer, InputLayer } = Crescent.Frontend;
+layer_1 = {
+   layer_type = image
+   layer_enabled = true
+   image_location = "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
+   .size = 480 x 360
+   .opacity = 100%
+   .rounded_corners = 10 px
+   .rotate = 360 deg
+}
+layer_2 = {
+   layer_type = image
+   layer_enabled = true
+   image_location = "https://staticimg.publishstory.co/thumb/123963166.cms?imgsize=658570&width=760&height=428&resizemode=8"
+   .size = 616 x 616
+   .opacity = 100%
+   .rounded_corners = 10 px
+   .rotate = 360 deg
+ }
+ 
+ object_ID_1 = {
+  layers = { layer_1, layer_2 }
+  index = { layer_1 = 0, layer_2 = 1 }
+  position = { layer_1 = (-10,-2)}
+  bg_layer = { layer_ID_2 }
+  size = {height = 670 px, width = 670 px}
+ }
 
-// Create a page
-const page = new Page({ title: 'Login' });
-
-// Build a header
-const header = new RObj({ id: 'header' });
-header.add_layer(new BaseLayer({
-  styles: { background: '#1a1a2e', padding: '20px', textAlign: 'center' }
-}));
-header.add_layer(new TextLayer({
-  text: 'Welcome Back',
-  tag: 'h1',
-  styles: { color: '#ffffff' }
-}));
-
-// Build a form
-const form = new RObj({ id: 'login-form' });
-form.add_layer(new BaseLayer({
-  styles: { padding: '20px', maxWidth: '400px', margin: '0 auto' }
-}));
-form.add_layer(new InputLayer({
-  type: 'text', name: 'username', placeholder: 'Username'
-}));
-form.add_layer(new InputLayer({
-  type: 'password', name: 'password', placeholder: 'Password'
-}));
-
-// Assemble and render
-page.add(header);
-page.add(form);
-const html = page.render();
+ Page_ID/name = {
+      page_bg = 0,0,0
+      page_url = www.xyz.com/home
+      page_title = xyz
+      page_description = this is the home of www.xyz.com
+      page_type = home
+      page_size = { height: 1080, width: 1080}
+      objects = { object_ID_1 }
+      index = { object_ID_1 = 0}
+      position = { object_ID_1 = (-10,0)}
+    }
+```
+```html
+<!DOCTYPE html>
+<html lang="en">    
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+</html>
+```
