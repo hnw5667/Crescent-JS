@@ -1,329 +1,279 @@
-# ⚙️ Backend Module
+# Backend
 
-Access: `Crescent.Backend`
-
-The Backend module provides server-side logic primitives — named functions, conditionals, loops, boolean logic, data collection, and HTTP utilities.
+Crescent.js provides built-in backend logic primitives — functions, conditionals, loops, API calls, and more — so you can build server-side logic without leaving the framework.
 
 ---
 
-## Classes
+## Core Concepts
 
-| Class | Description |
-|-------|-------------|
-| [RocketFunction](#rocketfunction) | Named functions with enable/disable toggle |
-| [Conditional](#conditional) | If/else evaluation |
-| [Loop](#loop) | For-loops and for-in iteration |
-| [RocketBoolean](#rocketboolean) | AND, OR, NOT logic chains |
-| [Collect](#collect) | Gather and transform data |
-| [APICall](#apicall) | Make HTTP requests |
-| [APIMake](#apimake) | Build and send API requests |
+| Concept | Description |
+|---------|-------------|
+| **Function** | A reusable block of logic with a handler. |
+| **Conditional** | Branching logic with true/false paths. |
+| **Loop** | Iterate over collections with a custom iteratee. |
+| **API Call** | Make HTTP requests to external services. |
+| **API Make** | Define and serve your own API endpoints. |
+| **Collect** | Aggregate data from multiple sources. |
+| **Boolean** | Logical operations (AND, OR, NOT). |
 
 ---
 
-## RocketFunction
+## Functions
 
-Named functions you can enable and disable. Disabled functions return `null` when called.
+Define reusable functions with the `rocket.function()` method.
 
-### Constructor
+### Creating a Function
 
 ```javascript
-const fn = new RocketFunction('name', {
-  body: (arg1, arg2) => result,
-  enabled: true  // optional, default is true
+const calculateTotal = rocket.function({
+  function_id: 'calculate-total',
+  handler: (items) => {
+    return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+});
+```
+
+### Retrieving a Function
+
+```javascript
+const fn = rocket.get_function('calculate-total');
+```
+
+---
+
+## Conditionals
+
+Branch your logic based on conditions.
+
+### Creating a Conditional
+
+```javascript
+const checkPermission = rocket.conditional({
+  conditional_id: 'check-permission',
+  condition: (user) => user.role === 'admin',
+  onTrue: (user) => 'Welcome, admin ' + user.name,
+  onFalse: (user) => 'Access denied'
 });
 ```
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `name` | string | Function name (for debugging/logging) |
-| `body` | function | The function to execute |
-| `enabled` | boolean | Initial enabled state (default: `true`) |
+| `condition` | function | A function that returns a boolean |
+| `onTrue` | function | Executed when condition is true |
+| `onFalse` | function | Executed when condition is false |
 
-### Methods
-
-#### `call(...args)`
-
-Executes the function if enabled. Returns `null` if disabled.
+### Retrieving a Conditional
 
 ```javascript
-const fn = new RocketFunction('greet', { body: (name) => `Hello, ${name}!` });
-fn.call('World'); // 'Hello, World!'
-
-fn.disable();
-fn.call('World'); // null
-```
-
-#### `enable()` / `disable()`
-
-Toggle the function on or off.
-
-```javascript
-fn.enable();   // Function will execute on call()
-fn.disable();  // Function returns null on call()
-```
-
-#### `is_enabled()`
-
-Returns whether the function is currently enabled.
-
-```javascript
-fn.is_enabled(); // true or false
+const cond = rocket.get_conditional('check-permission');
 ```
 
 ---
 
-## Conditional
+## Loops
 
-If/else evaluation with custom condition functions.
+Iterate over arrays and collections.
 
-### Constructor
+### Creating a Loop
 
 ```javascript
-const cond = new Conditional({
-  condition: () => boolean,
-  if_branch: () => result,
-  else_branch: () => result
+const renderProducts = rocket.loop({
+  loop_id: 'render-products',
+  items: products,
+  iteratee: (product, index) => {
+    return '<div class="product">' + product.name + ' - $' + product.price + '</div>';
+  }
 });
 ```
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `condition` | function | A function that returns true or false |
-| `if_branch` | function | Runs when condition is true |
-| `else_branch` | function | Runs when condition is false |
+| `items` | array | The collection to iterate over |
+| `iteratee` | function | Function called for each item, receives `(item, index)` |
 
-### Methods
-
-#### `evaluate()`
-
-Evaluates the condition and runs the matching branch. Returns the branch's result.
+### Retrieving a Loop
 
 ```javascript
-const cond = new Conditional({
-  condition: () => 5 > 3,
-  if_branch: () => 'yes',
-  else_branch: () => 'no'
-});
-cond.evaluate(); // 'yes'
+const lp = rocket.get_loop('render-products');
 ```
 
 ---
 
-## Loop
+## API Calls
 
-For-loops and for-in iteration over collections.
+Make HTTP requests to external APIs.
 
-### Constructor
+### Creating an API Call
 
 ```javascript
-// Counted loop — runs N times
-const loop = new Loop({
-  type: 'for',
-  count: 5,
-  body: (i) => i * 2
-});
-
-// For-in loop — iterates over an array
-const loop = new Loop({
-  type: 'for_in',
-  collection: [10, 20, 30],
-  body: (item) => item + 5
+const fetchUsers = rocket.api_call({
+  url: 'https://api.example.com/users',
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer my-token'
+  }
 });
 ```
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `type` | string | `'for'` for counted, `'for_in'` for collection iteration |
-| `count` | number | Number of iterations (for `type: 'for'`) |
-| `collection` | array | Array to iterate over (for `type: 'for_in'`) |
-| `body` | function | Function to run each iteration |
-
-### Methods
-
-#### `run()`
-
-Executes the loop and returns an array of results.
-
-```javascript
-const loop1 = new Loop({ type: 'for', count: 3, body: (i) => i * 2 });
-loop1.run(); // [0, 2, 4]
-
-const loop2 = new Loop({ type: 'for_in', collection: ['a', 'b', 'c'], body: (x) => x.toUpperCase() });
-loop2.run(); // ['A', 'B', 'C']
-```
+| `url` | string | The URL to request |
+| `method` | string | HTTP method: `GET`, `POST`, `PUT`, `DELETE` |
+| `headers` | object | Request headers |
 
 ---
 
-## RocketBoolean
+## API Make
 
-AND, OR, NOT logic chains. Chain them together for complex conditions.
+Define your own API endpoints that other services can call.
 
-### Constructor
+### Creating an API Endpoint
 
 ```javascript
-const bool = new RocketBoolean();
+const userApi = rocket.api_make({
+  api_id: 'users-api',
+  route: '/api/users',
+  method: 'GET',
+  handler: (req, res) => {
+    return { users: ['Alice', 'Bob', 'Charlie'] };
+  }
+});
 ```
 
-### Methods
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `route` | string | The URL route for this endpoint |
+| `method` | string | HTTP method this endpoint responds to |
+| `handler` | function | Function that handles the request |
 
-#### `AND(...conditions)`
-
-Returns `true` if ALL conditions are true.
-
-```javascript
-bool.AND(true, true, true);   // true
-bool.AND(true, false, true);  // false
-```
-
-#### `OR(...conditions)`
-
-Returns `true` if ANY condition is true.
+### Retrieving an API
 
 ```javascript
-bool.OR(false, true, false);  // true
-bool.OR(false, false, false); // false
-```
-
-#### `NOT(condition)`
-
-Returns the opposite of the condition.
-
-```javascript
-bool.NOT(true);   // false
-bool.NOT(false);  // true
-```
-
-### Chaining Example
-
-```javascript
-const { RocketBoolean } = Crescent.Backend;
-const bool = new RocketBoolean();
-
-// Complex: (true OR false) AND (NOT false)
-const result = bool.AND(
-  bool.OR(true, false),
-  bool.NOT(false)
-);
-// true
+const api = rocket.get_api('users-api');
 ```
 
 ---
 
 ## Collect
 
-Gather and transform data from multiple sources.
+Aggregate data from multiple sources into a single result.
 
-### Constructor
-
-```javascript
-const collect = new Collect();
-```
-
-### Methods
-
-#### `gather(...sources)`
-
-Combines multiple arrays into one flat array.
+### Creating a Collect
 
 ```javascript
-collect.gather([1, 2], [3, 4], [5]);
-// [1, 2, 3, 4, 5]
-```
-
-#### `transform(data, fn)`
-
-Maps a function over the data. Returns a new array.
-
-```javascript
-collect.transform([1, 2, 3], (x) => x * 10);
-// [10, 20, 30]
-```
-
-#### `filter(data, fn)`
-
-Filters data by a predicate function.
-
-```javascript
-collect.filter([1, 2, 3, 4, 5], (x) => x > 3);
-// [4, 5]
-```
-
----
-
-## APICall
-
-Make HTTP requests to external APIs.
-
-### Constructor
-
-```javascript
-const api = new APICall();
-```
-
-### Methods
-
-#### `get(url, headers)`
-
-Makes a GET request. Returns a Promise with the response.
-
-```javascript
-const data = await api.get('https://api.example.com/users');
-```
-
-#### `post(url, body, headers)`
-
-Makes a POST request with a JSON body.
-
-```javascript
-const result = await api.post('https://api.example.com/users', { name: 'Alice' });
-```
-
-#### `put(url, body, headers)`
-
-Makes a PUT request.
-
-```javascript
-await api.put('https://api.example.com/users/1', { name: 'Alice Updated' });
-```
-
-#### `delete(url, headers)`
-
-Makes a DELETE request.
-
-```javascript
-await api.delete('https://api.example.com/users/1');
-```
-
----
-
-## APIMake
-
-Build and send custom HTTP requests with full control over method, headers, and body.
-
-### Constructor
-
-```javascript
-const api = new APIMake();
-```
-
-### Methods
-
-#### `send(config)`
-
-Sends a custom HTTP request. Returns a Promise.
-
-```javascript
-const result = await api.send({
-  method: 'POST',
-  url: 'https://api.example.com/data',
-  headers: { 'Authorization': 'Bearer token123' },
-  body: { key: 'value' }
+const dashboardData = rocket.collect({
+  collect_id: 'dashboard-data',
+  sources: [
+    { key: 'users',  url: '/api/users' },
+    { key: 'orders', url: '/api/orders' },
+    { key: 'stats',  url: '/api/stats' }
+  ],
+  handler: (results) => {
+    return {
+      userCount:  results.users.length,
+      orderCount: results.orders.length,
+      revenue:    results.stats.revenue
+    };
+  }
 });
 ```
 
-| Config Field | Type | Description |
-|-------------|------|-------------|
-| `method` | string | HTTP method: GET, POST, PUT, DELETE, PATCH |
-| `url` | string | Request URL |
-| `headers` | object | Custom headers (optional) |
-| `body` | object | Request body (optional) |
+### Retrieving a Collect
+
+```javascript
+const col = rocket.get_collect('dashboard-data');
+```
+
+---
+
+## Boolean
+
+Perform logical operations.
+
+### Creating a Boolean
+
+```javascript
+const isAdmin = rocket.boolean({
+  boolean_id: 'is-admin',
+  operation: 'AND',
+  values: [user.isAuthenticated, user.role === 'admin']
+});
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `operation` | string | Logical operation: `AND`, `OR`, `NOT` |
+| `values` | array | Array of boolean values to evaluate |
+
+### Retrieving a Boolean
+
+```javascript
+const bl = rocket.get_boolean('is-admin');
+```
+
+---
+
+## Global Utility Functions
+
+Rocket.js provides several built-in utility functions accessible directly on the `rocket` instance.
+
+### Math Operations
+
+```javascript
+rocket.add(5, 3);       // 8
+rocket.subtract(10, 4); // 6
+rocket.multiply(3, 7);  // 21
+rocket.divide(20, 4);   // 5
+rocket.sqrt(16);        // 4
+rocket.sin(0);          // 0
+rocket.cos(0);          // 1
+rocket.tan(0);          // 0
+```
+
+### Other Utilities
+
+```javascript
+rocket.print('Hello');          // Logs to console, returns the value
+rocket.get_timestamp();         // Returns current Unix timestamp
+rocket.redirect('/home');       // Redirects the browser (client-side only)
+rocket.connect_and_pull(url);   // Fetch JSON from a URL
+```
+
+---
+
+## Complete Example
+
+```javascript
+const rocket = require('crescent-js');
+
+// Define a function
+const getDiscount = rocket.function({
+  function_id: 'get-discount',
+  handler: (price, percent) => price * (1 - percent / 100)
+});
+
+// Use a conditional to check eligibility
+const checkDiscount = rocket.conditional({
+  conditional_id: 'check-discount',
+  condition: (orderTotal) => orderTotal > 100,
+  onTrue:  () => 'Eligible for 20% discount',
+  onFalse: () => 'No discount available'
+});
+
+// Loop through items
+const listItems = rocket.loop({
+  loop_id: 'list-items',
+  items: ['Widget', 'Gadget', 'Gizmo'],
+  iteratee: (item, i) => '<li>' + item + '</li>'
+});
+
+// Create an API endpoint
+rocket.api_make({
+  api_id: 'products-api',
+  route: '/api/products',
+  method: 'GET',
+  handler: (req, res) => {
+    return { products: ['Widget', 'Gadget', 'Gizmo'] };
+  }
+});
+```

@@ -1,233 +1,354 @@
-# 🎨 Frontend Module
+# Frontend
 
-- **Page** → Full application view  
-- **Object (RObject)** → Container (like a `div`)  
-- **Layer** → Visual or functional element  
+Rocket.js provides a declarative, component-based approach to building user interfaces. Everything is built using Pages, Objects, and Layers.
 
 ---
 
-## 📦 Classes
+## Core Concepts
 
-| Class | Description |
-|-------|-------------|
-| Page | Top-level page container |
-| Object (RObject) | Component that holds layers |
-| BaseLayer | Background, padding, borders |
-| TextLayer | Text content with styling |
-| ImageLayer | Image display |
-| ShapeLayer | Shapes (rectangle, circle) |
-| InputLayer | Form inputs |
-| Transition | CSS animations |
-| Trigger | Event handlers |
-| Responsive | Breakpoints |
-| Renderer | Render pages to HTML |
+| Concept | Description |
+|--------|------------|
+| Page | A full page in your application. Contains objects. |
+| Object | A reusable component/container. Contains layers. |
+| Layer | A visual or functional layer within an object (text, image, shape, input, base). |
+| Transition | Animations between states or pages. |
+| Trigger | Event handlers for user interactions. |
+| Responsive | Breakpoint configuration for responsive design. |
 
 ---
 
-# 📄 Page
+## Pages
 
-The top-level container for your app.
+A Page is the top-level container for your UI. Each page has an ID and a title.
 
-## Constructor
+### Creating a Page
 
 ```javascript
-Page_ID/name = {
-  page_bg = layer (or) colour
-  page_url = www.xyz.com/home
-  page_title = xyz
-  page_description = this is the home of www.xyz.com
-  page_type = home
-  page_size = { height: N, width: M }
-  objects = { object_ID_1, object_ID_2 }
-  index = { object_ID_1 = 0, object_ID_2 = 1 }
-  position = { object_ID_1 = (-10,0), object_ID_2 = (-3,3) }
-}
-Parameters
-Parameter	Description
-page_bg	Background of the page
-page_description	Improves SEO
-page_type	Page classification
-page_size	Base dimensions
-objects	All objects in page
-index	Object order
-position	Object positions
-📐 Ratio-Based Scaling
-Page defines base height and width
-Maintains position ratios on resize
-Elements scale proportionally
-0:0 ratio → element stretches
-🧩 Object (RObject)
+const page = rocket.page({
+  page_id: 'dashboard',
+  title: 'Dashboard'
+});
+```
 
-Container for layers.
+### Adding Objects to a Page
 
-Constructor
-object_ID/name = {
-  layers = { layer_ID_1, layer_ID_2 }
-  index = { layer_ID_1 = 0, layer_ID_2 = 1 }
-  position = { layer_ID_1 = (-10,-2), layer_ID_2 = (5,10) }
-  bg_layer = { layer_ID_2 }
-  size = {height = n px, width = m px}
-}
-Parameters
-Parameter	Description
-layers	All layers
-index	Layer order
-position	Layer positions
-bg_layer	Background layer
-size	Object dimensions
-🎨 BaseLayer
+```javascript
+const header = rocket.object({ object_id: 'header' });
+const sidebar = rocket.object({ object_id: 'sidebar' });
+const content = rocket.object({ object_id: 'content' });
 
-Foundation layer for visuals.
+page.add(header);
+page.add(sidebar);
+page.add(content);
+```
 
-Parameter	Description
-layer_id	Unique ID
-layer_type	Type of layer
-layer_enabled	Enable/disable
-colour	Background color
-opacity	Transparency
-rounded_corners	Border radius
-rotate	Rotation
-size	Dimensions
-📝 TextLayer
+### Rendering a Page
 
-Displays styled text.
+```javascript
+const html = page.render();
+```
 
-Constructor
-layer_id/name = {
-  layer_type = text
-  layer_enabled = true
-  .text = "abcdefxx"
-  .colour = 0,0,0
-  .size = 10
-  .spacing = 10 px
-  .font = inter
-  .strike = true
-  .underline = false
-  .highlight = true
-  .bold = true
-  property(abc'de'fxx) = { ... overrides ... }
-}
-🖼️ ImageLayer
+### Retrieving a Page
 
-Displays images.
+```javascript
+const myPage = rocket.get_page('dashboard');
+```
 
-Constructor
-layer_id/name = {
-  layer_type = image
-  layer_enabled = true
-  image_location = "url or path"
-  .size = height x width
-  .colour = 0,0,0
-  .opacity = 100%
-  .rounded_corners = 10 px
-  .rotate = 360 deg
-}
-🔷 ShapeLayer
+---
 
-Renders shapes.
+## Objects
 
-Constructor
-layer_ID/name = {
-  layer_type = shape
-  layer_enabled = true
-  layer_vertices = 4
-  .size = height x width
-  .colour = 0,0,0
-  .opacity = 100%
-  .rounded_corners = 10 px
-  .rotate = 360 deg
-}
-⌨️ InputLayer
+An Object is a container that holds layers. Think of it as a component.
 
-Handles input fields.
+### Creating an Object
 
-Constructor
-layer_id/name = {
-  layer_type = input
-  layer_enabled = true
-  input_method = text box
-  .rounded_corners = 10 px
-  .box_length = 10
-  .box_inner_text = 'Crescent Moon'
-  .box_inner_text_properties = [underline, strike, bold, italic]
-  .box_inner_text_font = inter
-  .colour_text = 0,0,0
-  .written_inner_text_properties = [underline, strike, bold, italic]
-  .written_inner_text_font = inter
-  .colour_text_written = 0,0,0
-}
-🎬 Transition
+```javascript
+const card = rocket.object({ object_id: 'product-card' });
+```
 
-Defines animations.
+### Adding Layers
 
-Constructor
-transition_property = {
-  import object_ID/name
-  import object_ID_2/name
+```javascript
+card.add_layer(
+  rocket.layer({
+    layer_type: 'base',
+    layer_id: 'card-bg',
+    styles: {
+      background: '#ffffff',
+      borderRadius: '12px',
+      padding: '20px',
+      boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+    }
+  })
+);
 
-  time = 45 sec
-  change.object_ID/name.layer_1:width = 100
-  change.object_ID_2/name.layer_1:width = 100
-}
-⚡ Trigger
+card.add_layer(
+  rocket.layer({
+    layer_type: 'text',
+    layer_id: 'card-title',
+    text: 'Product Name',
+    tag: 'h3'
+  })
+);
 
-Handles events.
+card.add_layer(
+  rocket.layer({
+    layer_type: 'image',
+    layer_id: 'card-img',
+    src: '/images/product.jpg',
+    alt: 'Product image'
+  })
+);
+```
 
-Constructor
-if object_ID/name:clicked = true
-  then play.transition_property
-else
-  then play.transition_property_2
-Events
-click
-hover
-scroll
-keypress
-📱 Responsive
+### Retrieving an Object
 
-Breakpoints for layouts.
+```javascript
+const myCard = rocket.get_object('product-card');
+```
 
-Constructor
-const responsive = new Responsive({
+---
+
+## Layers
+
+Layers are the building blocks of objects. Each layer has a `layer_type`.
+
+### Base Layer
+
+```javascript
+rocket.layer({
+  layer_type: 'base',
+  layer_id: 'container',
+  styles: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    padding: '20px'
+  }
+});
+```
+
+### Text Layer
+
+```javascript
+rocket.layer({
+  layer_type: 'text',
+  layer_id: 'heading',
+  text: 'Hello World',
+  tag: 'h1',
+  styles: {
+    color: '#333333',
+    fontSize: '32px',
+    fontWeight: 'bold'
+  }
+});
+```
+
+| Parameter | Type | Description |
+|----------|------|------------|
+| `text` | string | The text content to display |
+| `tag` | string | HTML tag (`h1`–`h6`, `p`, `span`, etc.) |
+| `styles` | object | CSS styles |
+
+---
+
+### Image Layer
+
+```javascript
+rocket.layer({
+  layer_type: 'image',
+  layer_id: 'hero-img',
+  src: '/images/hero.jpg',
+  alt: 'Hero image',
+  styles: {
+    width: '100%',
+    maxHeight: '400px',
+    objectFit: 'cover'
+  }
+});
+```
+
+| Parameter | Type | Description |
+|----------|------|------------|
+| `src` | string | Image source URL |
+| `alt` | string | Alt text |
+| `styles` | object | CSS styles |
+
+---
+
+### Shape Layer
+
+```javascript
+rocket.layer({
+  layer_type: 'shape',
+  layer_id: 'divider',
+  shape: 'rectangle',
+  styles: {
+    width: '100%',
+    height: '2px',
+    background: '#e0e0e0'
+  }
+});
+```
+
+---
+
+### Input Layer
+
+```javascript
+rocket.layer({
+  layer_type: 'input',
+  layer_id: 'email-input',
+  type: 'email',
+  name: 'email',
+  placeholder: 'Enter your email',
+  styles: {
+    padding: '12px',
+    borderRadius: '8px',
+    border: '1px solid #ccc'
+  }
+});
+```
+
+---
+
+## Transitions
+
+```javascript
+const fadeIn = rocket.transition({
+  transition_id: 'fade-in',
+  type: 'fade',
+  duration: 300,
+  easing: 'ease-in-out'
+});
+```
+
+### Retrieve
+
+```javascript
+const myTransition = rocket.get_transition('fade-in');
+```
+
+---
+
+## Triggers
+
+```javascript
+const clickTrigger = rocket.trigger({
+  trigger_id: 'submit-form',
+  event: 'click',
+  action: () => {
+    console.log('Form submitted!');
+  }
+});
+```
+
+### Retrieve
+
+```javascript
+const myTrigger = rocket.get_trigger('submit-form');
+```
+
+---
+
+## Responsive Design
+
+```javascript
+rocket.responsive({
   mobile: '480px',
   tablet: '768px',
   desktop: '1024px'
 });
-🖥️ Renderer
-
-Renders pages to HTML.
-
-Notes
-Uses .basehtml
-Combines HTML + JS
-Final output layer
-✅ Complete Example
-layer_1 = {
-  layer_type = image
-  layer_enabled = true
-  image_location = "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
-  .size = 480 x 360
-  .opacity = 100%
-  .rounded_corners = 10 px
-}
-
-object_ID_1 = {
-  layers = { layer_1 }
-  index = { layer_1 = 0 }
-  position = { layer_1 = (-10,-2) }
-  size = {height = 670 px, width = 670 px}
-}
-
-Page_ID/name = {
-  page_bg = 0,0,0
-  page_url = www.xyz.com/home
-  page_title = xyz
-  page_description = this is the home of www.xyz.com
-  page_type = home
-  page_size = { height: 1080, width: 1080}
-  objects = { object_ID_1 }
-  index = { object_ID_1 = 0 }
-  position = { object_ID_1 = (-10,0) }
-}
+```
 
 ---
+
+## Renderer
+
+```javascript
+// Render an entire page
+const html = rocket.renderer.render_page(page);
+
+// Render a single object
+const html = rocket.renderer.render_component(object);
+```
+
+---
+
+## Complete Example
+
+```javascript
+const rocket = require('crescent-js');
+
+// Create a page
+const page = rocket.page({
+  page_id: 'login',
+  title: 'Login'
+});
+
+// Header
+const header = rocket.object({ object_id: 'header' });
+
+header.add_layer(
+  rocket.layer({
+    layer_type: 'base',
+    layer_id: 'header-bg',
+    styles: {
+      background: '#1a1a2e',
+      padding: '20px',
+      textAlign: 'center'
+    }
+  })
+);
+
+header.add_layer(
+  rocket.layer({
+    layer_type: 'text',
+    layer_id: 'header-title',
+    text: 'Welcome Back',
+    tag: 'h1',
+    styles: { color: '#ffffff' }
+  })
+);
+
+// Form
+const form = rocket.object({ object_id: 'login-form' });
+
+form.add_layer(
+  rocket.layer({
+    layer_type: 'base',
+    layer_id: 'form-bg',
+    styles: {
+      padding: '20px',
+      maxWidth: '400px',
+      margin: '0 auto'
+    }
+  })
+);
+
+form.add_layer(
+  rocket.layer({
+    layer_type: 'input',
+    layer_id: 'username',
+    type: 'text',
+    name: 'username',
+    placeholder: 'Username'
+  })
+);
+
+form.add_layer(
+  rocket.layer({
+    layer_type: 'input',
+    layer_id: 'password',
+    type: 'password',
+    name: 'password',
+    placeholder: 'Password'
+  })
+);
+
+// Assemble
+page.add(header);
+page.add(form);
+
+const html = page.render();
+```

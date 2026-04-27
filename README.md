@@ -1,47 +1,108 @@
-# 🌙 Crescent.js (Rocket.js) Documentation
+# 🚀 Rocket.js
 
-> **⚠️ This is Phase 1 of 2** in the crescent.js roadmap. the Database and the auth will be integrated with phrase 2
+A full-stack JavaScript framework with integrated authentication, frontend rendering, backend logic, and more.
 
-## Overview
+---
 
-Crescent.js is a full-stack JavaScript platform with **six built-in modules** across two phases:
+## 📌 Overview
 
-### Phase 1 — JavaScript Framework
+Rocket.js is a full-stack JavaScript framework that gives you everything you need to build modern web applications — from rendering pages and handling user interfaces to managing backend logic and authentication — all in one cohesive package.
 
-| Module | Purpose | Access |
-|--------|---------|--------|
-| **Database** | Store and query data without an external DB | `Crescent.Database` |
-| **Auth** | User registration, login, sessions | `Crescent.Auth` |
-| **Backend** | Functions, conditionals, loops, logic | `Crescent.Backend` |
-| **Frontend** | Component-based UI with cartesian layers | `Crescent.Frontend` |
+---
 
+## ✨ Why Rocket.js?
 
-## Roadmap
+- 🧩 **All-in-one** — Frontend, backend, and auth in a single framework  
+- 🧱 **Declarative API** — Build UIs with layers, objects, and pages  
+- 🔐 **Built-in Auth** — Signup, login, OAuth, and session management out of the box  
+- ⚙️ **Backend Logic** — Functions, conditionals, loops, and API management  
+- 📱 **Responsive by Default** — Built-in responsive design support  
+- 🚀 **Zero Config** — Get started immediately with sensible defaults  
 
-| Phase | Focus | Status |
-|-------|-------|--------|
-| **Phase 1** (current) | Framework + Deployment Platform | ✅ Complete |
-| **Phase 2** | Crescent.Launch — Stripe billing, cloud API keys, free tier management, deployment config | 🔜 Next |
+---
 
-## Install
+## ⚡ Quick Start
 
 ```bash
 npm install crescent-js
 ```
 
-## Import
+```js
+const rocket = require('crescent-js');
 
-```javascript
-const Crescent = require('crescent-js');
+// Create a page
+const page = rocket.page({
+  page_id: 'home',
+  title: 'My App'
+});
 
-// Or access individual modules
-const { Database, Auth, Backend, Frontend } = Crescent;
+// Add content
+const heading = rocket.object({ object_id: 'heading' });
+
+heading.add_layer(
+  rocket.layer({
+    layer_type: 'text',
+    layer_id: 'title',
+    text: 'Hello, Rocket!',
+    tag: 'h1'
+  })
+);
+
+page.add(heading);
+
+// Render
+console.log(page.render());
 ```
 
-## Documentation Files
+➡️ **Next Step:** [Getting Started Guide](./docs/getting-started.md)
 
-### Phase 1a — JavaScript Framework
-- [Database Module](./database.md) — FileManager, QueryEngine, DatabaseSyntax, LiveSearch
-- [Auth Module](./auth.md) — Password, Cookie, DBSchema, Signup, Login, OAuth
-- [Backend Module](./backend.md) — RocketFunction, Conditional, Loop, RocketBoolean, Collect, APICall, APIMake
-- [Frontend Module](./frontend.md) — Page, Object, Layers, Transition, Trigger, Responsive, Renderer.
+---
+
+## 📚 Documentation
+
+| Guide | Description |
+|------|------------|
+| [Getting Started](./docs/getting-started.md) | Installation, setup, and your first app |
+| [Frontend](./docs/frontend.md) | Pages, objects, layers, transitions, and triggers |
+| [Backend](./docs/backend.md) | Functions, conditionals, loops, and API management |
+| [Authentication](./docs/authentication.md) | Signup, login, OAuth, and session handling |
+| [API Reference](./docs/api-reference.md) | Complete API documentation |
+| [Configuration](./docs/configuration.md) | Configuration options and customization |
+| [Deployment](./docs/deployment.md) | Deploying your Rocket.js application |
+| [Contributing](./docs/contributing.md) | How to contribute |
+| [Changelog](./docs/changelog.md) | Release history and updates |
+
+---
+
+## 🗂️ Project Structure
+
+```
+my-app/
+├── src/
+│   ├── pages/          # Page definitions
+│   ├── components/     # Reusable objects and layers
+│   ├── functions/      # Backend functions
+│   ├── auth/           # Authentication config
+│   └── app.js          # Entry point
+├── data/               # Local data storage
+└── package.json
+```
+
+---
+
+## 🤝 Community & Support
+
+- 🐛 **Issues** → [GitHub Issues](../../issues)
+- 🌐 **Homepage** → [rocket.js](#)
+
+---
+
+## 📄 License
+
+This project is licensed under the terms described in the [LICENSE](./LICENSE) file.
+
+---
+
+## ⭐ Contribute
+
+If you find this project useful, consider starring ⭐ the repo and contributing!
