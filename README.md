@@ -6,7 +6,7 @@
 
 Crescent.js is a full-stack JavaScript platform with **six built-in modules** across two phases:
 
-### Phase 1a — JavaScript Framework
+### Phase 1 — JavaScript Framework
 
 | Module | Purpose | Access |
 |--------|---------|--------|
