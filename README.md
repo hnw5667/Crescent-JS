@@ -1,4 +1,4 @@
-# 🚀 Rocket.js
+# 🚀 crescent.js
 
 A full-stack JavaScript framework with integrated frontend rendering, backend logic, and database support.
 
