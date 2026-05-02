@@ -1,113 +1,103 @@
-# 🌙 Crescent.js (Rocket.js) Documentation
+# 🚀 Rocket.js
 
-> **⚠️ This is Phase 1 of 3** in the Rocket.js roadmap. The current release includes the JavaScript Framework and Deployment Platform. See [Roadmap](#roadmap) for upcoming phases.
+A full-stack JavaScript framework with integrated frontend rendering, backend logic, and database support.
 
-## Overview
+---
 
-Crescent.js is a full-stack JavaScript platform with **six built-in modules** across two phases:
+## 📌 Overview
 
-### Phase 1a — JavaScript Framework
+Rocket.js is a full-stack JavaScript framework that gives you everything you need to build modern web applications — from rendering pages and handling user interfaces to managing backend logic and database operations — all in one cohesive package.
 
-| Module | Purpose | Access |
-|--------|---------|--------|
-| **Database** | Store and query data without an external DB | `Crescent.Database` |
-| **Auth** | User registration, login, sessions | `Crescent.Auth` |
-| **Backend** | Functions, conditionals, loops, logic | `Crescent.Backend` |
-| **Frontend** | Component-based UI with cartesian layers | `Crescent.Frontend` |
+---
 
-### Phase 1b — Deployment Platform
+## ✨ Why Rocket.js?
 
-| Module | Purpose | Access |
-|--------|---------|--------|
-| **SSH** | Remote server connections & key management | `require('crescent-js/src/phase2/ssh/...')` |
-| **Orchestrator** | Server management, routing, packages | `require('crescent-js/src/phase2/orchestrator/...')` |
-| **SubServer** | Instances, load balancing, queues | `require('crescent-js/src/phase2/subserver/...')` |
-| **Database (VoidDB)** | Full database suite — VoidDB, CacheDB, BackupDB, etc. | `require('crescent-js/src/phase2/database/...')` |
-| **Scaling** | Auto-scaling, health monitoring, metrics | `require('crescent-js/src/phase2/scaling/...')` |
-| **Hosting** | Domains, SSL, deployment | `require('crescent-js/src/phase2/hosting/...')` |
-| **Cloud** | Cloud providers, instances, storage | `require('crescent-js/src/phase2/cloud/...')` |
-| **Crash** | Crash handling, recovery, logging | `require('crescent-js/src/phase2/crash/...')` |
-| **Admin** | Admin panel, user management, audit logs | `require('crescent-js/src/phase2/admin/...')` |
-| **DB Libraries** | Adapters, connection pools | `require('crescent-js/src/phase2/db_libraries/...')` |
-| **WebUI** | Dashboard, API routes, WebSocket | `require('crescent-js/src/phase2/webui/...')` |
+- 🧩 **All-in-one** — Frontend, backend, and database in a single framework  
+- 🧱 **Declarative API** — Build UIs with layers, objects, and pages  
+- ⚙️ **Backend Logic** — Functions, conditionals, loops, and API management  
+- 📱 **Responsive by Default** — Built-in responsive design support  
+- 🚀 **Zero Config** — Get started immediately with sensible defaults  
 
-## Roadmap
+---
 
-| Phase | Focus | Status |
-|-------|-------|--------|
-| **Phase 1** (current) | Framework + Deployment Platform | ✅ Complete |
-| **Phase 2** | Crescent.Launch — Stripe billing, cloud API keys, free tier management, deployment config | 🔜 Next |
-| **Phase 3** | Full cloud orchestration, multi-region scaling, production hardening | 📋 Planned |
-
-## Install
+## ⚡ Quick Start
 
 ```bash
 npm install crescent-js
 ```
 
-## Import
+```js
+const rocket = require('crescent-js');
 
-```javascript
-const Crescent = require('crescent-js');
+// Create a page
+const page = rocket.page({
+  page_id: 'home',
+  title: 'My App'
+});
 
-// Or access individual modules
-const { Database, Auth, Backend, Frontend } = Crescent;
+// Add content
+const heading = rocket.object({ object_id: 'heading' });
+
+heading.add_layer(
+  rocket.layer({
+    layer_type: 'text',
+    layer_id: 'title',
+    text: 'Hello, Rocket!',
+    tag: 'h1'
+  })
+);
+
+page.add(heading);
+
+// Render
+console.log(page.render());
 ```
 
-## Documentation Files
+➡️ **Next Step:** [Getting Started Guide](./docs/getting-started.md)
 
-### Phase 1a — JavaScript Framework
-- [Database Module](./database.md) — FileManager, QueryEngine, DatabaseSyntax, LiveSearch
-- [Auth Module](./auth.md) — Password, Cookie, DBSchema, Signup, Login, OAuth
-- [Backend Module](./backend.md) — RocketFunction, Conditional, Loop, RocketBoolean, Collect, APICall, APIMake
-- [Frontend Module](./frontend.md) — Page, Object, Layers, Transition, Trigger, Responsive, Renderer
+---
 
-### Phase 1b — Deployment Platform
-- [SSH Module](./ssh.md) — Connection, KeyLibrary, ServerInfo
-- [Orchestrator Module](./orchestrator.md) — Server, RequestRouter, ResponseHandler, Cloudflare, PackageManager
-- [SubServer Module](./subserver.md) — Instance, Manager, Queue, LoadBalancer, SubPackage
-- [Database Module (Phase 2)](./database_phase2.md) — VoidDB, QueryDB, FileDB, CacheDB, SyncDB, BackupDB, ReplicateDB, MigrateDB
-- [Scaling Module](./scaling.md) — AutoScale, ManualScale, Metrics, HealthMonitor, Threshold, ResourceManager, Scheduler
-- [Hosting Module](./hosting.md) — Domain, SSL, Deploy
-- [Cloud Module](./cloud.md) — Provider, InstanceManager, Storage
-- [Crash Module](./crash.md) — CrashHandler, Recovery, CrashLog
-- [Admin Module](./admin.md) — AdminPanel, UserManagement, AuditLog
-- [DB Libraries Module](./db_libraries.md) — Adapter, VoidAdapter, ConnectionPool
-- [WebUI Module](./webui.md) — Dashboard, APIRoutes, WebSocket
+## 📚 Documentation
 
-## Quick Example
+| Guide | Description |
+|------|------------|
+| [Getting Started](./docs/getting-started.md) | Installation, setup, and your first app |
+| [Frontend](./docs/frontend.md) | Pages, objects, layers, transitions, and triggers |
+| [Backend](./docs/backend.md) | Functions, conditionals, loops, and API management |
+| [API Reference](./docs/api-reference.md) | Complete API documentation |
+| [Configuration](./docs/configuration.md) | Configuration options and customization |
+| [Contributing](./docs/contributing.md) | How to contribute |
+| [Changelog](./docs/changelog.md) | Release history and updates |
 
-```javascript
-const Crescent = require('crescent-js');
+---
 
-// Database
-const { FileManager, QueryEngine } = Crescent.Database;
-const fm = new FileManager({ base_path: './data' });
-fm.create_collection('users');
+## 🗂️ Project Structure
 
-// Auth
-const { Password, Signup, Login } = Crescent.Auth;
-
-// Backend
-const { RocketFunction, Conditional } = Crescent.Backend;
-const fn = new RocketFunction('greet', { body: (n) => `Hello, ${n}!` });
-
-// Frontend — cartesian coordinate system
-const { Page, TextLayer } = Crescent.Frontend;
-const page = new Page({ page_id: 'home', size: { width: 1920, height: 1080 } });
-
-// Deployment — auto-scaling
-const AutoScale = require('crescent-js/src/phase2/scaling/auto_scale');
-const scaler = new AutoScale({ cooldown: 60000 });
-scaler.add_rule('cpu', { metric: 'cpu', threshold_up: 80, threshold_down: 20 });
+```
+my-app/
+├── src/
+│   ├── pages/          # Page definitions
+│   ├── components/     # Reusable objects and layers
+│   ├── functions/      # Backend functions
+│   └── app.js          # Entry point
+└── package.json
 ```
 
-## Testing
+---
 
-```bash
-npm test            # Run all tests (Phase 1 + Phase 2)
-npm run test:phase1 # Phase 1 framework tests (65 tests)
-npm run test:phase2 # Phase 2 deployment tests (11 modules)
-```
+## 🤝 Community & Support
 
-All **76 tests** pass across both phases.
+- 🐛 **Issues** → [GitHub Issues](../../issues)
+- 🌐 **Homepage** → [rocket.js](#)
+
+---
+
+## 📄 License
+
+This project is licensed under the terms described in the [LICENSE](./LICENSE) file.
+
+---
+
+## ⭐ Contribute
+
+If you find this project useful, consider starring ⭐ the repo and contributing!

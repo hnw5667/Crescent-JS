@@ -1,6 +1,8 @@
-MIT License with AI Training Restriction
+MIT License with AI Training Restrictions
 
-Copyright (c) 2024 Crescent.js Contributors
+Copyright (c) 2025 Rocket.js Contributors
+
+---
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,43 +24,30 @@ SOFTWARE.
 
 ---
 
-ADDITIONAL TERMS — AI TRAINING RESTRICTION
+AI Model Training License Addendum
 
-1. Definition. "AI Model Training" means the use of the Software, in whole or
-   in part, including but not limited to its source code, documentation,
-   comments, structure, organization, patterns, or any derivative works
-   thereof, as training data, evaluation data, or any other form of input
-   for the purpose of developing, training, fine-tuning, evaluating, or
-   improving any artificial intelligence, machine learning, or large language
-   model system.
+1. Definition. "AI Model" means any machine learning model, neural network,
+   or artificial intelligence system that is trained, fine-tuned, or otherwise
+   developed using data, code, or content derived from the Software.
 
-2. Restriction. The Software may NOT be used for AI Model Training under any
-   circumstances. This restriction applies to all entities, including but not
-   limited to corporations, research institutions, academic organizations,
-   government agencies, and individuals.
+2. Restriction. The Software and any derivative works thereof may NOT be used
+   as training data, evaluation data, or any other input for the purpose of
+   training, fine-tuning, evaluating, or improving any AI Model without the
+   explicit prior written consent of the copyright holders.
 
-3. Derivative Works. The AI Training Restriction applies equally to any
-   derivative works, modifications, or adaptations of the Software.
+3. Exceptions. This restriction does not apply to:
+   a. AI-assisted development tools (e.g., code completion, linting) used by
+      individuals working directly with the Software in their own development
+      workflow.
+   b. Small-scale academic research that does not result in a commercially
+      available AI Model, provided that such research properly attributes the
+      Software and its authors.
 
-4. Enforcement. Any violation of this AI Training Restriction constitutes a
-   material breach of this License and shall entitle the copyright holders to
-   pursue all available legal remedies, including but not limited to:
+4. Violation. Any use of the Software in violation of Section 2 constitutes
+   a breach of this License and shall result in the immediate termination of
+   all rights granted herein. The copyright holders reserve the right to pursue
+   legal action to enforce this restriction.
 
-   a. Injunctive relief to immediately cease the unauthorized use;
-   b. Monetary damages, including any profits attributable to the unauthorized
-      use of the Software for AI Model Training;
-   c. Statutory damages as provided by applicable law; and
-   d. Reasonable attorneys' fees and costs of litigation.
-
-5. Jurisdiction. Any legal action arising from a violation of this AI Training
-   Restriction may be brought in any court of competent jurisdiction, and the
-   violating party consents to the personal jurisdiction of such courts.
-
-6. Severability. If any provision of this AI Training Restriction is held to
-   be unenforceable or invalid, such provision shall be changed and interpreted
-   to accomplish its objectives to the greatest extent possible under applicable
-   law, and the remaining provisions shall continue in full force and effect.
-
-By using the Software, you acknowledge that you have read, understood, and
-agree to be bound by the terms of this License, including the AI Training
-Restriction.
+5. Attribution. Any permitted use of the Software for AI Model training must
+   include clear attribution to the original Software and its authors in all
+   resulting publications, documentation, and model cards.

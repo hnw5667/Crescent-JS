@@ -1,329 +1,368 @@
-# ⚙️ Backend Module
+# Backend Guide
 
-Access: `Crescent.Backend`
-
-The Backend module provides server-side logic primitives — named functions, conditionals, loops, boolean logic, data collection, and HTTP utilities.
+Write server-side logic with functions, conditionals, loops, API calls, and more.
 
 ---
 
-## Classes
+## Functions
 
-| Class | Description |
-|-------|-------------|
-| [RocketFunction](#rocketfunction) | Named functions with enable/disable toggle |
-| [Conditional](#conditional) | If/else evaluation |
-| [Loop](#loop) | For-loops and for-in iteration |
-| [RocketBoolean](#rocketboolean) | AND, OR, NOT logic chains |
-| [Collect](#collect) | Gather and transform data |
-| [APICall](#apicall) | Make HTTP requests |
-| [APIMake](#apimake) | Build and send API requests |
+Create reusable server-side functions.
 
----
-
-## RocketFunction
-
-Named functions you can enable and disable. Disabled functions return `null` when called.
-
-### Constructor
-
-```javascript
-const fn = new RocketFunction('name', {
-  body: (arg1, arg2) => result,
-  enabled: true  // optional, default is true
+```js
+const greet = crescent.function({
+  function_id: 'greet',
+  params: ['name'],
+  body: (name) => `Hello, ${name}!`
 });
+
+// Execute
+const result = greet.call('World'); // "Hello, World!"
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `name` | string | Function name (for debugging/logging) |
-| `body` | function | The function to execute |
-| `enabled` | boolean | Initial enabled state (default: `true`) |
+### Function Configuration
 
-### Methods
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `function_id` | string | required | Unique identifier |
+| `params` | array | `[]` | Parameter names |
+| `body` | function | `function() {}` | The function to execute |
+| `function_enabled` | boolean | `true` | Whether the function is active |
 
-#### `call(...args)`
+### Function Methods
 
-Executes the function if enabled. Returns `null` if disabled.
-
-```javascript
-const fn = new RocketFunction('greet', { body: (name) => `Hello, ${name}!` });
-fn.call('World'); // 'Hello, World!'
-
-fn.disable();
-fn.call('World'); // null
-```
-
-#### `enable()` / `disable()`
-
-Toggle the function on or off.
-
-```javascript
-fn.enable();   // Function will execute on call()
-fn.disable();  // Function returns null on call()
-```
-
-#### `is_enabled()`
-
-Returns whether the function is currently enabled.
-
-```javascript
-fn.is_enabled(); // true or false
+```js
+func.call(...args);           // Execute the function with arguments
+func.set_enabled(bool);       // Enable or disable the function
+func.set_body(fn);            // Replace the function body
+func.get_params();            // Get the parameter list
 ```
 
 ---
 
-## Conditional
+## Conditionals
 
-If/else evaluation with custom condition functions.
+Branch logic with if / else-if / else chains.
 
-### Constructor
-
-```javascript
-const cond = new Conditional({
-  condition: () => boolean,
-  if_branch: () => result,
-  else_branch: () => result
+```js
+const check = crescent.conditional({
+  conditional_id: 'age_check',
+  if: {
+    check: () => user.age >= 18,
+    actions: [
+      { type: 'call_function', function: grantAccess }
+    ]
+  },
+  else_if: [
+    {
+      check: () => user.age >= 13,
+      actions: [
+        { type: 'call_function', function: limitedAccess }
+      ]
+    }
+  ],
+  else: {
+    actions: [
+      { type: 'call_function', function: denyAccess }
+    ]
+  }
 });
+
+// Evaluate — returns 'if', 'else_if', or 'else'
+const result = check.evaluate();
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `condition` | function | A function that returns true or false |
-| `if_branch` | function | Runs when condition is true |
-| `else_branch` | function | Runs when condition is false |
+### Conditional Configuration
 
-### Methods
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `conditional_id` | string | required | Unique identifier |
+| `conditional_enabled` | boolean | `true` | Whether the conditional is active |
+| `if` | object | `{ check: false, actions: [] }` | If branch: `{ check, actions }` |
+| `else_if` | array | `[]` | Array of `{ check, actions }` branches |
+| `else` | object | `{ actions: [] }` | Else branch: `{ actions }` |
 
-#### `evaluate()`
+### Conditional Methods
 
-Evaluates the condition and runs the matching branch. Returns the branch's result.
-
-```javascript
-const cond = new Conditional({
-  condition: () => 5 > 3,
-  if_branch: () => 'yes',
-  else_branch: () => 'no'
-});
-cond.evaluate(); // 'yes'
+```js
+conditional.evaluate();                          // Run and return 'if', 'else_if', or 'else'
+conditional.set_if(check, actions);              // Set the if branch
+conditional.add_else_if(check, actions);         // Add an else-if branch
+conditional.set_else(actions);                   // Set the else branch
 ```
 
 ---
 
-## Loop
+## Loops
 
-For-loops and for-in iteration over collections.
+Iterate with for, while, and for-in loops.
 
-### Constructor
+### For Loop
 
-```javascript
-// Counted loop — runs N times
-const loop = new Loop({
-  type: 'for',
-  count: 5,
-  body: (i) => i * 2
+```js
+const loop = crescent.loop({
+  loop_id: 'count',
+  loop_type: 'for',
+  start: 0,
+  end: 10,
+  step: 1,
+  actions: [
+    (i) => console.log(i)
+  ]
 });
 
-// For-in loop — iterates over an array
-const loop = new Loop({
-  type: 'for_in',
-  collection: [10, 20, 30],
-  body: (item) => item + 5
+loop.run();
+```
+
+### While Loop
+
+```js
+const loop = crescent.loop({
+  loop_id: 'process',
+  loop_type: 'while',
+  condition: () => hasMoreItems(),
+  actions: [
+    (i) => processNext()
+  ]
 });
+
+loop.run();
 ```
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `type` | string | `'for'` for counted, `'for_in'` for collection iteration |
-| `count` | number | Number of iterations (for `type: 'for'`) |
-| `collection` | array | Array to iterate over (for `type: 'for_in'`) |
-| `body` | function | Function to run each iteration |
+### For-In Loop
 
-### Methods
+```js
+const loop = crescent.loop({
+  loop_id: 'iterate',
+  loop_type: 'for_in',
+  iterable: ['a', 'b', 'c'],
+  actions: [
+    (item) => console.log(item)
+  ]
+});
 
-#### `run()`
-
-Executes the loop and returns an array of results.
-
-```javascript
-const loop1 = new Loop({ type: 'for', count: 3, body: (i) => i * 2 });
-loop1.run(); // [0, 2, 4]
-
-const loop2 = new Loop({ type: 'for_in', collection: ['a', 'b', 'c'], body: (x) => x.toUpperCase() });
-loop2.run(); // ['A', 'B', 'C']
+loop.run();
 ```
+
+### Loop Configuration
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `loop_id` | string | Unique identifier |
+| `loop_type` | string | `for`, `while`, `for_in` |
+| `start` | number | Start value (for loop) |
+| `end` | number | End value (for loop) |
+| `step` | number | Step increment (for loop) |
+| `condition` | function/any | While condition |
+| `iterable` | array | Items to iterate (for_in) |
+| `actions` | array | Actions to execute each iteration |
+| `loop_enabled` | boolean | Whether the loop is active |
 
 ---
 
-## RocketBoolean
+## Boolean Logic
 
-AND, OR, NOT logic chains. Chain them together for complex conditions.
+Evaluate boolean expressions with AND, OR, NOT, XOR, NAND, NOR.
 
-### Constructor
+```js
+const check = crescent.boolean({
+  boolean_id: 'access_check',
+  value1: true,
+  value2: false,
+  operator: 'AND'
+});
 
-```javascript
-const bool = new RocketBoolean();
+check.evaluate(); // false
 ```
 
-### Methods
+### Chaining
 
-#### `AND(...conditions)`
-
-Returns `true` if ALL conditions are true.
-
-```javascript
-bool.AND(true, true, true);   // true
-bool.AND(true, false, true);  // false
+```js
+const result = crescent.boolean({ boolean_id: 'a', value1: true, operator: 'NOT' })
+  .and(crescent.boolean({ boolean_id: 'b', value1: true }))
+  .evaluate();
 ```
 
-#### `OR(...conditions)`
+### Operators
 
-Returns `true` if ANY condition is true.
+| Operator | Description |
+|----------|-------------|
+| `AND` | Both values must be true |
+| `OR` | At least one value must be true |
+| `NOT` | Negates the first value |
+| `XOR` | Exactly one value is true |
+| `NAND` | NOT AND |
+| `NOR` | NOT OR |
 
-```javascript
-bool.OR(false, true, false);  // true
-bool.OR(false, false, false); // false
+---
+
+## API Calls
+
+Make HTTP requests to external APIs.
+
+```js
+const api = crescent.api_call({
+  api_call_id: 'fetch_users',
+  url: 'https://api.example.com/users',
+  method: 'GET',
+  headers: { 'Authorization': 'Bearer token123' },
+  timeout: 30000
+});
+
+// Execute
+const response = await api.call();
 ```
 
-#### `NOT(condition)`
+### API Call Configuration
 
-Returns the opposite of the condition.
+| Property | Type | Description |
+|----------|------|-------------|
+| `api_call_id` | string | Unique identifier |
+| `url` | string | Request URL |
+| `method` | string | HTTP method (GET, POST, PUT, PATCH, DELETE) |
+| `headers` | object | Request headers |
+| `body` | any | Request body (POST/PUT/PATCH) |
+| `timeout` | number | Timeout in ms (default: 30000) |
 
-```javascript
-bool.NOT(true);   // false
-bool.NOT(false);  // true
+---
+
+## API Server
+
+Create REST API endpoints.
+
+```js
+const api = crescent.api_make({
+  api_id: 'my_api',
+  port: 3000,
+  host: 'localhost',
+  cors: true
+});
+
+// Add endpoints
+api.add_endpoint('GET', '/users', (req, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ users: [] }));
+});
+
+api.add_endpoint('POST', '/users', (req, res) => {
+  const user = req.body;
+  res.writeHead(201, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ created: user }));
+});
+
+// Start the server
+await api.start();
+
+// Stop the server
+await api.stop();
 ```
 
-### Chaining Example
+### Path Parameters
 
-```javascript
-const { RocketBoolean } = Crescent.Backend;
-const bool = new RocketBoolean();
+Use `:param` syntax for dynamic routes:
 
-// Complex: (true OR false) AND (NOT false)
-const result = bool.AND(
-  bool.OR(true, false),
-  bool.NOT(false)
-);
-// true
+```js
+api.add_endpoint('GET', '/users/:id', (req, res) => {
+  const userId = req.params.id;
+  // ...
+});
+```
+
+### Middleware
+
+```js
+api.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 ```
 
 ---
 
 ## Collect
 
-Gather and transform data from multiple sources.
+Gather data from multiple sources (layers, objects, pages).
 
-### Constructor
-
-```javascript
-const collect = new Collect();
-```
-
-### Methods
-
-#### `gather(...sources)`
-
-Combines multiple arrays into one flat array.
-
-```javascript
-collect.gather([1, 2], [3, 4], [5]);
-// [1, 2, 3, 4, 5]
-```
-
-#### `transform(data, fn)`
-
-Maps a function over the data. Returns a new array.
-
-```javascript
-collect.transform([1, 2, 3], (x) => x * 10);
-// [10, 20, 30]
-```
-
-#### `filter(data, fn)`
-
-Filters data by a predicate function.
-
-```javascript
-collect.filter([1, 2, 3, 4, 5], (x) => x > 3);
-// [4, 5]
-```
-
----
-
-## APICall
-
-Make HTTP requests to external APIs.
-
-### Constructor
-
-```javascript
-const api = new APICall();
-```
-
-### Methods
-
-#### `get(url, headers)`
-
-Makes a GET request. Returns a Promise with the response.
-
-```javascript
-const data = await api.get('https://api.example.com/users');
-```
-
-#### `post(url, body, headers)`
-
-Makes a POST request with a JSON body.
-
-```javascript
-const result = await api.post('https://api.example.com/users', { name: 'Alice' });
-```
-
-#### `put(url, body, headers)`
-
-Makes a PUT request.
-
-```javascript
-await api.put('https://api.example.com/users/1', { name: 'Alice Updated' });
-```
-
-#### `delete(url, headers)`
-
-Makes a DELETE request.
-
-```javascript
-await api.delete('https://api.example.com/users/1');
-```
-
----
-
-## APIMake
-
-Build and send custom HTTP requests with full control over method, headers, and body.
-
-### Constructor
-
-```javascript
-const api = new APIMake();
-```
-
-### Methods
-
-#### `send(config)`
-
-Sends a custom HTTP request. Returns a Promise.
-
-```javascript
-const result = await api.send({
-  method: 'POST',
-  url: 'https://api.example.com/data',
-  headers: { 'Authorization': 'Bearer token123' },
-  body: { key: 'value' }
+```js
+const collect = crescent.collect({
+  collect_id: 'form_data',
+  sources: [nameInput, emailInput],
+  transform: (data) => ({ ...data, submitted_at: Date.now() }),
+  validate: (data) => data.email && data.email.includes('@')
 });
+
+const formData = collect.collect();
 ```
 
-| Config Field | Type | Description |
-|-------------|------|-------------|
-| `method` | string | HTTP method: GET, POST, PUT, DELETE, PATCH |
-| `url` | string | Request URL |
-| `headers` | object | Custom headers (optional) |
-| `body` | object | Request body (optional) |
+### Collect Methods
+
+```js
+collect.collect();           // Gather from all sources
+collect.add_source(source);  // Add a data source
+collect.set_transform(fn);   // Set transform function
+collect.set_validate(fn);    // Set validation function
+collect.send(url, options);  // Collect and send to API
+```
+
+---
+
+## Database
+
+Crescent.js includes a built-in database with a clean CRUD API.
+
+```js
+// Access the database
+const db = crescent.db;
+
+// Create a collection
+db.create('users');
+
+// Insert documents
+db.insert('users', { _id: '1', name: 'Alice', age: 30 });
+db.insert_many('users', [
+  { _id: '2', name: 'Bob', age: 25 },
+  { _id: '3', name: 'Charlie', age: 35 }
+]);
+
+// Find documents
+const all = db.find('users');
+const alice = db.find_one('users', { name: 'Alice' });
+const byId = db.find_by_id('users', '1');
+
+// Update documents
+db.update('users', { name: 'Alice' }, { age: 31 });
+db.update_one('users', { name: 'Bob' }, { age: 26 });
+
+// Delete documents
+db.delete('users', { name: 'Charlie' });
+db.delete_one('users', { _id: '2' });
+
+// Count, sort, limit
+const count = db.count('users');
+const sorted = db.sort('users', {}, 'age', 'asc');
+const limited = db.limit('users', {}, 10);
+
+// Collection management
+db.list_collections();
+db.exists('users');
+db.drop('users');
+```
+
+---
+
+## Global Utility Functions
+
+Crescent.js provides built-in utility functions:
+
+```js
+crescent.print(value);              // Console.log and return value
+crescent.add(a, b);                 // Addition
+crescent.subtract(a, b);            // Subtraction
+crescent.multiply(a, b);            // Multiplication
+crescent.divide(a, b);              // Division (throws on /0)
+crescent.sqrt(n);                   // Square root
+crescent.sin(n);                    // Sine
+crescent.cos(n);                    // Cosine
+crescent.tan(n);                    // Tangent
+crescent.get_timestamp();           // Current timestamp
+crescent.redirect(url);             // Browser redirect
+crescent.connect_and_pull(url, options);  // Fetch JSON from URL
