@@ -6,11 +6,11 @@ A full-stack JavaScript framework with integrated frontend rendering, backend lo
 
 ## 📌 Overview
 
-Rocket.js is a full-stack JavaScript framework that gives you everything you need to build modern web applications — from rendering pages and handling user interfaces to managing backend logic and database operations — all in one cohesive package.
+crescent.js is a full-stack JavaScript framework that gives you everything you need to build modern web applications — from rendering pages and handling user interfaces to managing backend logic and database operations — all in one cohesive package.
 
 ---
 
-## ✨ Why Rocket.js?
+## ✨ Why crescent.js?
 
 - 🧩 **All-in-one** — Frontend, backend, and database in a single framework  
 - 🧱 **Declarative API** — Build UIs with layers, objects, and pages  
@@ -42,7 +42,7 @@ heading.add_layer(
   rocket.layer({
     layer_type: 'text',
     layer_id: 'title',
-    text: 'Hello, Rocket!',
+    text: 'Hello, Moon!',
     tag: 'h1'
   })
 );
