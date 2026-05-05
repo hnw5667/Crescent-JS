@@ -85,11 +85,11 @@ my-app/
 
 ---
 
-## 🤝 Community & Support
-
-- 🐛 **Issues** → [GitHub Issues](../../issues)
-- 🌐 **Homepage** → [rocket.js](#)
-
+## How to run
+```
+cresent run <FILE_PATH> 3030 --> To run on a Specific Port
+crescent run <FILE_PATH> ------> Auto Runs the file on 3000
+```
 ---
 
 ## 📄 License
