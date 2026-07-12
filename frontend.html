@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frontend — crescent.js</title>
+  <meta name="description" content="Frontend so easy that designers start coding. Build UIs with pages, objects, layers, transitions, and triggers." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">🎨</span>
+        <h1 class="thumb-title">Frontend</h1>
+        <p class="thumb-subtitle">So easy that designers start coding — build UIs with pages, objects, layers, transitions, and triggers.</p>
+        <span class="thumb-badge"><span class="dot"></span> Pages → Objects → Layers</span>
+      </section>
+
+      <div class="callout note">
+        <div class="callout-icon">🧠</div>
+        <div class="callout-body">
+          <strong>The mental model, in one line.</strong>
+          A <strong>page</strong> holds <strong>objects</strong>, an <strong>object</strong> holds <strong>layers</strong>, and a <strong>layer</strong> is the thing you actually see (text, image, shape, input). Everything sits on a cartesian grid where <code>(0,0)</code> is the center.
+        </div>
+      </div>
+
+      <!-- ===================== LAYERS ===================== -->
+      <h2 id="layers">Layers</h2>
+      <p>Layers are the visual building blocks. Every visible element is a layer.</p>
+
+      <h3>Layer Types</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>text</code></td><td>Text content with per-character property overrides</td></tr>
+            <tr><td><code>image</code></td><td>Image display</td></tr>
+            <tr><td><code>shape</code></td><td>Shapes defined by vertices (3=triangle, 4=rectangle, 0=circle)</td></tr>
+            <tr><td><code>input</code></td><td>User input (text box or list)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Common Properties (All Layer Types)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>layer_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>layer_type</code></td><td>string</td><td>required</td><td><code>text</code>, <code>image</code>, <code>shape</code>, <code>input</code></td></tr>
+            <tr><td><code>layer_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Whether the layer is visible</td></tr>
+            <tr><td><code>position</code></td><td>object</td><td><code>{ x: 0, y: 0 }</code></td><td>Cartesian position within parent object</td></tr>
+            <tr><td><code>index</code></td><td>number</td><td><code>0</code></td><td>Z-index for stacking (lower = back, higher = front)</td></tr>
+            <tr><td><code>rotate</code></td><td>number/string</td><td><code>'0deg'</code></td><td>Rotation (e.g., <code>45</code> or <code>'45deg'</code>)</td></tr>
+            <tr><td><code>opacity</code></td><td>string</td><td><code>'100%'</code></td><td>Opacity as percentage (e.g., <code>'50%'</code>)</td></tr>
+            <tr><td><code>size</code></td><td>object</td><td><code>{ height: 50, width: 50 }</code></td><td>Dimensions in pixels</td></tr>
+            <tr><td><code>colour</code></td><td>string</td><td><code>'0,0,0'</code></td><td>RGB format: <code>'R,G,B'</code> or <code>'R,G,B,A'</code></td></tr>
+            <tr><td><code>rounded_corners</code></td><td>string</td><td><code>'0px'</code></td><td>Border radius (e.g., <code>'10px'</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="text-layer">Text Layer</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> title = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'text'</span>,
+  layer_id: <span class="tok-str">'title'</span>,
+  text: <span class="tok-str">'Hello World'</span>,
+  size: <span class="tok-num">24</span>,                    <span class="tok-com">// font size in px</span>
+  colour: <span class="tok-str">'0,0,0'</span>,
+  bold: <span class="tok-key">false</span>,
+  underline: <span class="tok-key">false</span>,
+  strike: <span class="tok-key">false</span>,
+  highlight: <span class="tok-key">false</span>,
+  font: <span class="tok-str">'sans-serif'</span>,          <span class="tok-com">// font family</span>
+  spacing: <span class="tok-str">'0px'</span>,              <span class="tok-com">// letter spacing</span>
+  properties: []               <span class="tok-com">// per-character overrides</span>
+});</code></pre>
+      </div>
+
+      <h4>Per-character property overrides</h4>
+      <p>Style individual characters by index range. For multi-character ranges, <code>spacing</code> can split into <code>internal</code> (within selection) and <code>external</code> (margin around selection).</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> styled = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'text'</span>,
+  layer_id: <span class="tok-str">'styled'</span>,
+  text: <span class="tok-str">"abc'de'fxx"</span>,
+  size: <span class="tok-num">16</span>,
+  colour: <span class="tok-str">'0,0,0'</span>,
+  bold: <span class="tok-key">false</span>,
+  properties: [
+    {
+      range: [<span class="tok-num">3</span>, <span class="tok-num">4</span>],           <span class="tok-com">// override characters at index 3-4 ('de')</span>
+      colour: <span class="tok-str">'255,0,0'</span>,
+      bold: <span class="tok-key">true</span>,
+      underline: <span class="tok-key">true</span>,
+      size: <span class="tok-num">20</span>,
+      font: <span class="tok-str">'monospace'</span>,
+      spacing: { internal: <span class="tok-str">'2px'</span>, external: <span class="tok-str">'4px'</span> }  <span class="tok-com">// multi-char: internal + external</span>
+    }
+  ]
+});</code></pre>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>text</code></td><td>string</td><td><code>''</code></td><td>Text content</td></tr>
+            <tr><td><code>size</code></td><td>number</td><td><code>16</code></td><td>Font size in px</td></tr>
+            <tr><td><code>font</code></td><td>string</td><td><code>'sans-serif'</code></td><td>Font family</td></tr>
+            <tr><td><code>spacing</code></td><td>string/number</td><td><code>'0px'</code></td><td>Letter spacing</td></tr>
+            <tr><td><code>bold</code></td><td>boolean</td><td><code>false</code></td><td>Bold text</td></tr>
+            <tr><td><code>underline</code></td><td>boolean</td><td><code>false</code></td><td>Underlined text</td></tr>
+            <tr><td><code>strike</code></td><td>boolean</td><td><code>false</code></td><td>Strikethrough text</td></tr>
+            <tr><td><code>highlight</code></td><td>boolean</td><td><code>false</code></td><td>Yellow highlight background</td></tr>
+            <tr><td><code>properties</code></td><td>array</td><td><code>[]</code></td><td>Per-character style overrides</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="image-layer">Image Layer</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> logo = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'image'</span>,
+  layer_id: <span class="tok-str">'logo'</span>,
+  image_location: <span class="tok-str">'images/logo.png'</span>,  <span class="tok-com">// local path or URL</span>
+  size: { height: <span class="tok-num">100</span>, width: <span class="tok-num">200</span> },
+  colour: <span class="tok-str">'0,0,0'</span>,                    <span class="tok-com">// optional colour overlay</span>
+  opacity: <span class="tok-str">'100%'</span>,
+  rounded_corners: <span class="tok-str">'8px'</span>,
+  rotate: <span class="tok-str">'0deg'</span>
+});</code></pre>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>image_location</code></td><td>string</td><td><code>''</code></td><td>Image path or URL</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="shape-layer">Shape Layer</h3>
+      <p>Vertices decide the shape: <code>0</code> or <code>'circle'</code> = circle/ellipse, <code>3</code> = triangle, <code>4</code> = rectangle, <code>5+</code> = polygon.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> box = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'shape'</span>,
+  layer_id: <span class="tok-str">'box'</span>,
+  layer_vertices: <span class="tok-num">4</span>,           <span class="tok-com">// 4 = rectangle</span>
+  size: { height: <span class="tok-num">50</span>, width: <span class="tok-num">200</span> },
+  colour: <span class="tok-str">'52,152,219'</span>,
+  rounded_corners: <span class="tok-str">'8px'</span>,
+  opacity: <span class="tok-str">'100%'</span>,
+  rotate: <span class="tok-str">'0deg'</span>
+});
+
+<span class="tok-key">const</span> circle = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'shape'</span>,
+  layer_id: <span class="tok-str">'circle'</span>,
+  layer_vertices: <span class="tok-num">0</span>,           <span class="tok-com">// 0 or 'circle' = circle/ellipse</span>
+  size: { height: <span class="tok-num">100</span>, width: <span class="tok-num">100</span> },
+  colour: <span class="tok-str">'231,76,60'</span>
+});
+
+<span class="tok-key">const</span> triangle = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'shape'</span>,
+  layer_id: <span class="tok-str">'tri'</span>,
+  layer_vertices: <span class="tok-num">3</span>,           <span class="tok-com">// 3 = triangle</span>
+  size: { height: <span class="tok-num">100</span>, width: <span class="tok-num">100</span> },
+  colour: <span class="tok-str">'46,204,113'</span>
+});</code></pre>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>layer_vertices</code></td><td>number/string</td><td><code>4</code></td><td>0/<code>'circle'</code> = circle, 3 = triangle, 4 = rectangle, 5+ = polygon</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="input-layer">Input Layer</h3>
+
+      <h4>Text Box Input</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> nameInput = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'input'</span>,
+  layer_id: <span class="tok-str">'name_input'</span>,
+  input_method: <span class="tok-str">'text box'</span>,
+  box_length: <span class="tok-num">20</span>,                          <span class="tok-com">// character length</span>
+  box_inner_text: <span class="tok-str">'Enter your name...'</span>,    <span class="tok-com">// placeholder text</span>
+  box_inner_text_properties: [<span class="tok-str">'italic'</span>],   <span class="tok-com">// placeholder style: underline, strike, bold, italic</span>
+  box_inner_text_font: <span class="tok-str">'sans-serif'</span>,       <span class="tok-com">// placeholder font</span>
+  colour_text: <span class="tok-str">'0,0,0'</span>,                   <span class="tok-com">// placeholder text colour</span>
+  written_inner_text_properties: [],        <span class="tok-com">// written text style</span>
+  written_inner_text_font: <span class="tok-str">'sans-serif'</span>,   <span class="tok-com">// written text font</span>
+  colour_text_written: <span class="tok-str">'0,0,0'</span>,           <span class="tok-com">// written text colour</span>
+  size: { height: <span class="tok-num">40</span>, width: <span class="tok-num">300</span> },
+  rounded_corners: <span class="tok-str">'4px'</span>
+});</code></pre>
+      </div>
+
+      <h4>List Input</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> colorPicker = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'input'</span>,
+  layer_id: <span class="tok-str">'color_picker'</span>,
+  input_method: <span class="tok-str">'list'</span>,
+  select: <span class="tok-str">'one'</span>,                           <span class="tok-com">// 'one', 'more_than_one', or { min: N, max: M }</span>
+  list_elements: [<span class="tok-str">'Red'</span>, <span class="tok-str">'Green'</span>, <span class="tok-str">'Blue'</span>],
+  colour_text_written: <span class="tok-str">'0,0,0'</span>,
+  written_inner_text_font: <span class="tok-str">'sans-serif'</span>,
+  size: { height: <span class="tok-num">120</span>, width: <span class="tok-num">200</span> },
+  rounded_corners: <span class="tok-str">'4px'</span>
+});</code></pre>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>input_method</code></td><td>string</td><td><code>'text box'</code></td><td><code>'text box'</code> or <code>'list'</code></td></tr>
+            <tr><td><code>box_length</code></td><td>number</td><td><code>20</code></td><td>Text box character length</td></tr>
+            <tr><td><code>box_inner_text</code></td><td>string</td><td><code>''</code></td><td>Placeholder text</td></tr>
+            <tr><td><code>box_inner_text_properties</code></td><td>array</td><td><code>[]</code></td><td>Placeholder styles: <code>underline</code>, <code>strike</code>, <code>bold</code>, <code>italic</code></td></tr>
+            <tr><td><code>box_inner_text_font</code></td><td>string</td><td><code>'sans-serif'</code></td><td>Placeholder font</td></tr>
+            <tr><td><code>colour_text</code></td><td>string</td><td><code>'0,0,0'</code></td><td>Placeholder text colour</td></tr>
+            <tr><td><code>written_inner_text_properties</code></td><td>array</td><td><code>[]</code></td><td>Written text styles</td></tr>
+            <tr><td><code>written_inner_text_font</code></td><td>string</td><td><code>'sans-serif'</code></td><td>Written text font</td></tr>
+            <tr><td><code>colour_text_written</code></td><td>string</td><td><code>'0,0,0'</code></td><td>Written text colour</td></tr>
+            <tr><td><code>select</code></td><td>string/object</td><td><code>'one'</code></td><td><code>'one'</code>, <code>'more_than_one'</code>, or <code>{ min: N, max: M }</code></td></tr>
+            <tr><td><code>list_elements</code></td><td>array</td><td><code>[]</code></td><td>List items for selection</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="layer-methods">Layer Methods</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>layer.<span class="tok-fn">get_value</span>();                <span class="tok-com">// Get current value (input layers)</span>
+layer.<span class="tok-fn">set_property</span>(name, value);  <span class="tok-com">// Update a property and re-render</span>
+layer.<span class="tok-fn">render</span>();                   <span class="tok-com">// Generate DOM element</span>
+layer.<span class="tok-fn">get_element</span>();              <span class="tok-com">// Get the rendered DOM element</span></code></pre>
+      </div>
+
+      <!-- ===================== OBJECTS ===================== -->
+      <h2 id="objects">Objects</h2>
+      <p>Objects are containers that hold layers in a cartesian coordinate system.</p>
+
+      <h3>Creating Objects</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> card = crescent.<span class="tok-fn">object</span>({
+  object_id: <span class="tok-str">'card'</span>,
+  size: { height: <span class="tok-num">300</span>, width: <span class="tok-num">400</span> },
+  bg_layer: <span class="tok-str">'bg_layer_id'</span>,
+  layers_config: [titleLayer, logoLayer],
+  index_config: { titleLayer: <span class="tok-num">0</span>, logoLayer: <span class="tok-num">1</span> },
+  position_config: { titleLayer: { x: -<span class="tok-num">10</span>, y: -<span class="tok-num">2</span> }, logoLayer: { x: <span class="tok-num">5</span>, y: <span class="tok-num">10</span> } }
+});</code></pre>
+      </div>
+
+      <h4>Spec format</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">text</span><button class="copy-btn" type="button"></button></div>
+<pre><code>object_ID/name = {
+  layers = { layer_ID_1, layer_ID_2 }
+  index = { layer_ID_1 = 0, layer_ID_2 = 1 }
+  position = { layer_ID_1 = (-10,-2), layer_ID_2 = (5,10) }
+  bg_layer = { layer_ID_2 }
+  size = { height = n px, width = m px }
+}</code></pre>
+      </div>
+
+      <h3>Cartesian Coordinate System</h3>
+      <p>Objects use a cartesian coordinate system where:</p>
+      <ul>
+        <li><strong>Center</strong> = <code>(0, 0)</code></li>
+        <li><strong>Positive x</strong> = right, <strong>negative x</strong> = left</li>
+        <li><strong>Positive y</strong> = down, <strong>negative y</strong> = up</li>
+        <li>If height is 400, y ranges from <code>-200</code> to <code>200</code></li>
+        <li>If width is 300, x ranges from <code>-150</code> to <code>150</code></li>
+      </ul>
+      <div class="callout warn">
+        <div class="callout-icon">✂️</div>
+        <div class="callout-body"><strong>Layers outside the object bounds are clipped.</strong></div>
+      </div>
+
+      <h3>Object Config</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>object_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>size</code></td><td>object</td><td>required</td><td><code>{ height, width }</code> in pixels</td></tr>
+            <tr><td><code>page_position</code></td><td>object</td><td><code>{ x: 0, y: 0 }</code></td><td>Position on the page</td></tr>
+            <tr><td><code>page_index</code></td><td>number</td><td><code>0</code></td><td>Z-index on the page</td></tr>
+            <tr><td><code>bg_layer</code></td><td>string/null</td><td><code>null</code></td><td>Layer ID for background (fills entire object)</td></tr>
+            <tr><td><code>object_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Visibility toggle</td></tr>
+            <tr><td><code>layers_config</code></td><td>array</td><td>—</td><td>Pre-add layers</td></tr>
+            <tr><td><code>index_config</code></td><td>object</td><td>—</td><td>Pre-set layer indices</td></tr>
+            <tr><td><code>position_config</code></td><td>object</td><td>—</td><td>Pre-set layer positions</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Object Methods</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-com">// Add/remove layers</span>
+object.<span class="tok-fn">add_layer</span>(layer);
+object.<span class="tok-fn">remove_layer</span>(layer_id);
+object.<span class="tok-fn">get_layer</span>(layer_id);
+
+<span class="tok-com">// Position layers within the object (cartesian)</span>
+object.<span class="tok-fn">set_layer_position</span>(layer_id, x, y);
+object.<span class="tok-fn">set_layer_index</span>(layer_id, zIndex);
+
+<span class="tok-com">// Background layer (fills entire object)</span>
+object.<span class="tok-fn">set_bg_layer</span>(layer_id);
+
+<span class="tok-com">// Get values from all input layers</span>
+object.<span class="tok-fn">get_value</span>();
+
+<span class="tok-com">// Get cartesian coordinate range</span>
+object.<span class="tok-fn">get_cartesian_range</span>();
+
+<span class="tok-com">// Render to DOM</span>
+object.<span class="tok-fn">render</span>();
+
+<span class="tok-com">// Get the rendered DOM element</span>
+object.<span class="tok-fn">get_element</span>();
+
+<span class="tok-com">// Update properties</span>
+object.<span class="tok-fn">set_property</span>(name, value);
+
+<span class="tok-com">// Apply transition</span>
+object.<span class="tok-fn">set_transition</span>(transition);</code></pre>
+      </div>
+
+      <!-- ===================== PAGES ===================== -->
+      <h2 id="pages">Pages</h2>
+      <p>Pages are top-level containers that hold objects in a cartesian coordinate system with ratio-based scaling.</p>
+
+      <h3>Creating Pages</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> page = crescent.<span class="tok-fn">page</span>({
+  page_id: <span class="tok-str">'home'</span>,
+  page_bg: <span class="tok-str">'240,240,240'</span>,                    <span class="tok-com">// colour string or layer instance</span>
+  page_url: <span class="tok-str">'www.xyz.com/home'</span>,
+  page_title: <span class="tok-str">'Home'</span>,
+  page_description: <span class="tok-str">'This is the home of www.xyz.com'</span>,
+  page_type: <span class="tok-str">'home'</span>,
+  size: { height: <span class="tok-num">800</span>, width: <span class="tok-num">1200</span> },
+  objects_config: [headerObj, contentObj],
+  index_config: { headerObj: <span class="tok-num">0</span>, contentObj: <span class="tok-num">1</span> },
+  position_config: { headerObj: { x: -<span class="tok-num">10</span>, y: <span class="tok-num">0</span> }, contentObj: { x: -<span class="tok-num">3</span>, y: <span class="tok-num">3</span> } },
+  scaling_config: {
+    headerObj: { height_ratio: [<span class="tok-num">0</span>, <span class="tok-num">0</span>], width_ratio: [<span class="tok-num">0</span>, <span class="tok-num">0</span>] },
+    contentObj: { height_ratio: [<span class="tok-num">2</span>, <span class="tok-num">1</span>], width_ratio: [<span class="tok-num">3</span>, <span class="tok-num">1</span>] }
+  }
+});</code></pre>
+      </div>
+
+      <h4>Spec format</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">text</span><button class="copy-btn" type="button"></button></div>
+<pre><code>Page_ID/name = {
+  page_bg = layer (or) colour
+  page_url = www.xyz.com/home
+  page_title = xyz
+  page_description = this is the home of www.xyz.com
+  page_type = home
+  page_size = { height: N, width: M }
+  objects = { object_ID_1, object_ID_2 }
+  index = { object_ID_1 = 0, object_ID_2 = 1 }
+  position = { object_ID_1 = (-10,0), object_ID_2 = (-3,3) }
+}</code></pre>
+      </div>
+
+      <h3>Cartesian Coordinate System</h3>
+      <p>Pages use the same cartesian system as objects:</p>
+      <ul>
+        <li><strong>Center</strong> = <code>(0, 0)</code></li>
+        <li>If height is 800, y ranges from <code>-400</code> to <code>400</code></li>
+        <li>If width is 1200, x ranges from <code>-600</code> to <code>600</code></li>
+      </ul>
+
+      <h3>Ratio-Based Scaling</h3>
+      <p>When the page is created, it gets a height and width. This creates two ratios for each object:</p>
+      <ul>
+        <li><strong>height_ratio</strong>: <code>[top, bottom]</code> — proportion of space above vs below</li>
+        <li><strong>width_ratio</strong>: <code>[left, right]</code> — proportion of space left vs right</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-icon">📱</div>
+        <div class="callout-body">If a ratio is <code>[0, 0]</code>, the object resizes to fit the screen in that dimension. The <code>page_bg</code> layer scales to fill the screen.</div>
+      </div>
+
+      <h3>Page Config</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>page_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>page_bg</code></td><td>string/layer</td><td><code>'255,255,255'</code></td><td>Background: colour string or layer instance</td></tr>
+            <tr><td><code>page_url</code></td><td>string</td><td><code>'/'</code></td><td>Page URL</td></tr>
+            <tr><td><code>page_title</code></td><td>string</td><td><code>''</code></td><td>Page title</td></tr>
+            <tr><td><code>page_description</code></td><td>string</td><td><code>''</code></td><td>Meta description</td></tr>
+            <tr><td><code>page_type</code></td><td>string</td><td><code>'home'</code></td><td>Page type</td></tr>
+            <tr><td><code>size</code></td><td>object</td><td><code>{ height: 800, width: 1200 }</code></td><td>Dimensions in pixels</td></tr>
+            <tr><td><code>page_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Visibility toggle</td></tr>
+            <tr><td><code>objects_config</code></td><td>array</td><td>—</td><td>Pre-add objects</td></tr>
+            <tr><td><code>index_config</code></td><td>object</td><td>—</td><td>Pre-set object indices <code>{ id: idx }</code></td></tr>
+            <tr><td><code>position_config</code></td><td>object</td><td>—</td><td>Pre-set object positions <code>{ id: { x, y } }</code></td></tr>
+            <tr><td><code>scaling_config</code></td><td>object</td><td>—</td><td>Pre-set scaling ratios <code>{ id: { height_ratio: [t,b], width_ratio: [l,r] } }</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Page Methods</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-com">// Add/remove objects</span>
+page.<span class="tok-fn">add_object</span>(object);
+page.<span class="tok-fn">remove_object</span>(object_id);
+page.<span class="tok-fn">get_object</span>(object_id);
+
+<span class="tok-com">// Position objects using cartesian coordinates</span>
+page.<span class="tok-fn">set_object_position</span>(object_id, x, y);
+page.<span class="tok-fn">set_object_index</span>(object_id, zIndex);
+
+<span class="tok-com">// Set scaling ratios for responsive behavior</span>
+page.<span class="tok-fn">set_scaling_ratio</span>(object_id, height_ratio, width_ratio);
+
+<span class="tok-com">// Get cartesian coordinate range</span>
+page.<span class="tok-fn">get_cartesian_range</span>();
+
+<span class="tok-com">// Get all input values from all objects</span>
+page.<span class="tok-fn">get_values</span>();
+
+<span class="tok-com">// Navigate to another page</span>
+page.<span class="tok-fn">navigate_to</span>(page_id);
+
+<span class="tok-com">// Render the entire page</span>
+page.<span class="tok-fn">render</span>();
+
+<span class="tok-com">// Get the rendered DOM element</span>
+page.<span class="tok-fn">get_element</span>();
+
+<span class="tok-com">// Update properties</span>
+page.<span class="tok-fn">set_property</span>(name, value);
+
+<span class="tok-com">// Clean up</span>
+page.<span class="tok-fn">destroy</span>();</code></pre>
+      </div>
+
+      <!-- ===================== TRANSITIONS ===================== -->
+      <h2 id="transitions">Transitions</h2>
+      <p>Animate property changes on layers within objects. Transitions import objects, specify a duration, and list property changes.</p>
+
+      <h4>Spec format</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">text</span><button class="copy-btn" type="button"></button></div>
+<pre><code>transition_property = {
+  import object_ID/name
+  import object_ID_2/name
+
+  time = 45 sec
+  change.object_ID/name.layer_1:width = 100
+  change.object_ID_2/name.layer_1:width = 100
+}</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> slideIn = crescent.<span class="tok-fn">transition</span>({
+  objects: [headerObj, contentObj],
+  time: <span class="tok-str">'2s'</span>,               <span class="tok-com">// '2s', '45 sec', '1000ms', or ms number</span>
+  changes: [
+    { object_id: <span class="tok-str">'header'</span>, layer_id: <span class="tok-str">'title'</span>, property: <span class="tok-str">'size.width'</span>, value: <span class="tok-num">200</span> },
+    { object_id: <span class="tok-str">'header'</span>, layer_id: <span class="tok-str">'bg'</span>, property: <span class="tok-str">'colour'</span>, value: <span class="tok-str">'255,0,0'</span> }
+  ]
+});
+
+<span class="tok-com">// Play forward</span>
+slideIn.<span class="tok-fn">play</span>(() =&gt; console.<span class="tok-fn">log</span>(<span class="tok-str">'done'</span>));
+
+<span class="tok-com">// Reverse back to original</span>
+slideIn.<span class="tok-fn">reverse</span>();
+
+<span class="tok-com">// Stop mid-animation</span>
+slideIn.<span class="tok-fn">stop</span>();
+
+<span class="tok-com">// Add more changes dynamically</span>
+slideIn.<span class="tok-fn">add_change</span>(<span class="tok-str">'header'</span>, <span class="tok-str">'title'</span>, <span class="tok-str">'opacity'</span>, <span class="tok-str">'50%'</span>);
+slideIn.<span class="tok-fn">add_object</span>(anotherObj);</code></pre>
+      </div>
+
+      <!-- ===================== TRIGGERS ===================== -->
+      <h2 id="triggers">Triggers</h2>
+      <p>Triggers respond to user interactions. They are boolean: if <code>true</code> → execute <code>true_sequence</code>, if <code>false</code> → execute <code>false_sequence</code>.</p>
+
+      <h4>Spec format</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">text</span><button class="copy-btn" type="button"></button></div>
+<pre><code>if object_ID/name:clicked = true
+  then play.transition_property
+else
+  then play.transition_property_2</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> clickTrigger = crescent.<span class="tok-fn">trigger</span>({
+  object_id: <span class="tok-str">'submitBtn'</span>,
+  event: <span class="tok-str">'click'</span>,             <span class="tok-com">// 'click', 'hover', 'scroll', 'keypress', 'focus', 'submit'</span>
+  condition: (event, object) =&gt; <span class="tok-key">true</span>,   <span class="tok-com">// optional condition function</span>
+  true_sequence: [
+    { type: <span class="tok-str">'transition'</span>, transition: slideIn },
+    { type: <span class="tok-str">'api_call'</span>, api_call: myApiCall },
+    { type: <span class="tok-str">'redirect'</span>, url: <span class="tok-str">'/success'</span> }
+  ],
+  false_sequence: [],
+  redirect_page: <span class="tok-key">null</span>          <span class="tok-com">// page ID to redirect to on true</span>
+});
+
+<span class="tok-com">// Attach to an object</span>
+clickTrigger.<span class="tok-fn">attach</span>(myObject);
+
+<span class="tok-com">// Add actions dynamically</span>
+clickTrigger.<span class="tok-fn">on_true</span>({ type: <span class="tok-str">'redirect'</span>, url: <span class="tok-str">'/done'</span> });
+clickTrigger.<span class="tok-fn">on_false</span>({ type: <span class="tok-str">'transition'</span>, transition: fadeOut });
+clickTrigger.<span class="tok-fn">set_condition</span>((event, obj) =&gt; obj.<span class="tok-fn">get_value</span>().checked);
+clickTrigger.<span class="tok-fn">set_redirect</span>(<span class="tok-str">'successPage'</span>);</code></pre>
+      </div>
+
+      <!-- ===================== RENDERER ===================== -->
+      <h2 id="renderer">Renderer</h2>
+      <p>The renderer manages page rendering, navigation, and SSR.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-com">// Register pages</span>
+crescent.renderer.<span class="tok-fn">register_page</span>(homePage);
+crescent.renderer.<span class="tok-fn">register_page</span>(aboutPage);
+
+<span class="tok-com">// Set base HTML (string or file path)</span>
+crescent.renderer.<span class="tok-fn">basehtml</span>(<span class="tok-str">'&lt;html&gt;&lt;body&gt;&lt;div id="rocket-root"&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'</span>);
+
+<span class="tok-com">// Define root mount point (default: #rocket-root)</span>
+crescent.renderer.<span class="tok-fn">root</span>(<span class="tok-str">'#app'</span>);
+
+<span class="tok-com">// Mount to a DOM container (browser mode)</span>
+crescent.renderer.<span class="tok-fn">mount</span>(document.<span class="tok-fn">getElementById</span>(<span class="tok-str">'app'</span>));
+
+<span class="tok-com">// Navigate between pages</span>
+crescent.renderer.<span class="tok-fn">navigate</span>(<span class="tok-str">'home'</span>);
+crescent.renderer.<span class="tok-fn">navigate</span>(<span class="tok-str">'about'</span>);
+
+<span class="tok-com">// SSR: render full HTML</span>
+<span class="tok-key">const</span> html = crescent.renderer.<span class="tok-fn">render_full_page</span>(<span class="tok-str">'home'</span>);
+
+<span class="tok-com">// Get current page</span>
+<span class="tok-key">const</span> current = crescent.renderer.<span class="tok-fn">get_current_page</span>();</code></pre>
+      </div>
+
+      <!-- ===================== RESPONSIVE ===================== -->
+      <h2 id="responsive">Responsive Design</h2>
+      <p>Ratio-based scaling: when the screen size changes, height/width ratios are maintained. If a ratio is <code>0:0</code>, the object resizes to fit.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> responsive = crescent.<span class="tok-fn">responsive</span>({
+  page: homePage,
+  breakpoints: [
+    { name: <span class="tok-str">'mobile'</span>,  maxWidth: <span class="tok-num">480</span> },
+    { name: <span class="tok-str">'tablet'</span>,  maxWidth: <span class="tok-num">768</span> },
+    { name: <span class="tok-str">'desktop'</span>, maxWidth: <span class="tok-num">1200</span> },
+    { name: <span class="tok-str">'large'</span>,   maxWidth: <span class="tok-key">Infinity</span> }
+  ]
+});
+
+<span class="tok-com">// Initialize scaling</span>
+responsive.<span class="tok-fn">init</span>();
+
+<span class="tok-com">// Get current breakpoint</span>
+responsive.<span class="tok-fn">get_breakpoint</span>();  <span class="tok-com">// 'mobile' | 'tablet' | 'desktop' | 'large'</span>
+
+<span class="tok-com">// Calculate scaling ratios for an object</span>
+<span class="tok-key">const</span> ratios = responsive.<span class="tok-fn">calculate_ratios</span>(myObject, <span class="tok-num">1200</span>, <span class="tok-num">800</span>);
+<span class="tok-com">// { height_ratio: [top, bottom], width_ratio: [left, right] }</span>
+
+<span class="tok-com">// Scale an object manually</span>
+responsive.<span class="tok-fn">scale_object</span>(myObject, <span class="tok-num">1200</span>, <span class="tok-num">800</span>, <span class="tok-num">600</span>, <span class="tok-num">400</span>);
+
+<span class="tok-com">// Clean up</span>
+responsive.<span class="tok-fn">destroy</span>();</code></pre>
+      </div>
+
+      <nav class="pagenav">
+        <a href="getting-started.html"><span class="label">← Previous</span><span class="title">Getting Started</span></a>
+        <a class="next" href="backend.html"><span class="label">Next →</span><span class="title">Backend</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

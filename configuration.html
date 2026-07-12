@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration — crescent.js</title>
+  <meta name="description" content="All configuration options for every Crescent.js component." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">⚙️</span>
+        <h1 class="thumb-title">Configuration</h1>
+        <p class="thumb-subtitle">Every option, every default — copy-paste ready config objects for layers, objects, pages, transitions, triggers, and the whole backend.</p>
+        <span class="thumb-badge"><span class="dot"></span> All components · Copy-paste ready</span>
+      </section>
+
+      <div class="callout tip">
+        <div class="callout-icon">📋</div>
+        <div class="callout-body"><strong>How to use this page.</strong> Each block is a complete config object you can copy and paste straight into your app. Inline comments document every field and its default.</div>
+      </div>
+
+      <!-- ===== LAYER ===== -->
+      <h2 id="layer-config">Layer Configuration</h2>
+
+      <h3>Common (All Layer Types)</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  layer_id: <span class="tok-str">'my_layer'</span>,       <span class="tok-com">// string, required — unique identifier</span>
+  layer_type: <span class="tok-str">'text'</span>,         <span class="tok-com">// 'text' | 'image' | 'shape' | 'input'</span>
+  layer_enabled: <span class="tok-key">true</span>,        <span class="tok-com">// boolean — visibility</span>
+  position: { x: <span class="tok-num">0</span>, y: <span class="tok-num">0</span> },  <span class="tok-com">// object — cartesian position</span>
+  index: <span class="tok-num">0</span>,                   <span class="tok-com">// number — z-index (lower = back, higher = front)</span>
+  rotate: <span class="tok-str">'0deg'</span>,            <span class="tok-com">// number | string — rotation in degrees</span>
+  opacity: <span class="tok-str">'100%'</span>,            <span class="tok-com">// string — opacity as percentage</span>
+  size: { height: <span class="tok-num">50</span>, width: <span class="tok-num">50</span> }, <span class="tok-com">// object — dimensions in px</span>
+  colour: <span class="tok-str">'0,0,0'</span>,           <span class="tok-com">// string — RGB 'R,G,B' or RGBA 'R,G,B,A'</span>
+  rounded_corners: <span class="tok-str">'0px'</span>      <span class="tok-com">// string — border radius</span>
+}</code></pre>
+      </div>
+
+      <h3>Text Layer</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  layer_type: <span class="tok-str">'text'</span>,
+  layer_id: <span class="tok-str">'title'</span>,
+  text: <span class="tok-str">'Hello World'</span>,              <span class="tok-com">// string — text content</span>
+  size: <span class="tok-num">16</span>,                         <span class="tok-com">// number — font size in px</span>
+  font: <span class="tok-str">'sans-serif'</span>,               <span class="tok-com">// string — font family</span>
+  spacing: <span class="tok-str">'0px'</span>,                   <span class="tok-com">// string | number — letter spacing</span>
+  bold: <span class="tok-key">false</span>,                      <span class="tok-com">// boolean — bold text</span>
+  underline: <span class="tok-key">false</span>,                 <span class="tok-com">// boolean — underlined text</span>
+  strike: <span class="tok-key">false</span>,                    <span class="tok-com">// boolean — strikethrough text</span>
+  highlight: <span class="tok-key">false</span>,                 <span class="tok-com">// boolean — yellow highlight</span>
+  properties: [                     <span class="tok-com">// array — per-character overrides</span>
+    {
+      range: [<span class="tok-num">3</span>, <span class="tok-num">4</span>],               <span class="tok-com">// [start, end] character indices</span>
+      colour: <span class="tok-str">'255,0,0'</span>,
+      bold: <span class="tok-key">true</span>,
+      underline: <span class="tok-key">true</span>,
+      size: <span class="tok-num">20</span>,
+      font: <span class="tok-str">'monospace'</span>,
+      spacing: {                    <span class="tok-com">// object for multi-char: internal + external</span>
+        internal: <span class="tok-str">'2px'</span>,            <span class="tok-com">// letter-spacing within selection</span>
+        external: <span class="tok-str">'4px'</span>             <span class="tok-com">// margin around selection</span>
+      }
+    }
+  ]
+}</code></pre>
+      </div>
+
+      <h3>Image Layer</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  layer_type: <span class="tok-str">'image'</span>,
+  layer_id: <span class="tok-str">'logo'</span>,
+  image_location: <span class="tok-str">'images/logo.png'</span> <span class="tok-com">// string — local path or URL</span>
+}</code></pre>
+      </div>
+
+      <h3>Shape Layer</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  layer_type: <span class="tok-str">'shape'</span>,
+  layer_id: <span class="tok-str">'box'</span>,
+  layer_vertices: <span class="tok-num">4</span>    <span class="tok-com">// number | string — 0/'circle' = circle, 3 = triangle,</span>
+                        <span class="tok-com">//   4 = rectangle, 5+ = polygon</span>
+}</code></pre>
+      </div>
+
+      <h3>Input Layer</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-com">// Text Box</span>
+{
+  layer_type: <span class="tok-str">'input'</span>,
+  layer_id: <span class="tok-str">'name_input'</span>,
+  input_method: <span class="tok-str">'text box'</span>,                    <span class="tok-com">// 'text box' | 'list'</span>
+  box_length: <span class="tok-num">20</span>,                              <span class="tok-com">// number — character length</span>
+  box_inner_text: <span class="tok-str">'Enter your name...'</span>,        <span class="tok-com">// string — placeholder</span>
+  box_inner_text_properties: [<span class="tok-str">'italic'</span>],       <span class="tok-com">// array — underline, strike, bold, italic</span>
+  box_inner_text_font: <span class="tok-str">'sans-serif'</span>,           <span class="tok-com">// string — placeholder font</span>
+  colour_text: <span class="tok-str">'0,0,0'</span>,                       <span class="tok-com">// string — placeholder text colour</span>
+  written_inner_text_properties: [],            <span class="tok-com">// array — written text styles</span>
+  written_inner_text_font: <span class="tok-str">'sans-serif'</span>,       <span class="tok-com">// string — written text font</span>
+  colour_text_written: <span class="tok-str">'0,0,0'</span>                <span class="tok-com">// string — written text colour</span>
+}
+
+<span class="tok-com">// List</span>
+{
+  layer_type: <span class="tok-str">'input'</span>,
+  layer_id: <span class="tok-str">'picker'</span>,
+  input_method: <span class="tok-str">'list'</span>,
+  select: <span class="tok-str">'one'</span>,                               <span class="tok-com">// 'one' | 'more_than_one' | { min: N, max: M }</span>
+  list_elements: [<span class="tok-str">'Red'</span>, <span class="tok-str">'Green'</span>, <span class="tok-str">'Blue'</span>],     <span class="tok-com">// array — selectable items</span>
+  colour_text_written: <span class="tok-str">'0,0,0'</span>,
+  written_inner_text_font: <span class="tok-str">'sans-serif'</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== OBJECT ===== -->
+      <h2 id="object-config">Object Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  object_id: <span class="tok-str">'card'</span>,                    <span class="tok-com">// string, required</span>
+  size: { height: <span class="tok-num">300</span>, width: <span class="tok-num">400</span> },   <span class="tok-com">// object, required — defines cartesian plane</span>
+  bg_layer: <span class="tok-key">null</span>,                       <span class="tok-com">// string | null — background layer ID (fills entire object)</span>
+  object_enabled: <span class="tok-key">true</span>,                 <span class="tok-com">// boolean — visibility</span>
+  layers_config: [],                    <span class="tok-com">// array — pre-add layers</span>
+  index_config: {},                     <span class="tok-com">// object — { layer_id: zIndex }</span>
+  position_config: {}                   <span class="tok-com">// object — { layer_id: { x, y } }</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== PAGE ===== -->
+      <h2 id="page-config">Page Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  page_id: <span class="tok-str">'home'</span>,                      <span class="tok-com">// string, required</span>
+  page_bg: <span class="tok-str">'255,255,255'</span>,               <span class="tok-com">// string | layer — background colour or layer</span>
+  page_url: <span class="tok-str">'/'</span>,                         <span class="tok-com">// string — page URL</span>
+  page_title: <span class="tok-str">'Home'</span>,                   <span class="tok-com">// string — page title</span>
+  page_description: <span class="tok-str">'Welcome'</span>,          <span class="tok-com">// string — meta description</span>
+  page_type: <span class="tok-str">'home'</span>,                    <span class="tok-com">// string — page type</span>
+  size: { height: <span class="tok-num">800</span>, width: <span class="tok-num">1200</span> },   <span class="tok-com">// object — dimensions in px</span>
+  page_enabled: <span class="tok-key">true</span>,                    <span class="tok-com">// boolean — visibility</span>
+  objects_config: [],                    <span class="tok-com">// array — pre-add objects</span>
+  index_config: {},                      <span class="tok-com">// object — { object_id: zIndex }</span>
+  position_config: {},                   <span class="tok-com">// object — { object_id: { x, y } }</span>
+  scaling_config: {}                     <span class="tok-com">// object — { object_id: { height_ratio: [t,b], width_ratio: [l,r] } }</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== TRANSITION ===== -->
+      <h2 id="transition-config">Transition Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  objects: [obj1, obj2],                    <span class="tok-com">// array — objects involved in the transition</span>
+  time: <span class="tok-str">'2s'</span>,                               <span class="tok-com">// string | number — '2s', '45 sec', '1000ms', or ms number</span>
+  changes: [                                <span class="tok-com">// array — property changes to animate</span>
+    { object_id: <span class="tok-str">'header'</span>, layer_id: <span class="tok-str">'title'</span>, property: <span class="tok-str">'size.width'</span>, value: <span class="tok-num">200</span> },
+    { object_id: <span class="tok-str">'header'</span>, layer_id: <span class="tok-str">'bg'</span>, property: <span class="tok-str">'colour'</span>, value: <span class="tok-str">'255,0,0'</span> }
+  ]
+}</code></pre>
+      </div>
+
+      <!-- ===== TRIGGER ===== -->
+      <h2 id="trigger-config">Trigger Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  object_id: <span class="tok-str">'card'</span>,                       <span class="tok-com">// string, required — object this trigger is attached to</span>
+  event: <span class="tok-str">'click'</span>,                          <span class="tok-com">// 'click' | 'hover' | 'scroll' | 'keypress' | 'focus' | 'submit'</span>
+  condition: (event, object) =&gt; <span class="tok-key">true</span>,      <span class="tok-com">// function | null — condition evaluator</span>
+  true_sequence: [],                       <span class="tok-com">// array — actions when condition is true</span>
+  false_sequence: [],                      <span class="tok-com">// array — actions when condition is false</span>
+  redirect_page: <span class="tok-key">null</span>                      <span class="tok-com">// string | null — page ID to redirect to on true</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== RESPONSIVE ===== -->
+      <h2 id="responsive-config">Responsive Configuration</h2>
+      <p>Ratio-based scaling: when the screen size changes, height/width ratios are maintained. If a ratio is <code>0:0</code>, the object resizes to fit.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  page: myPage,               <span class="tok-com">// page | null — page to scale</span>
+  breakpoints: [              <span class="tok-com">// array — breakpoint definitions</span>
+    { name: <span class="tok-str">'mobile'</span>, maxWidth: <span class="tok-num">480</span> },
+    { name: <span class="tok-str">'tablet'</span>, maxWidth: <span class="tok-num">768</span> },
+    { name: <span class="tok-str">'desktop'</span>, maxWidth: <span class="tok-num">1200</span> },
+    { name: <span class="tok-str">'large'</span>, maxWidth: <span class="tok-key">Infinity</span> }
+  ]
+}</code></pre>
+      </div>
+
+      <!-- ===== FUNCTION ===== -->
+      <h2 id="function-config">Function Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  function_id: <span class="tok-str">'handler'</span>,       <span class="tok-com">// string, required</span>
+  params: [],                   <span class="tok-com">// array — parameter names</span>
+  body: (args) =&gt; { },          <span class="tok-com">// function — the function implementation</span>
+  function_enabled: <span class="tok-key">true</span>         <span class="tok-com">// boolean</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== CONDITIONAL ===== -->
+      <h2 id="conditional-config">Conditional Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  conditional_id: <span class="tok-str">'check'</span>,              <span class="tok-com">// string, required</span>
+  conditional_enabled: <span class="tok-key">true</span>,            <span class="tok-com">// boolean — whether active</span>
+  if: {                                 <span class="tok-com">// object — if branch</span>
+    check: () =&gt; <span class="tok-key">true</span>,                  <span class="tok-com">// function | any — condition to evaluate</span>
+    actions: []                         <span class="tok-com">// array — actions to execute if true</span>
+  },
+  else_if: [                            <span class="tok-com">// array — else-if branches</span>
+    {
+      check: () =&gt; <span class="tok-key">false</span>,              <span class="tok-com">// function | any</span>
+      actions: []                       <span class="tok-com">// array</span>
+    }
+  ],
+  else: {                               <span class="tok-com">// object — else branch</span>
+    actions: []                         <span class="tok-com">// array — actions when no condition matches</span>
+  }
+}</code></pre>
+      </div>
+
+      <!-- ===== LOOP ===== -->
+      <h2 id="loop-config">Loop Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  loop_id: <span class="tok-str">'iterate'</span>,           <span class="tok-com">// string, required</span>
+  loop_type: <span class="tok-str">'for'</span>,             <span class="tok-com">// 'for' | 'while' | 'for_in'</span>
+  start: <span class="tok-num">0</span>,                     <span class="tok-com">// number (for)</span>
+  end: <span class="tok-num">10</span>,                      <span class="tok-com">// number (for)</span>
+  step: <span class="tok-num">1</span>,                      <span class="tok-com">// number (for)</span>
+  condition: () =&gt; <span class="tok-key">true</span>,        <span class="tok-com">// function | any (while)</span>
+  iterable: [],                 <span class="tok-com">// array (for_in)</span>
+  actions: [],                  <span class="tok-com">// array</span>
+  loop_enabled: <span class="tok-key">true</span>            <span class="tok-com">// boolean</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== BOOLEAN ===== -->
+      <h2 id="boolean-config">Boolean Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  boolean_id: <span class="tok-str">'flag'</span>,           <span class="tok-com">// string, required</span>
+  value1: <span class="tok-key">true</span>,                 <span class="tok-com">// any</span>
+  value2: <span class="tok-key">false</span>,                <span class="tok-com">// any</span>
+  operator: <span class="tok-str">'AND'</span>               <span class="tok-com">// 'AND' | 'OR' | 'NOT' | 'XOR' | 'NAND' | 'NOR'</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== API CALL ===== -->
+      <h2 id="api-call-config">API Call Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  api_call_id: <span class="tok-str">'fetchData'</span>,     <span class="tok-com">// string, required</span>
+  url: <span class="tok-str">'https://api.example.com'</span>, <span class="tok-com">// string</span>
+  method: <span class="tok-str">'GET'</span>,                 <span class="tok-com">// string</span>
+  headers: {},                   <span class="tok-com">// object</span>
+  body: <span class="tok-key">null</span>,                    <span class="tok-com">// any</span>
+  timeout: <span class="tok-num">30000</span>                 <span class="tok-com">// number — ms</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== API SERVER ===== -->
+      <h2 id="api-server-config">API Server Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  api_id: <span class="tok-str">'myApi'</span>,              <span class="tok-com">// string, required</span>
+  port: <span class="tok-num">3000</span>,                   <span class="tok-com">// number</span>
+  host: <span class="tok-str">'localhost'</span>,            <span class="tok-com">// string</span>
+  cors: <span class="tok-key">true</span>                    <span class="tok-com">// boolean</span>
+}</code></pre>
+      </div>
+
+      <!-- ===== COLLECT ===== -->
+      <h2 id="collect-config">Collect Configuration</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>{
+  collect_id: <span class="tok-str">'formData'</span>,       <span class="tok-com">// string, required</span>
+  sources: [],                  <span class="tok-com">// array</span>
+  transform: (data) =&gt; data,    <span class="tok-com">// function</span>
+  validate: (data) =&gt; <span class="tok-key">true</span>      <span class="tok-com">// function</span>
+}</code></pre>
+      </div>
+
+      <nav class="pagenav">
+        <a href="api-reference.html"><span class="label">← Previous</span><span class="title">API Reference</span></a>
+        <a class="next" href="changelog.html"><span class="label">Next →</span><span class="title">Changelog</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

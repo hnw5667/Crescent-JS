@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authentication — crescent.js</title>
+  <meta name="description" content="Built-in user management with signup, login, OAuth, and session handling." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">🔐</span>
+        <h1 class="thumb-title">Authentication</h1>
+        <p class="thumb-subtitle">Secure by default — signup, login, OAuth, and session handling built right in, so you never wire auth from scratch again.</p>
+        <span class="thumb-badge"><span class="dot"></span> PBKDF2 hashing · Signed sessions</span>
+      </section>
+
+      <h2 id="overview">Overview</h2>
+      <p>Crescent.js provides a complete authentication system:</p>
+      <div class="grid grid-2">
+        <div class="card"><span class="card-emoji">📝</span><h4>Signup</h4><p>User registration with password strength validation.</p></div>
+        <div class="card"><span class="card-emoji">🔑</span><h4>Login</h4><p>Authentication with account locking after failed attempts.</p></div>
+        <div class="card"><span class="card-emoji">🔌</span><h4>OAuth</h4><p>Third-party login (Google, GitHub, etc.).</p></div>
+        <div class="card"><span class="card-emoji">🍪</span><h4>Cookie</h4><p>Signed session tokens with configurable expiry.</p></div>
+      </div>
+
+      <!-- ===================== SIGNUP ===================== -->
+      <h2 id="signup">Signup</h2>
+      <p>Register new users with validation and password strength checks.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> signup = crescent.auth.<span class="tok-fn">signup</span>({
+  collection: <span class="tok-str">'users'</span>,
+  require_email_verification: <span class="tok-key">false</span>,
+  password: {
+    iterations: <span class="tok-num">100000</span>,
+    key_length: <span class="tok-num">64</span>,
+    digest: <span class="tok-str">'sha512'</span>
+  }
+});
+
+<span class="tok-key">const</span> result = <span class="tok-key">await</span> signup.<span class="tok-fn">register</span>(<span class="tok-str">'john'</span>, <span class="tok-str">'john@example.com'</span>, <span class="tok-str">'SecureP@ss1'</span>);
+<span class="tok-com">// { success: true, user: { ... }, verification_required: false }</span></code></pre>
+      </div>
+
+      <h3>Password Strength</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Score</th><th>Strength</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>0–2</td><td><code>weak</code></td><td>Rejected</td></tr>
+            <tr><td>3–4</td><td><code>medium</code></td><td>Accepted</td></tr>
+            <tr><td>5–6</td><td><code>strong</code></td><td>Accepted</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Checks: length ≥ 8, length ≥ 12, lowercase, uppercase, digits, special characters.</p>
+
+      <h3>Registration Flow</h3>
+      <ol>
+        <li>Validate required fields (username, email, password)</li>
+        <li>Check password strength (rejects <code>weak</code>)</li>
+        <li>Check for existing username</li>
+        <li>Check for existing email</li>
+        <li>Hash password with PBKDF2 + random salt</li>
+        <li>Apply schema defaults (role, email_verified, etc.)</li>
+        <li>Validate against user schema</li>
+        <li>Insert into collection</li>
+        <li>Return safe user (no password_hash or salt)</li>
+      </ol>
+
+      <!-- ===================== LOGIN ===================== -->
+      <h2 id="login">Login</h2>
+      <p>Authenticate users with username and password.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> login = crescent.auth.<span class="tok-fn">login</span>({
+  collection: <span class="tok-str">'users'</span>,
+  max_attempts: <span class="tok-num">5</span>,
+  lock_duration: <span class="tok-num">900000</span>, <span class="tok-com">// 15 minutes</span>
+  password: {
+    iterations: <span class="tok-num">100000</span>,
+    key_length: <span class="tok-num">64</span>,
+    digest: <span class="tok-str">'sha512'</span>
+  },
+  cookie: {
+    secret: <span class="tok-str">'your-secret-key'</span>,
+    cookie_name: <span class="tok-str">'crescent_session'</span>,
+    max_age: <span class="tok-num">86400000</span>, <span class="tok-com">// 24 hours</span>
+    http_only: <span class="tok-key">true</span>,
+    secure: <span class="tok-key">false</span>,
+    same_site: <span class="tok-str">'lax'</span>
+  }
+});
+
+<span class="tok-key">const</span> result = <span class="tok-key">await</span> login.<span class="tok-fn">authenticate</span>(<span class="tok-str">'john'</span>, <span class="tok-str">'SecureP@ss1'</span>);
+<span class="tok-com">// { success: true, user: { ... }, token, set_cookie: '...' }</span></code></pre>
+      </div>
+
+      <h3>Account Locking</h3>
+      <div class="callout warn">
+        <div class="callout-icon">🔒</div>
+        <div class="callout-body">After <code>max_attempts</code> failed logins, the account is locked for <code>lock_duration</code> milliseconds.</div>
+      </div>
+
+      <h3>Session Verification</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> session = login.<span class="tok-fn">verify_session</span>(token);
+<span class="tok-key">const</span> user = login.<span class="tok-fn">get_user_from_token</span>(token);
+<span class="tok-key">const</span> logoutResult = login.<span class="tok-fn">logout</span>();
+<span class="tok-com">// { success: true, clear_cookie: '...' }</span></code></pre>
+      </div>
+
+      <!-- ===================== OAUTH ===================== -->
+      <h2 id="oauth">OAuth</h2>
+      <p>Third-party authentication with providers like Google and GitHub.</p>
+
+      <h3>Configuring Providers</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> oauth = crescent.auth.<span class="tok-fn">oauth</span>({
+  collection: <span class="tok-str">'users'</span>,
+  providers: {
+    google: {
+      client_id: <span class="tok-str">'your-client-id'</span>,
+      client_secret: <span class="tok-str">'your-client-secret'</span>,
+      authorize_url: <span class="tok-str">'https://accounts.google.com/o/oauth2/v2/auth'</span>,
+      token_url: <span class="tok-str">'https://oauth2.googleapis.com/token'</span>,
+      user_info_url: <span class="tok-str">'https://www.googleapis.com/oauth2/v3/userinfo'</span>,
+      scope: <span class="tok-str">'openid profile email'</span>,
+      redirect_uri: <span class="tok-str">'http://localhost:3000/auth/callback'</span>
+    },
+    github: {
+      client_id: <span class="tok-str">'your-client-id'</span>,
+      client_secret: <span class="tok-str">'your-client-secret'</span>,
+      authorize_url: <span class="tok-str">'https://github.com/login/oauth/authorize'</span>,
+      token_url: <span class="tok-str">'https://github.com/login/oauth/access_token'</span>,
+      user_info_url: <span class="tok-str">'https://api.github.com/user'</span>,
+      scope: <span class="tok-str">'read:user user:email'</span>,
+      redirect_uri: <span class="tok-str">'http://localhost:3000/auth/callback'</span>
+    }
+  }
+});</code></pre>
+      </div>
+
+      <h3>OAuth Flow</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-com">// 1. Redirect user to authorization URL</span>
+<span class="tok-key">const</span> authUrl = oauth.<span class="tok-fn">get_authorize_url</span>(<span class="tok-str">'google'</span>);
+
+<span class="tok-com">// 2. Handle callback with authorization code</span>
+<span class="tok-key">const</span> result = <span class="tok-key">await</span> oauth.<span class="tok-fn">authenticate</span>(<span class="tok-str">'google'</span>, authorizationCode);
+<span class="tok-com">// { success: true, user: { ... }, is_new: true/false }</span></code></pre>
+      </div>
+
+      <h3>Adding Providers Dynamically</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>oauth.<span class="tok-fn">add_provider</span>(<span class="tok-str">'gitlab'</span>, {
+  client_id: <span class="tok-str">'...'</span>,
+  client_secret: <span class="tok-str">'...'</span>,
+  authorize_url: <span class="tok-str">'https://gitlab.com/oauth/authorize'</span>,
+  token_url: <span class="tok-str">'https://gitlab.com/oauth/token'</span>,
+  user_info_url: <span class="tok-str">'https://gitlab.com/api/v4/user'</span>,
+  scope: <span class="tok-str">'read_user'</span>,
+  redirect_uri: <span class="tok-str">'http://localhost:3000/auth/callback'</span>
+});</code></pre>
+      </div>
+
+      <!-- ===================== PASSWORD MANAGER ===================== -->
+      <h2 id="password-manager">Password Manager</h2>
+      <p>Direct access to password hashing and verification.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> password = crescent.auth.password;
+
+<span class="tok-key">const</span> { hash, salt } = password.<span class="tok-fn">hash</span>(<span class="tok-str">'my-password'</span>);
+<span class="tok-key">const</span> valid = password.<span class="tok-fn">verify</span>(<span class="tok-str">'my-password'</span>, hash, salt); <span class="tok-com">// true</span>
+<span class="tok-key">const</span> strength = password.<span class="tok-fn">check_strength</span>(<span class="tok-str">'P@ssw0rd!'</span>); <span class="tok-com">// { strength: 'strong', score: 6 }</span>
+<span class="tok-key">const</span> token = password.<span class="tok-fn">generate_reset_token</span>();</code></pre>
+      </div>
+
+      <!-- ===================== COOKIE MANAGER ===================== -->
+      <h2 id="cookie-manager">Cookie Manager</h2>
+      <p>Direct access to session token management.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> cookie = crescent.auth.cookie;
+
+<span class="tok-key">const</span> token = cookie.<span class="tok-fn">create_token</span>(<span class="tok-str">'user_123'</span>);
+<span class="tok-key">const</span> session = cookie.<span class="tok-fn">verify_token</span>(token);
+<span class="tok-com">// { user_id: 'user_123', iat: ..., exp: ..., jti: '...' }</span>
+
+<span class="tok-key">const</span> cookies = cookie.<span class="tok-fn">parse_cookies</span>(<span class="tok-str">'crescent_session=abc; other=xyz'</span>);
+<span class="tok-key">const</span> session = cookie.<span class="tok-fn">get_session</span>(request.headers.cookie);
+<span class="tok-key">const</span> setCookie = cookie.<span class="tok-fn">set_cookie_header</span>(token);
+<span class="tok-key">const</span> clearCookie = cookie.<span class="tok-fn">clear_cookie_header</span>();</code></pre>
+      </div>
+
+      <h3>Cookie Configuration</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>secret</code></td><td><code>'rocket-default-secret-change-me'</code></td><td>HMAC signing key</td></tr>
+            <tr><td><code>cookie_name</code></td><td><code>'rocket_session'</code></td><td>Cookie name</td></tr>
+            <tr><td><code>max_age</code></td><td><code>86400000</code></td><td>24 hours in ms</td></tr>
+            <tr><td><code>http_only</code></td><td><code>true</code></td><td>HttpOnly flag</td></tr>
+            <tr><td><code>secure</code></td><td><code>false</code></td><td>Secure flag</td></tr>
+            <tr><td><code>same_site</code></td><td><code>'lax'</code></td><td>SameSite policy</td></tr>
+            <tr><td><code>domain</code></td><td><code>null</code></td><td>Cookie domain</td></tr>
+            <tr><td><code>path</code></td><td><code>'/'</code></td><td>Cookie path</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===================== USER SCHEMA ===================== -->
+      <h2 id="user-schema">User Schema</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th></tr></thead>
+          <tbody>
+            <tr><td><code>_id</code></td><td>string</td><td>✅</td><td>—</td></tr>
+            <tr><td><code>username</code></td><td>string (3–32 chars)</td><td>✅</td><td>—</td></tr>
+            <tr><td><code>email</code></td><td>string (email format)</td><td>✅</td><td>—</td></tr>
+            <tr><td><code>password_hash</code></td><td>string</td><td>✅</td><td>—</td></tr>
+            <tr><td><code>salt</code></td><td>string</td><td>✅</td><td>—</td></tr>
+            <tr><td><code>created_at</code></td><td>number</td><td>✅</td><td>—</td></tr>
+            <tr><td><code>updated_at</code></td><td>number</td><td>✅</td><td>—</td></tr>
+            <tr><td><code>role</code></td><td>string</td><td>❌</td><td><code>'user'</code></td></tr>
+            <tr><td><code>email_verified</code></td><td>boolean</td><td>❌</td><td><code>false</code></td></tr>
+            <tr><td><code>oauth_providers</code></td><td>array</td><td>❌</td><td><code>[]</code></td></tr>
+            <tr><td><code>last_login</code></td><td>number</td><td>❌</td><td><code>null</code></td></tr>
+            <tr><td><code>locked</code></td><td>boolean</td><td>❌</td><td><code>false</code></td></tr>
+            <tr><td><code>login_attempts</code></td><td>number</td><td>❌</td><td><code>0</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===================== SECURITY ===================== -->
+      <h2 id="security">Security Best Practices</h2>
+      <ol>
+        <li><strong>Always change the cookie secret</strong> — Never use the default in production</li>
+        <li><strong>Enable <code>secure</code> flag</strong> in production (requires HTTPS)</li>
+        <li><strong>Use <code>same_site: 'strict'</code></strong> for sensitive applications</li>
+        <li><strong>Set appropriate <code>lock_duration</code></strong> to prevent brute force</li>
+        <li><strong>Require strong passwords</strong> — weak passwords are rejected by default</li>
+        <li><strong>Keep <code>http_only: true</code></strong> to prevent XSS access to cookies</li>
+      </ol>
+
+      <nav class="pagenav">
+        <a href="backend.html"><span class="label">← Previous</span><span class="title">Backend</span></a>
+        <a class="next" href="deployment.html"><span class="label">Next →</span><span class="title">Deployment</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

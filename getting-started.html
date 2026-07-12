@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started — crescent.js</title>
+  <meta name="description" content="Install, set up, and build your first Crescent.js application in minutes." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">🚀</span>
+        <h1 class="thumb-title">Getting Started</h1>
+        <p class="thumb-subtitle">From <code>npm install</code> to a rendered page in under five minutes — install, set up, and build your first Crescent.js app.</p>
+        <span class="thumb-badge"><span class="dot"></span> Beginner friendly · ~5 min</span>
+      </section>
+
+      <h2 id="installation">Installation</h2>
+      <p>Add crescent.js to your project with npm:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code>npm install crescent-js</code></pre>
+      </div>
+
+      <h2 id="your-first-app">Your First App</h2>
+      <p>Here's a complete working example. A page holds an object, the object holds a layer, and the layer is the visible thing on screen.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> crescent = <span class="tok-fn">require</span>(<span class="tok-str">'crescent-js'</span>);
+
+<span class="tok-com">// 1. Create a page</span>
+<span class="tok-key">const</span> page = crescent.<span class="tok-fn">page</span>({
+  page_id: <span class="tok-str">'home'</span>,
+  page_title: <span class="tok-str">'My First App'</span>,
+  page_description: <span class="tok-str">'Built with Crescent.js'</span>,
+  size: { height: <span class="tok-num">800</span>, width: <span class="tok-num">1200</span> }
+});
+
+<span class="tok-com">// 2. Create an object</span>
+<span class="tok-key">const</span> hero = crescent.<span class="tok-fn">object</span>({
+  object_id: <span class="tok-str">'hero'</span>,
+  size: { height: <span class="tok-num">200</span>, width: <span class="tok-num">600</span> }
+});
+
+<span class="tok-com">// 3. Add a text layer</span>
+<span class="tok-key">const</span> title = crescent.<span class="tok-fn">layer</span>({
+  layer_type: <span class="tok-str">'text'</span>,
+  layer_id: <span class="tok-str">'title'</span>,
+  text: <span class="tok-str">'Hello, Crescent!'</span>,
+  size: <span class="tok-num">32</span>,
+  colour: <span class="tok-str">'0,0,0'</span>,
+  bold: <span class="tok-key">true</span>,
+  font: <span class="tok-str">'sans-serif'</span>,
+  spacing: <span class="tok-str">'0px'</span>
+});
+
+hero.<span class="tok-fn">add_layer</span>(title);
+
+<span class="tok-com">// 4. Add the object to the page</span>
+page.<span class="tok-fn">add_object</span>(hero);
+
+<span class="tok-com">// 5. Position the object using cartesian coordinates</span>
+page.<span class="tok-fn">set_object_position</span>(<span class="tok-str">'hero'</span>, <span class="tok-num">0</span>, -<span class="tok-num">100</span>);
+
+console.<span class="tok-fn">log</span>(<span class="tok-str">'App created successfully!'</span>);</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body">
+          <strong>That's the whole mental model.</strong>
+          Pages hold objects, objects hold layers, layers are the visual building blocks. Everything is positioned with a cartesian coordinate system where <code>(0,0)</code> is the center.
+        </div>
+      </div>
+
+      <h2 id="run-it">Run it</h2>
+      <p>Run your file with the <code>crescent</code> CLI. Pick a port or let it default to 3000.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code>crescent run app.js 3030   <span class="tok-com"># Run on a specific port</span>
+crescent run app.js        <span class="tok-com"># Auto-runs on port 3000</span></code></pre>
+      </div>
+
+      <h2 id="core-concepts">Core Concepts</h2>
+      <p>Crescent.js is built around two core pillars:</p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <span class="card-emoji">🎨</span>
+          <h4>Frontend</h4>
+          <p>Build UIs using <strong>pages</strong>, <strong>objects</strong>, and <strong>layers</strong>. Pages hold objects, objects hold layers, and layers are the visual building blocks (text, image, shape, input). Everything is positioned using a cartesian coordinate system.</p>
+        </div>
+        <div class="card">
+          <span class="card-emoji">⚙️</span>
+          <h4>Backend</h4>
+          <p>Write logic using <strong>functions</strong>, <strong>conditionals</strong>, <strong>loops</strong>, and <strong>API endpoints</strong>. Create reusable server-side functions, branch logic with conditionals, iterate with loops, and define REST APIs.</p>
+        </div>
+      </div>
+
+      <h2 id="project-structure">Project Structure</h2>
+      <p>A sensible default layout you can grow into:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">text</span><button class="copy-btn" type="button"></button></div>
+<pre><code>my-app/
+├── src/
+│   ├── pages/          <span class="tok-com"># Page definitions</span>
+│   ├── components/     <span class="tok-com"># Reusable objects and layers</span>
+│   ├── functions/      <span class="tok-com"># Backend functions</span>
+│   └── app.js          <span class="tok-com"># Entry point</span>
+└── package.json</code></pre>
+      </div>
+
+      <h2 id="next-steps">Next Steps</h2>
+      <div class="grid grid-2">
+        <a class="card" href="frontend.html">
+          <span class="card-emoji">🎨</span>
+          <h4>Frontend Guide →</h4>
+          <p>Learn about pages, objects, layers, transitions, and rendering.</p>
+        </a>
+        <a class="card" href="backend.html">
+          <span class="card-emoji">⚙️</span>
+          <h4>Backend Guide →</h4>
+          <p>Functions, conditionals, loops, and APIs.</p>
+        </a>
+        <a class="card" href="api-reference.html">
+          <span class="card-emoji">📚</span>
+          <h4>API Reference →</h4>
+          <p>Complete method documentation.</p>
+        </a>
+        <a class="card" href="configuration.html">
+          <span class="card-emoji">⚙️</span>
+          <h4>Configuration →</h4>
+          <p>All configuration options.</p>
+        </a>
+      </div>
+
+      <nav class="pagenav">
+        <a href="index.html"><span class="label">← Previous</span><span class="title">Home</span></a>
+        <a class="next" href="frontend.html"><span class="label">Next →</span><span class="title">Frontend</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

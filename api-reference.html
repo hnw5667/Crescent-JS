@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference — crescent.js</title>
+  <meta name="description" content="Complete method documentation for every Crescent.js component." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">📚</span>
+        <h1 class="thumb-title">API Reference</h1>
+        <p class="thumb-subtitle">Every method, parameter, and return value — the complete map of what crescent.js can do, all in one place.</p>
+        <span class="thumb-badge"><span class="dot"></span> Complete · v1.0.0</span>
+      </section>
+
+      <h2 id="core-instance">Core Instance</h2>
+      <p>Crescent.js exports a singleton instance by default:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> crescent = <span class="tok-fn">require</span>(<span class="tok-str">'crescent-js'</span>);</code></pre>
+      </div>
+
+      <!-- ===== FRONTEND API ===== -->
+      <h2 id="frontend-api">Frontend API</h2>
+
+      <h3 id="layer"><code>crescent.layer(config)</code></h3>
+      <p>Create a visual layer. Returns a layer instance.</p>
+      <h4>Common Properties (All Types)</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.layer_type</code></td><td>string</td><td>required</td><td><code>text</code>, <code>image</code>, <code>shape</code>, <code>input</code></td></tr>
+            <tr><td><code>config.layer_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.layer_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Whether layer is visible</td></tr>
+            <tr><td><code>config.position</code></td><td>object</td><td><code>{ x: 0, y: 0 }</code></td><td>Cartesian position</td></tr>
+            <tr><td><code>config.index</code></td><td>number</td><td><code>0</code></td><td>Z-index (lower = back, higher = front)</td></tr>
+            <tr><td><code>config.rotate</code></td><td>number/string</td><td><code>'0deg'</code></td><td>Rotation in degrees</td></tr>
+            <tr><td><code>config.opacity</code></td><td>string</td><td><code>'100%'</code></td><td>Opacity as percentage</td></tr>
+            <tr><td><code>config.size</code></td><td>object</td><td><code>{ height: 50, width: 50 }</code></td><td>Dimensions</td></tr>
+            <tr><td><code>config.colour</code></td><td>string</td><td><code>'0,0,0'</code></td><td>RGB: <code>'R,G,B'</code> or <code>'R,G,B,A'</code></td></tr>
+            <tr><td><code>config.rounded_corners</code></td><td>string</td><td><code>'0px'</code></td><td>Border radius</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Text-specific</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>text</code></td><td>string</td><td><code>''</code></td><td>Text content</td></tr>
+            <tr><td><code>size</code></td><td>number</td><td><code>16</code></td><td>Font size in px</td></tr>
+            <tr><td><code>font</code></td><td>string</td><td><code>'sans-serif'</code></td><td>Font family</td></tr>
+            <tr><td><code>spacing</code></td><td>string/number</td><td><code>'0px'</code></td><td>Letter spacing</td></tr>
+            <tr><td><code>bold</code></td><td>boolean</td><td><code>false</code></td><td>Bold text</td></tr>
+            <tr><td><code>underline</code></td><td>boolean</td><td><code>false</code></td><td>Underlined text</td></tr>
+            <tr><td><code>strike</code></td><td>boolean</td><td><code>false</code></td><td>Strikethrough text</td></tr>
+            <tr><td><code>highlight</code></td><td>boolean</td><td><code>false</code></td><td>Yellow highlight</td></tr>
+            <tr><td><code>properties</code></td><td>array</td><td><code>[]</code></td><td>Per-character overrides: <code>[{ range: [start, end], ...overrides }]</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Image-specific</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>image_location</code></td><td>string</td><td><code>''</code></td><td>Image path or URL</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Shape-specific</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>layer_vertices</code></td><td>number/string</td><td><code>4</code></td><td>0/<code>'circle'</code> = circle, 3 = triangle, 4 = rectangle, 5+ = polygon</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Input-specific</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>input_method</code></td><td>string</td><td><code>'text box'</code></td><td><code>'text box'</code> or <code>'list'</code></td></tr>
+            <tr><td><code>box_length</code></td><td>number</td><td><code>20</code></td><td>Text box character length</td></tr>
+            <tr><td><code>box_inner_text</code></td><td>string</td><td><code>''</code></td><td>Placeholder text</td></tr>
+            <tr><td><code>box_inner_text_properties</code></td><td>array</td><td><code>[]</code></td><td>Placeholder styles: <code>underline</code>, <code>strike</code>, <code>bold</code>, <code>italic</code></td></tr>
+            <tr><td><code>box_inner_text_font</code></td><td>string</td><td><code>'sans-serif'</code></td><td>Placeholder font</td></tr>
+            <tr><td><code>colour_text</code></td><td>string</td><td><code>'0,0,0'</code></td><td>Placeholder text colour</td></tr>
+            <tr><td><code>written_inner_text_properties</code></td><td>array</td><td><code>[]</code></td><td>Written text styles</td></tr>
+            <tr><td><code>written_inner_text_font</code></td><td>string</td><td><code>'sans-serif'</code></td><td>Written text font</td></tr>
+            <tr><td><code>colour_text_written</code></td><td>string</td><td><code>'0,0,0'</code></td><td>Written text colour</td></tr>
+            <tr><td><code>select</code></td><td>string/object</td><td><code>'one'</code></td><td><code>'one'</code>, <code>'more_than_one'</code>, or <code>{ min, max }</code></td></tr>
+            <tr><td><code>list_elements</code></td><td>array</td><td><code>[]</code></td><td>List items for selection</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Layer Methods</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>get_value()</code></td><td>any</td><td>Get current value (input layers)</td></tr>
+            <tr><td><code>set_property(name, value)</code></td><td>void</td><td>Update a property and re-render</td></tr>
+            <tr><td><code>render()</code></td><td>HTMLElement</td><td>Generate DOM element</td></tr>
+            <tr><td><code>get_element()</code></td><td>HTMLElement</td><td>Get rendered DOM element</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="object"><code>crescent.object(config)</code></h3>
+      <p>Create an object container. Returns a <code>RocketObject</code> instance.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.object_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.size</code></td><td>object</td><td>required</td><td><code>{ height, width }</code> in pixels</td></tr>
+            <tr><td><code>config.page_position</code></td><td>object</td><td><code>{ x: 0, y: 0 }</code></td><td>Position on the page</td></tr>
+            <tr><td><code>config.page_index</code></td><td>number</td><td><code>0</code></td><td>Z-index on the page</td></tr>
+            <tr><td><code>config.bg_layer</code></td><td>string/null</td><td><code>null</code></td><td>Background layer ID</td></tr>
+            <tr><td><code>config.object_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Visibility toggle</td></tr>
+            <tr><td><code>config.layers_config</code></td><td>array</td><td>—</td><td>Pre-add layers</td></tr>
+            <tr><td><code>config.index_config</code></td><td>object</td><td>—</td><td>Pre-set layer indices <code>{ id: idx }</code></td></tr>
+            <tr><td><code>config.position_config</code></td><td>object</td><td>—</td><td>Pre-set layer positions <code>{ id: { x, y } }</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Object Methods</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>add_layer(layer)</code></td><td>this</td><td>Add a layer</td></tr>
+            <tr><td><code>remove_layer(layer_id)</code></td><td>this</td><td>Remove a layer</td></tr>
+            <tr><td><code>get_layer(layer_id)</code></td><td>layer/null</td><td>Get a layer by ID</td></tr>
+            <tr><td><code>set_layer_position(id, x, y)</code></td><td>this</td><td>Position a layer (cartesian)</td></tr>
+            <tr><td><code>set_layer_index(id, idx)</code></td><td>this</td><td>Set layer z-index</td></tr>
+            <tr><td><code>set_bg_layer(layer_id)</code></td><td>this</td><td>Set background layer (fills entire object)</td></tr>
+            <tr><td><code>get_value()</code></td><td>object</td><td>Get all input layer values</td></tr>
+            <tr><td><code>get_cartesian_range()</code></td><td>object</td><td>Get coordinate bounds <code>{ x: { min, max }, y: { min, max } }</code></td></tr>
+            <tr><td><code>render()</code></td><td>HTMLElement</td><td>Render to DOM</td></tr>
+            <tr><td><code>set_property(name, value)</code></td><td>void</td><td>Update a property</td></tr>
+            <tr><td><code>set_transition(transition)</code></td><td>this</td><td>Apply a transition</td></tr>
+            <tr><td><code>get_element()</code></td><td>HTMLElement</td><td>Get rendered DOM element</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="page"><code>crescent.page(config)</code></h3>
+      <p>Create a page. Returns a <code>RocketPage</code> instance.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.page_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.page_bg</code></td><td>string/layer</td><td><code>'255,255,255'</code></td><td>Background: colour string or layer</td></tr>
+            <tr><td><code>config.page_url</code></td><td>string</td><td><code>'/'</code></td><td>Page URL</td></tr>
+            <tr><td><code>config.page_title</code></td><td>string</td><td><code>''</code></td><td>Page title</td></tr>
+            <tr><td><code>config.page_description</code></td><td>string</td><td><code>''</code></td><td>Meta description</td></tr>
+            <tr><td><code>config.page_type</code></td><td>string</td><td><code>'home'</code></td><td>Page type</td></tr>
+            <tr><td><code>config.size</code></td><td>object</td><td><code>{ height: 800, width: 1200 }</code></td><td>Dimensions</td></tr>
+            <tr><td><code>config.page_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Visibility toggle</td></tr>
+            <tr><td><code>config.objects_config</code></td><td>array</td><td>—</td><td>Pre-add objects</td></tr>
+            <tr><td><code>config.index_config</code></td><td>object</td><td>—</td><td>Pre-set object indices <code>{ id: idx }</code></td></tr>
+            <tr><td><code>config.position_config</code></td><td>object</td><td>—</td><td>Pre-set object positions <code>{ id: { x, y } }</code></td></tr>
+            <tr><td><code>config.scaling_config</code></td><td>object</td><td>—</td><td>Pre-set scaling ratios <code>{ id: { height_ratio: [t,b], width_ratio: [l,r] } }</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Page Methods</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>add_object(object)</code></td><td>this</td><td>Add an object</td></tr>
+            <tr><td><code>remove_object(object_id)</code></td><td>this</td><td>Remove an object</td></tr>
+            <tr><td><code>get_object(object_id)</code></td><td>object/null</td><td>Get an object</td></tr>
+            <tr><td><code>set_object_position(id, x, y)</code></td><td>this</td><td>Position an object (cartesian)</td></tr>
+            <tr><td><code>set_object_index(id, idx)</code></td><td>this</td><td>Set object z-index</td></tr>
+            <tr><td><code>set_scaling_ratio(id, h_ratio, w_ratio)</code></td><td>this</td><td>Set responsive scaling ratios</td></tr>
+            <tr><td><code>get_cartesian_range()</code></td><td>object</td><td>Get coordinate bounds</td></tr>
+            <tr><td><code>get_values()</code></td><td>object</td><td>Get all input values from all objects</td></tr>
+            <tr><td><code>navigate_to(page_id)</code></td><td>void</td><td>Navigate to another page</td></tr>
+            <tr><td><code>render()</code></td><td>HTMLElement</td><td>Render entire page</td></tr>
+            <tr><td><code>get_element()</code></td><td>HTMLElement</td><td>Get rendered DOM element</td></tr>
+            <tr><td><code>set_property(name, value)</code></td><td>void</td><td>Update a property</td></tr>
+            <tr><td><code>destroy()</code></td><td>void</td><td>Clean up resize observer</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="transition"><code>crescent.transition(config)</code></h3>
+      <p>Create a transition animation. Animates property changes on layers within objects.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.objects</code></td><td>array</td><td><code>[]</code></td><td>Objects involved in the transition</td></tr>
+            <tr><td><code>config.time</code></td><td>string/number</td><td><code>'0.3s'</code></td><td>Duration: <code>'2s'</code>, <code>'45 sec'</code>, <code>'1000ms'</code>, or ms number</td></tr>
+            <tr><td><code>config.changes</code></td><td>array</td><td><code>[]</code></td><td>Property changes: <code>[{ object_id, layer_id, property, value }]</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>Transition Methods</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>play(onComplete)</code></td><td>this</td><td>Play the transition forward</td></tr>
+            <tr><td><code>reverse(onComplete)</code></td><td>this</td><td>Reverse the transition back to original</td></tr>
+            <tr><td><code>stop()</code></td><td>this</td><td>Stop the animation</td></tr>
+            <tr><td><code>is_playing()</code></td><td>boolean</td><td>Check if currently playing</td></tr>
+            <tr><td><code>add_change(object_id, layer_id, property, value)</code></td><td>this</td><td>Add a property change</td></tr>
+            <tr><td><code>add_object(object)</code></td><td>this</td><td>Add an object to the transition</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="trigger"><code>crescent.trigger(config)</code></h3>
+      <p>Create an event trigger. Triggers are boolean: if true → execute <code>true_sequence</code>, if false → execute <code>false_sequence</code>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.object_id</code></td><td>string</td><td>required</td><td>Object this trigger is attached to</td></tr>
+            <tr><td><code>config.event</code></td><td>string</td><td><code>'click'</code></td><td>Event type: <code>click</code>, <code>hover</code>, <code>scroll</code>, <code>keypress</code>, <code>focus</code>, <code>submit</code></td></tr>
+            <tr><td><code>config.condition</code></td><td>function</td><td><code>null</code></td><td>Condition function <code>(event, object) =&gt; boolean</code></td></tr>
+            <tr><td><code>config.true_sequence</code></td><td>array</td><td><code>[]</code></td><td>Actions when condition is true</td></tr>
+            <tr><td><code>config.false_sequence</code></td><td>array</td><td><code>[]</code></td><td>Actions when condition is false</td></tr>
+            <tr><td><code>config.redirect_page</code></td><td>string/null</td><td><code>null</code></td><td>Page ID to redirect to on true</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>Trigger Methods</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>attach(object)</code></td><td>this</td><td>Attach trigger to an object's DOM element</td></tr>
+            <tr><td><code>detach()</code></td><td>this</td><td>Detach trigger from its object</td></tr>
+            <tr><td><code>on_true(action)</code></td><td>this</td><td>Add action to true sequence</td></tr>
+            <tr><td><code>on_false(action)</code></td><td>this</td><td>Add action to false sequence</td></tr>
+            <tr><td><code>set_condition(fn)</code></td><td>this</td><td>Set condition function</td></tr>
+            <tr><td><code>set_redirect(page_id)</code></td><td>this</td><td>Set redirect page</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="renderer"><code>crescent.renderer</code></h3>
+      <p>Access the <code>RocketRenderer</code> instance. Manages page rendering, navigation, and SSR.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>register_page(page)</code></td><td>this</td><td>Register a page for rendering</td></tr>
+            <tr><td><code>basehtml(htmlOrPath)</code></td><td>this</td><td>Set base HTML string or file path</td></tr>
+            <tr><td><code>root(selector)</code></td><td>this</td><td>Define root mount point inside base HTML (default <code>#rocket-root</code>)</td></tr>
+            <tr><td><code>mount(container)</code></td><td>this</td><td>Mount to a DOM container (browser mode)</td></tr>
+            <tr><td><code>navigate(page_id)</code></td><td>this</td><td>Navigate to a registered page</td></tr>
+            <tr><td><code>render_full_page(page_id)</code></td><td>string</td><td>SSR: render full HTML with base HTML</td></tr>
+            <tr><td><code>get_current_page()</code></td><td>page/null</td><td>Get the currently displayed page</td></tr>
+            <tr><td><code>get_page(page_id)</code></td><td>page/null</td><td>Get a registered page by ID</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="responsive"><code>crescent.responsive(config)</code></h3>
+      <p>Configure responsive ratio-based scaling for pages and objects.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.page</code></td><td>page/null</td><td><code>null</code></td><td>Page to scale</td></tr>
+            <tr><td><code>config.breakpoints</code></td><td>array</td><td>(see below)</td><td>Breakpoint definitions</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Default breakpoints:</strong> <code>[{ name: 'mobile', maxWidth: 480 }, { name: 'tablet', maxWidth: 768 }, { name: 'desktop', maxWidth: 1200 }, { name: 'large', maxWidth: Infinity }]</code></p>
+      <h4>Responsive Methods</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>init(page)</code></td><td>this</td><td>Initialize responsive scaling for a page</td></tr>
+            <tr><td><code>get_breakpoint()</code></td><td>string</td><td>Get current breakpoint name</td></tr>
+            <tr><td><code>calculate_ratios(object, vw, vh)</code></td><td>object</td><td>Calculate scaling ratios: <code>{ height_ratio: [top, bottom], width_ratio: [left, right] }</code></td></tr>
+            <tr><td><code>scale_object(object, origW, origH, newW, newH)</code></td><td>void</td><td>Apply scaling to an object</td></tr>
+            <tr><td><code>destroy()</code></td><td>void</td><td>Remove resize listener</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== DATABASE API ===== -->
+      <h2 id="database-api">Database API</h2>
+      <h3 id="db"><code>crescent.db</code></h3>
+      <p>Access the <code>DatabaseSyntax</code> instance. Provides a clean API for CRUD operations.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>create(collection, schema)</code></td><td>this</td><td>Create a new collection</td></tr>
+            <tr><td><code>drop(collection)</code></td><td>this</td><td>Drop a collection</td></tr>
+            <tr><td><code>insert(collection, document)</code></td><td>document</td><td>Insert a document</td></tr>
+            <tr><td><code>insert_many(collection, documents)</code></td><td>array</td><td>Insert multiple documents</td></tr>
+            <tr><td><code>find(collection, query)</code></td><td>array</td><td>Find documents matching query</td></tr>
+            <tr><td><code>find_one(collection, query)</code></td><td>document/null</td><td>Find one document</td></tr>
+            <tr><td><code>find_by_id(collection, id)</code></td><td>document/null</td><td>Find document by <code>_id</code></td></tr>
+            <tr><td><code>update(collection, query, updates)</code></td><td>number</td><td>Update matching documents</td></tr>
+            <tr><td><code>update_one(collection, query, updates)</code></td><td>number</td><td>Update one matching document</td></tr>
+            <tr><td><code>delete(collection, query)</code></td><td>number</td><td>Delete matching documents</td></tr>
+            <tr><td><code>delete_one(collection, query)</code></td><td>number</td><td>Delete one matching document</td></tr>
+            <tr><td><code>count(collection, query)</code></td><td>number</td><td>Count documents</td></tr>
+            <tr><td><code>sort(collection, query, field, order)</code></td><td>array</td><td>Sort documents (<code>'asc'</code>/<code>'desc'</code>)</td></tr>
+            <tr><td><code>limit(collection, query, num)</code></td><td>array</td><td>Limit results</td></tr>
+            <tr><td><code>list_collections()</code></td><td>array</td><td>List all collections</td></tr>
+            <tr><td><code>exists(collection)</code></td><td>boolean</td><td>Check if collection exists</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== BACKEND API ===== -->
+      <h2 id="backend-api">Backend API</h2>
+
+      <h3 id="function"><code>crescent.function(config)</code></h3>
+      <p>Create a server-side function.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.function_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.params</code></td><td>array</td><td><code>[]</code></td><td>Parameter names</td></tr>
+            <tr><td><code>config.body</code></td><td>function</td><td><code>function() {}</code></td><td>The function implementation</td></tr>
+            <tr><td><code>config.function_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Whether active</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Methods:</strong> <code>call(...args)</code>, <code>set_body(fn)</code>, <code>set_enabled(bool)</code>, <code>get_params()</code></p>
+
+      <h3 id="conditional"><code>crescent.conditional(config)</code></h3>
+      <p>Create a conditional with if / else-if / else branches.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.conditional_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.conditional_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Whether active</td></tr>
+            <tr><td><code>config.if</code></td><td>object</td><td><code>{ check: false, actions: [] }</code></td><td>If branch: <code>{ check, actions }</code></td></tr>
+            <tr><td><code>config.else_if</code></td><td>array</td><td><code>[]</code></td><td>Array of <code>{ check, actions }</code> branches</td></tr>
+            <tr><td><code>config.else</code></td><td>object</td><td><code>{ actions: [] }</code></td><td>Else branch: <code>{ actions }</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Methods:</strong> <code>evaluate()</code>, <code>set_if(check, actions)</code>, <code>add_else_if(check, actions)</code>, <code>set_else(actions)</code></p>
+
+      <h3 id="loop"><code>crescent.loop(config)</code></h3>
+      <p>Create a loop.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.loop_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.loop_type</code></td><td>string</td><td>—</td><td><code>for</code>, <code>while</code>, <code>for_in</code></td></tr>
+            <tr><td><code>config.start</code></td><td>number</td><td>—</td><td>Start (for)</td></tr>
+            <tr><td><code>config.end</code></td><td>number</td><td>—</td><td>End (for)</td></tr>
+            <tr><td><code>config.step</code></td><td>number</td><td>—</td><td>Step (for)</td></tr>
+            <tr><td><code>config.condition</code></td><td>function/any</td><td>—</td><td>Condition (while)</td></tr>
+            <tr><td><code>config.iterable</code></td><td>array</td><td>—</td><td>Items (for_in)</td></tr>
+            <tr><td><code>config.actions</code></td><td>array</td><td>—</td><td>Actions per iteration</td></tr>
+            <tr><td><code>config.loop_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Whether active</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Methods:</strong> <code>run()</code>, <code>get_results()</code></p>
+
+      <h3 id="boolean"><code>crescent.boolean(config)</code></h3>
+      <p>Create a boolean evaluator.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.boolean_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.value1</code></td><td>any</td><td>—</td><td>First value</td></tr>
+            <tr><td><code>config.value2</code></td><td>any</td><td>—</td><td>Second value</td></tr>
+            <tr><td><code>config.operator</code></td><td>string</td><td>—</td><td><code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>XOR</code>, <code>NAND</code>, <code>NOR</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Methods:</strong> <code>evaluate()</code>, <code>and(other)</code>, <code>or(other)</code>, <code>not()</code></p>
+
+      <h3 id="api_call"><code>crescent.api_call(config)</code></h3>
+      <p>Create an HTTP client.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.api_call_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.url</code></td><td>string</td><td>—</td><td>Request URL</td></tr>
+            <tr><td><code>config.method</code></td><td>string</td><td><code>'GET'</code></td><td>HTTP method</td></tr>
+            <tr><td><code>config.headers</code></td><td>object</td><td>—</td><td>Request headers</td></tr>
+            <tr><td><code>config.body</code></td><td>any</td><td>—</td><td>Request body</td></tr>
+            <tr><td><code>config.timeout</code></td><td>number</td><td><code>30000</code></td><td>Timeout in ms</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Methods:</strong> <code>call()</code>, <code>get_response()</code>, <code>get_error()</code></p>
+
+      <h3 id="api_make"><code>crescent.api_make(config)</code></h3>
+      <p>Create a REST API server.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.api_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.port</code></td><td>number</td><td><code>3000</code></td><td>Port</td></tr>
+            <tr><td><code>config.host</code></td><td>string</td><td><code>'localhost'</code></td><td>Hostname</td></tr>
+            <tr><td><code>config.cors</code></td><td>boolean</td><td><code>true</code></td><td>Enable CORS</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Methods:</strong> <code>add_endpoint(method, path, handler)</code>, <code>use(middleware)</code>, <code>start()</code>, <code>stop()</code></p>
+
+      <h3 id="collect"><code>crescent.collect(config)</code></h3>
+      <p>Create a data collector.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>config.collect_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>config.sources</code></td><td>array</td><td>—</td><td>Data sources</td></tr>
+            <tr><td><code>config.transform</code></td><td>function</td><td>—</td><td>Transform function</td></tr>
+            <tr><td><code>config.validate</code></td><td>function</td><td>—</td><td>Validation function</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Methods:</strong> <code>collect()</code>, <code>add_source(source)</code>, <code>set_transform(fn)</code>, <code>set_validate(fn)</code>, <code>send(url, options)</code>, <code>get_data()</code></p>
+
+      <!-- ===== UTILITIES ===== -->
+      <h2 id="utilities">Utility Functions</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Function</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>crescent.print(value)</code></td><td>any</td><td>Log and return value</td></tr>
+            <tr><td><code>crescent.add(a, b)</code></td><td>number</td><td>Addition</td></tr>
+            <tr><td><code>crescent.subtract(a, b)</code></td><td>number</td><td>Subtraction</td></tr>
+            <tr><td><code>crescent.multiply(a, b)</code></td><td>number</td><td>Multiplication</td></tr>
+            <tr><td><code>crescent.divide(a, b)</code></td><td>number</td><td>Division (throws on /0)</td></tr>
+            <tr><td><code>crescent.sqrt(n)</code></td><td>number</td><td>Square root</td></tr>
+            <tr><td><code>crescent.sin(n)</code></td><td>number</td><td>Sine</td></tr>
+            <tr><td><code>crescent.cos(n)</code></td><td>number</td><td>Cosine</td></tr>
+            <tr><td><code>crescent.tan(n)</code></td><td>number</td><td>Tangent</td></tr>
+            <tr><td><code>crescent.get_timestamp()</code></td><td>number</td><td>Current timestamp</td></tr>
+            <tr><td><code>crescent.redirect(url)</code></td><td>void</td><td>Browser redirect</td></tr>
+            <tr><td><code>crescent.connect_and_pull(url, options)</code></td><td>Promise</td><td>Fetch JSON</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== GETTERS ===== -->
+      <h2 id="getters">Getters</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>crescent.db</code></td><td>DatabaseSyntax</td><td>Database instance</td></tr>
+            <tr><td><code>crescent.renderer</code></td><td>Renderer</td><td>Renderer instance</td></tr>
+            <tr><td><code>crescent.get_page(id)</code></td><td>Page/null</td><td>Get page by ID</td></tr>
+            <tr><td><code>crescent.get_object(id)</code></td><td>Object/null</td><td>Get object by ID</td></tr>
+            <tr><td><code>crescent.get_layer(id)</code></td><td>Layer/null</td><td>Get layer by ID</td></tr>
+            <tr><td><code>crescent.get_function(id)</code></td><td>Function/null</td><td>Get function by ID</td></tr>
+            <tr><td><code>crescent.get_transition(id)</code></td><td>Transition/null</td><td>Get transition by ID</td></tr>
+            <tr><td><code>crescent.get_trigger(id)</code></td><td>Trigger/null</td><td>Get trigger by ID</td></tr>
+            <tr><td><code>crescent.get_conditional(id)</code></td><td>Conditional/null</td><td>Get conditional by ID</td></tr>
+            <tr><td><code>crescent.get_loop(id)</code></td><td>Loop/null</td><td>Get loop by ID</td></tr>
+            <tr><td><code>crescent.get_boolean(id)</code></td><td>Boolean/null</td><td>Get boolean by ID</td></tr>
+            <tr><td><code>crescent.get_api(id)</code></td><td>ApiMake/null</td><td>Get API by ID</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <nav class="pagenav">
+        <a href="deployment.html"><span class="label">← Previous</span><span class="title">Deployment</span></a>
+        <a class="next" href="configuration.html"><span class="label">Next →</span><span class="title">Configuration</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

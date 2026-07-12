@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>crescent.js — A framework so easy it takes 10 seconds to learn</title>
+  <meta name="description" content="A full-stack JavaScript framework with integrated frontend rendering, backend logic, and database support. So easy it takes 10 seconds to learn and go with it for the rest of your life." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search">
+          <input type="text" placeholder="Search docs…" />
+        </div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ===== HERO ===== -->
+      <section class="hero">
+        <div class="hero-eyebrow"><span class="dot"></span> v1.0.0 · Full-stack JavaScript</div>
+        <h1 class="hero-title">A framework <span class="grad">so easy</span><br/>it takes 10 seconds to learn.</h1>
+        <p class="hero-sub">Learn it once, go with it for the rest of your life. Frontend, backend, and database — all in one cohesive package, with zero config and sensible defaults.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="getting-started.html">Get Started →</a>
+          <a class="btn btn-ghost" href="api-reference.html">API Reference</a>
+        </div>
+
+        <div class="install-bar">
+          <code>npm install crescent-js</code>
+          <button class="copy-btn" type="button"></button>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat"><div class="stat-num">1</div><div class="stat-label">Framework</div></div>
+          <div class="stat"><div class="stat-num">3</div><div class="stat-label">Stacks covered</div></div>
+          <div class="stat"><div class="stat-num">0</div><div class="stat-label">Config required</div></div>
+          <div class="stat"><div class="stat-num">10s</div><div class="stat-label">To learn</div></div>
+        </div>
+      </section>
+
+      <!-- ===== WHY ===== -->
+      <div class="section-head">
+        <h2>Everything you need. Nothing you don't.</h2>
+        <p>One framework for the whole stack — render pages, run backend logic, and store data.</p>
+      </div>
+      <div class="grid grid-4">
+        <div class="feature">
+          <span class="emoji">🧩</span>
+          <h3>All-in-one</h3>
+          <p>Frontend, backend, and database in a single framework.</p>
+        </div>
+        <div class="feature">
+          <span class="emoji">🧱</span>
+          <h3>Declarative API</h3>
+          <p>Build UIs with layers, objects, and pages.</p>
+        </div>
+        <div class="feature">
+          <span class="emoji">⚙️</span>
+          <h3>Backend Logic</h3>
+          <p>Functions, conditionals, loops, and API management.</p>
+        </div>
+        <div class="feature">
+          <span class="emoji">📱</span>
+          <h3>Responsive</h3>
+          <p>Built-in responsive design support, by default.</p>
+        </div>
+      </div>
+
+      <!-- ===== QUICK START ===== -->
+      <div class="section-head">
+        <h2>Hello, Moon! in 10 lines</h2>
+        <p>This is the entire framework. Pages hold objects, objects hold layers. That's it.</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">javascript</span>
+          <button class="copy-btn" type="button"></button>
+        </div>
+<pre><code><span class="tok-key">const</span> rocket = <span class="tok-fn">require</span>(<span class="tok-str">'crescent-js'</span>);
+
+<span class="tok-com">// Create a page</span>
+<span class="tok-key">const</span> page = rocket.<span class="tok-fn">page</span>({ page_id: <span class="tok-str">'home'</span>, title: <span class="tok-str">'My App'</span> });
+
+<span class="tok-com">// Add content</span>
+<span class="tok-key">const</span> heading = rocket.<span class="tok-fn">object</span>({ object_id: <span class="tok-str">'heading'</span> });
+heading.<span class="tok-fn">add_layer</span>(
+  rocket.<span class="tok-fn">layer</span>({
+    layer_type: <span class="tok-str">'text'</span>,
+    layer_id: <span class="tok-str">'title'</span>,
+    text: <span class="tok-str">'Hello, Moon!'</span>,
+    tag: <span class="tok-str">'h1'</span>
+  })
+);
+page.<span class="tok-fn">add</span>(heading);
+
+<span class="tok-com">// Render</span>
+console.<span class="tok-fn">log</span>(page.<span class="tok-fn">render</span>());</code></pre>
+      </div>
+
+      <!-- ===== DOCS CARDS ===== -->
+      <div class="section-head">
+        <h2>Pick a path</h2>
+        <p>Each guide is its own page with a clear thumbnail and a one-line subtitle.</p>
+      </div>
+      <div class="grid grid-3">
+        <a class="card" href="getting-started.html">
+          <span class="card-emoji">🚀</span>
+          <h4>Getting Started</h4>
+          <p>Install, set up, and build your first app in minutes.</p>
+        </a>
+        <a class="card" href="frontend.html">
+          <span class="card-emoji">🎨</span>
+          <h4>Frontend</h4>
+          <p>So easy that designers start coding.</p>
+        </a>
+        <a class="card" href="backend.html">
+          <span class="card-emoji">⚙️</span>
+          <h4>Backend</h4>
+          <p>Functions, conditionals, loops, and APIs without the boilerplate.</p>
+        </a>
+        <a class="card" href="authentication.html">
+          <span class="card-emoji">🔐</span>
+          <h4>Authentication</h4>
+          <p>Signup, login, OAuth, and sessions — built in.</p>
+        </a>
+        <a class="card" href="api-reference.html">
+          <span class="card-emoji">📚</span>
+          <h4>API Reference</h4>
+          <p>Every method, parameter, and return value.</p>
+        </a>
+        <a class="card" href="configuration.html">
+          <span class="card-emoji">⚙️</span>
+          <h4>Configuration</h4>
+          <p>Every config option for every component.</p>
+        </a>
+      </div>
+
+      <!-- ===== HOW TO RUN ===== -->
+      <div class="section-head">
+        <h2>Run your app</h2>
+        <p>One command. Pick a port, or let it default to 3000.</p>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" type="button"></button>
+        </div>
+<pre><code>crescent run &lt;FILE_PATH&gt; 3030   <span class="tok-com"># Run on a specific port</span>
+crescent run &lt;FILE_PATH&gt;        <span class="tok-com"># Auto-runs on port 3000</span></code></pre>
+      </div>
+
+      <div class="section-head">
+        <h2>Project structure</h2>
+        <p>A sensible default layout you can grow into.</p>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">text</span>
+          <button class="copy-btn" type="button"></button>
+        </div>
+<pre><code>my-app/
+├── src/
+│   ├── pages/          <span class="tok-com"># Page definitions</span>
+│   ├── components/     <span class="tok-com"># Reusable objects and layers</span>
+│   ├── functions/      <span class="tok-com"># Backend functions</span>
+│   └── app.js          <span class="tok-com"># Entry point</span>
+└── package.json</code></pre>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>New here?</strong>
+          Start with the <a href="getting-started.html">Getting Started guide</a> — it walks you from <code>npm install</code> to a rendered page in under five minutes.
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

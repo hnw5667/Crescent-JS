@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing — crescent.js</title>
+  <meta name="description" content="How to contribute to Crescent.js — fork, branch, code, and submit a pull request." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">🤝</span>
+        <h1 class="thumb-title">Contributing</h1>
+        <p class="thumb-subtitle">Fork it, branch it, ship it — thank you for helping make crescent.js better. This guide will get you going.</p>
+        <span class="thumb-badge"><span class="dot"></span> Open source · MIT (with AI restrictions)</span>
+      </section>
+
+      <h2 id="getting-started">Getting Started</h2>
+      <ol>
+        <li><strong>Fork</strong> the repository on GitHub</li>
+        <li><strong>Clone</strong> your fork locally:</li>
+      </ol>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code>git clone https://github.com/YOUR_USERNAME/crescent-js.git
+cd crescent-js</code></pre>
+      </div>
+      <ol start="3">
+        <li><strong>Install</strong> dependencies:</li>
+      </ol>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code>npm install</code></pre>
+      </div>
+      <ol start="4">
+        <li><strong>Create a branch</strong> for your feature or fix:</li>
+      </ol>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code>git checkout -b feature/my-feature</code></pre>
+      </div>
+
+      <h2 id="development-setup">Development Setup</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-com"># Run the project</span>
+node src/rocket.js
+
+<span class="tok-com"># Run tests</span>
+npm test</code></pre>
+      </div>
+
+      <h2 id="code-style">Code Style</h2>
+      <ul>
+        <li>Use <strong>2 spaces</strong> for indentation</li>
+        <li>Use <strong>single quotes</strong> for strings</li>
+        <li>Use <strong>camelCase</strong> for variable and function names</li>
+        <li>Use <strong>PascalCase</strong> for class names</li>
+        <li>Add <strong>JSDoc comments</strong> for public methods</li>
+        <li>Keep lines under <strong>100 characters</strong></li>
+      </ul>
+
+      <h2 id="making-changes">Making Changes</h2>
+
+      <h3>Bug Fixes</h3>
+      <ol>
+        <li>Check if the bug is already reported in <a href="https://github.com/hnw5667/crescent-js/issues" target="_blank" rel="noopener">Issues</a></li>
+        <li>If not, open a new issue describing the bug</li>
+        <li>Fork and create a branch (<code>fix/bug-name</code>)</li>
+        <li>Write a fix with a clear commit message</li>
+        <li>Submit a pull request referencing the issue</li>
+      </ol>
+
+      <h3>New Features</h3>
+      <ol>
+        <li>Open an issue proposing the feature first</li>
+        <li>Discuss the approach with maintainers</li>
+        <li>Fork and create a branch (<code>feature/feature-name</code>)</li>
+        <li>Implement the feature with tests</li>
+        <li>Update documentation</li>
+        <li>Submit a pull request</li>
+      </ol>
+
+      <h2 id="pull-request-guidelines">Pull Request Guidelines</h2>
+      <ul>
+        <li><strong>One feature/fix per PR</strong> — Keep PRs focused</li>
+        <li><strong>Clear description</strong> — Explain what and why</li>
+        <li><strong>Update docs</strong> — If you change behavior, update the docs</li>
+        <li><strong>Follow existing patterns</strong> — Match the codebase style</li>
+        <li><strong>Test your changes</strong> — Ensure nothing is broken</li>
+      </ul>
+
+      <h2 id="reporting-issues">Reporting Issues</h2>
+      <p>When reporting bugs, please include:</p>
+      <ul>
+        <li><strong>Crescent.js version</strong> you're using</li>
+        <li><strong>Node.js version</strong> (<code>node -v</code>)</li>
+        <li><strong>Steps to reproduce</strong> the issue</li>
+        <li><strong>Expected behavior</strong></li>
+        <li><strong>Actual behavior</strong></li>
+        <li><strong>Error messages</strong> or stack traces</li>
+      </ul>
+
+      <h2 id="license">License</h2>
+      <p>By contributing to Crescent.js, you agree that your contributions will be licensed under the project's <a href="https://github.com/hnw5667/crescent-js/blob/main/LICENSE" target="_blank" rel="noopener">MIT License with AI Training Restrictions</a>.</p>
+
+      <nav class="pagenav">
+        <a href="changelog.html"><span class="label">← Previous</span><span class="title">Changelog</span></a>
+        <a class="next" href="index.html"><span class="label">Next →</span><span class="title">Home</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

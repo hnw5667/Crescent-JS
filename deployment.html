@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deployment — crescent.js</title>
+  <meta name="description" content="Ship your Crescent.js app — run it, serve the API, render SSR, and deploy to production." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">📦</span>
+        <h1 class="thumb-title">Deployment</h1>
+        <p class="thumb-subtitle">From your laptop to the world — run the app, serve the API, render SSR, and ship to production in a few commands.</p>
+        <span class="thumb-badge"><span class="dot"></span> CLI · API server · SSR</span>
+      </section>
+
+      <div class="callout note">
+        <div class="callout-icon">ℹ️</div>
+        <div class="callout-body">
+          <strong>This guide covers the deployment patterns built into crescent.js.</strong>
+          The framework ships with a <code>crescent run</code> CLI, a built-in API server (<code>api_make</code>), and server-side rendering (<code>render_full_page</code>) — so you have everything you need without extra tooling.
+        </div>
+      </div>
+
+      <!-- ===================== RUN ===================== -->
+      <h2 id="run">Running Your App</h2>
+      <p>The fastest way to run a Crescent.js app is the <code>crescent</code> CLI. Pick a port, or let it default to <code>3000</code>.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code>crescent run app.js 3030   <span class="tok-com"># Run on a specific port</span>
+crescent run app.js        <span class="tok-com"># Auto-runs on port 3000</span></code></pre>
+      </div>
+
+      <h2 id="entry-point">A Production-Ready Entry Point</h2>
+      <p>A typical <code>app.js</code> registers pages, sets up the API server, and starts listening. Combine the renderer, API server, and database in one process:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> crescent = <span class="tok-fn">require</span>(<span class="tok-str">'crescent-js'</span>);
+
+<span class="tok-com">// --- Frontend: register pages with the renderer</span>
+crescent.renderer.<span class="tok-fn">register_page</span>(homePage);
+crescent.renderer.<span class="tok-fn">register_page</span>(aboutPage);
+crescent.renderer.<span class="tok-fn">basehtml</span>(<span class="tok-str">'&lt;html&gt;&lt;body&gt;&lt;div id="rocket-root"&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;'</span>);
+
+<span class="tok-com">// --- Backend: create the API server</span>
+<span class="tok-key">const</span> api = crescent.<span class="tok-fn">api_make</span>({
+  api_id: <span class="tok-str">'prod_api'</span>,
+  port: process.env.PORT || <span class="tok-num">3000</span>,
+  host: <span class="tok-str">'0.0.0.0'</span>,        <span class="tok-com">// bind to all interfaces in production</span>
+  cors: <span class="tok-key">true</span>
+});
+
+api.<span class="tok-fn">add_endpoint</span>(<span class="tok-str">'GET'</span>, <span class="tok-str">'/'</span>, (req, res) =&gt; {
+  <span class="tok-com">// SSR: serve fully rendered HTML</span>
+  <span class="tok-key">const</span> html = crescent.renderer.<span class="tok-fn">render_full_page</span>(<span class="tok-str">'home'</span>);
+  res.<span class="tok-fn">writeHead</span>(<span class="tok-num">200</span>, { <span class="tok-str">'Content-Type'</span>: <span class="tok-str">'text/html'</span> });
+  res.<span class="tok-fn">end</span>(html);
+});
+
+<span class="tok-com">// --- Start</span>
+<span class="tok-key">await</span> api.<span class="tok-fn">start</span>();
+console.<span class="tok-fn">log</span>(<span class="tok-str">`🚀 crescent.js running on port ${process.env.PORT || 3000}`</span>);</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-icon">🌍</div>
+        <div class="callout-body"><strong>Bind to <code>0.0.0.0</code> in production.</strong> The default <code>localhost</code> only accepts local connections — most hosts (Render, Railway, Fly.io, a VPS) need <code>0.0.0.0</code> to route traffic in.</div>
+      </div>
+
+      <!-- ===================== ENV ===================== -->
+      <h2 id="environment">Environment Variables</h2>
+      <p>Keep secrets and config out of your code. Read them from <code>process.env</code>:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-com"># .env</span>
+PORT=3000
+NODE_ENV=production
+COOKIE_SECRET=replace-with-a-long-random-string
+DATABASE_URL=optional-if-using-external-db</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> login = crescent.auth.<span class="tok-fn">login</span>({
+  collection: <span class="tok-str">'users'</span>,
+  cookie: {
+    secret: process.env.COOKIE_SECRET,   <span class="tok-com">// never hardcode this</span>
+    secure: process.env.NODE_ENV === <span class="tok-str">'production'</span>,
+    same_site: <span class="tok-str">'lax'</span>
+  }
+});</code></pre>
+      </div>
+
+      <!-- ===================== SSR ===================== -->
+      <h2 id="ssr">Server-Side Rendering (SSR)</h2>
+      <p>Use <code>render_full_page</code> to return complete HTML from the server — great for SEO and fast first paint:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>api.<span class="tok-fn">add_endpoint</span>(<span class="tok-str">'GET'</span>, <span class="tok-str">'/about'</span>, (req, res) =&gt; {
+  <span class="tok-key">const</span> html = crescent.renderer.<span class="tok-fn">render_full_page</span>(<span class="tok-str">'about'</span>);
+  res.<span class="tok-fn">writeHead</span>(<span class="tok-num">200</span>, { <span class="tok-str">'Content-Type'</span>: <span class="tok-str">'text/html'</span> });
+  res.<span class="tok-fn">end</span>(html);
+});</code></pre>
+      </div>
+      <p>For client-side navigation between registered pages, use the renderer directly:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>crescent.renderer.<span class="tok-fn">navigate</span>(<span class="tok-str">'home'</span>);   <span class="tok-com">// swap to the home page in-place</span></code></pre>
+      </div>
+
+      <!-- ===================== HOSTS ===================== -->
+      <h2 id="hosts">Deploying to a Host</h2>
+      <p>Any Node.js host works. The general recipe:</p>
+      <ol>
+        <li>Push your code to a Git repository</li>
+        <li>Let the host run <code>npm install</code></li>
+        <li>Set the start command to <code>crescent run app.js $PORT</code> (or <code>node app.js</code> if you start the server yourself)</li>
+        <li>Set your environment variables (<code>PORT</code>, <code>COOKIE_SECRET</code>, <code>NODE_ENV=production</code>)</li>
+      </ol>
+
+      <div class="grid grid-3">
+        <div class="card"><span class="card-emoji">▲</span><h4>Vercel / Netlify</h4><p>Great for SSR functions. Set the build to your entry and provide env vars in the dashboard.</p></div>
+        <div class="card"><span class="card-emoji">🚂</span><h4>Railway / Render</h4><p>Long-running Node processes. Use <code>0.0.0.0</code> and the platform's <code>PORT</code>.</p></div>
+        <div class="card"><span class="card-emoji">🖥️</span><h4>VPS / Docker</h4><p>Full control. Run with a process manager (PM2) and put a reverse proxy (Nginx/Caddy) in front.</p></div>
+      </div>
+
+      <h3>Docker</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">dockerfile</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">FROM</span> node:20-alpine
+<span class="tok-key">WORKDIR</span> /app
+<span class="tok-key">COPY</span> package*.json ./
+<span class="tok-key">RUN</span> npm ci --omit=dev
+<span class="tok-key">COPY</span> . .
+<span class="tok-key">ENV</span> NODE_ENV=production
+<span class="tok-key">EXPOSE</span> 3000
+<span class="tok-key">CMD</span> [<span class="tok-str">"node"</span>, <span class="tok-str">"app.js"</span>]</code></pre>
+      </div>
+
+      <h3>PM2 (process manager)</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" type="button"></button></div>
+<pre><code>npm install -g pm2
+pm2 start app.js --name crescent-app --env production
+pm2 save
+pm2 startup     <span class="tok-com"># auto-restart on reboot</span></code></pre>
+      </div>
+
+      <!-- ===================== CHECKLIST ===================== -->
+      <h2 id="checklist">Production Checklist</h2>
+      <div class="callout warn">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body">
+          <strong>Before you ship, double-check:</strong>
+          <ul style="margin: 8px 0 0;">
+            <li>Cookie <code>secret</code> is set to a long random value (not the default)</li>
+            <li><code>secure: true</code> on cookies (requires HTTPS)</li>
+            <li>API server binds to <code>0.0.0.0</code>, not <code>localhost</code></li>
+            <li><code>NODE_ENV=production</code> is set</li>
+            <li>Strong passwords enforced (default rejects <code>weak</code>)</li>
+            <li><code>http_only: true</code> stays on to block XSS cookie access</li>
+          </ul>
+        </div>
+      </div>
+
+      <nav class="pagenav">
+        <a href="authentication.html"><span class="label">← Previous</span><span class="title">Authentication</span></a>
+        <a class="next" href="api-reference.html"><span class="label">Next →</span><span class="title">API Reference</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

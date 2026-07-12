@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backend — crescent.js</title>
+  <meta name="description" content="Backend so easy it feels like cheating — functions, conditionals, loops, APIs, database, and more." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">⚙️</span>
+        <h1 class="thumb-title">Backend</h1>
+        <p class="thumb-subtitle">So easy it feels like cheating — functions, conditionals, loops, APIs, and a built-in database, all without the boilerplate.</p>
+        <span class="thumb-badge"><span class="dot"></span> Server-side logic · No boilerplate</span>
+      </section>
+
+      <!-- ===================== FUNCTIONS ===================== -->
+      <h2 id="functions">Functions</h2>
+      <p>Create reusable server-side functions.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> greet = crescent.<span class="tok-fn">function</span>({
+  function_id: <span class="tok-str">'greet'</span>,
+  params: [<span class="tok-str">'name'</span>],
+  body: (name) =&gt; <span class="tok-str">`Hello, ${name}!`</span>
+});
+
+<span class="tok-com">// Execute</span>
+<span class="tok-key">const</span> result = greet.<span class="tok-fn">call</span>(<span class="tok-str">'World'</span>); <span class="tok-com">// "Hello, World!"</span></code></pre>
+      </div>
+
+      <h3>Function Configuration</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>function_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>params</code></td><td>array</td><td><code>[]</code></td><td>Parameter names</td></tr>
+            <tr><td><code>body</code></td><td>function</td><td><code>function() {}</code></td><td>The function to execute</td></tr>
+            <tr><td><code>function_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Whether the function is active</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Function Methods</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>func.<span class="tok-fn">call</span>(...args);           <span class="tok-com">// Execute the function with arguments</span>
+func.<span class="tok-fn">set_enabled</span>(bool);       <span class="tok-com">// Enable or disable the function</span>
+func.<span class="tok-fn">set_body</span>(fn);            <span class="tok-com">// Replace the function body</span>
+func.<span class="tok-fn">get_params</span>();            <span class="tok-com">// Get the parameter list</span></code></pre>
+      </div>
+
+      <!-- ===================== CONDITIONALS ===================== -->
+      <h2 id="conditionals">Conditionals</h2>
+      <p>Branch logic with if / else-if / else chains.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> check = crescent.<span class="tok-fn">conditional</span>({
+  conditional_id: <span class="tok-str">'age_check'</span>,
+  if: {
+    check: () =&gt; user.age &gt;= <span class="tok-num">18</span>,
+    actions: [
+      { type: <span class="tok-str">'call_function'</span>, function: grantAccess }
+    ]
+  },
+  else_if: [
+    {
+      check: () =&gt; user.age &gt;= <span class="tok-num">13</span>,
+      actions: [
+        { type: <span class="tok-str">'call_function'</span>, function: limitedAccess }
+      ]
+    }
+  ],
+  else: {
+    actions: [
+      { type: <span class="tok-str">'call_function'</span>, function: denyAccess }
+    ]
+  }
+});
+
+<span class="tok-com">// Evaluate — returns 'if', 'else_if', or 'else'</span>
+<span class="tok-key">const</span> result = check.<span class="tok-fn">evaluate</span>();</code></pre>
+      </div>
+
+      <h3>Conditional Configuration</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>conditional_id</code></td><td>string</td><td>required</td><td>Unique identifier</td></tr>
+            <tr><td><code>conditional_enabled</code></td><td>boolean</td><td><code>true</code></td><td>Whether the conditional is active</td></tr>
+            <tr><td><code>if</code></td><td>object</td><td><code>{ check: false, actions: [] }</code></td><td>If branch: <code>{ check, actions }</code></td></tr>
+            <tr><td><code>else_if</code></td><td>array</td><td><code>[]</code></td><td>Array of <code>{ check, actions }</code> branches</td></tr>
+            <tr><td><code>else</code></td><td>object</td><td><code>{ actions: [] }</code></td><td>Else branch: <code>{ actions }</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Conditional Methods</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>conditional.<span class="tok-fn">evaluate</span>();                          <span class="tok-com">// Run and return 'if', 'else_if', or 'else'</span>
+conditional.<span class="tok-fn">set_if</span>(check, actions);              <span class="tok-com">// Set the if branch</span>
+conditional.<span class="tok-fn">add_else_if</span>(check, actions);         <span class="tok-com">// Add an else-if branch</span>
+conditional.<span class="tok-fn">set_else</span>(actions);                   <span class="tok-com">// Set the else branch</span></code></pre>
+      </div>
+
+      <!-- ===================== LOOPS ===================== -->
+      <h2 id="loops">Loops</h2>
+      <p>Iterate with for, while, and for-in loops.</p>
+
+      <h3>For Loop</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> loop = crescent.<span class="tok-fn">loop</span>({
+  loop_id: <span class="tok-str">'count'</span>,
+  loop_type: <span class="tok-str">'for'</span>,
+  start: <span class="tok-num">0</span>,
+  end: <span class="tok-num">10</span>,
+  step: <span class="tok-num">1</span>,
+  actions: [
+    (i) =&gt; console.<span class="tok-fn">log</span>(i)
+  ]
+});
+
+loop.<span class="tok-fn">run</span>();</code></pre>
+      </div>
+
+      <h3>While Loop</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> loop = crescent.<span class="tok-fn">loop</span>({
+  loop_id: <span class="tok-str">'process'</span>,
+  loop_type: <span class="tok-str">'while'</span>,
+  condition: () =&gt; <span class="tok-fn">hasMoreItems</span>(),
+  actions: [
+    (i) =&gt; <span class="tok-fn">processNext</span>()
+  ]
+});
+
+loop.<span class="tok-fn">run</span>();</code></pre>
+      </div>
+
+      <h3>For-In Loop</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> loop = crescent.<span class="tok-fn">loop</span>({
+  loop_id: <span class="tok-str">'iterate'</span>,
+  loop_type: <span class="tok-str">'for_in'</span>,
+  iterable: [<span class="tok-str">'a'</span>, <span class="tok-str">'b'</span>, <span class="tok-str">'c'</span>],
+  actions: [
+    (item) =&gt; console.<span class="tok-fn">log</span>(item)
+  ]
+});
+
+loop.<span class="tok-fn">run</span>();</code></pre>
+      </div>
+
+      <h3>Loop Configuration</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>loop_id</code></td><td>string</td><td>Unique identifier</td></tr>
+            <tr><td><code>loop_type</code></td><td>string</td><td><code>for</code>, <code>while</code>, <code>for_in</code></td></tr>
+            <tr><td><code>start</code></td><td>number</td><td>Start value (for loop)</td></tr>
+            <tr><td><code>end</code></td><td>number</td><td>End value (for loop)</td></tr>
+            <tr><td><code>step</code></td><td>number</td><td>Step increment (for loop)</td></tr>
+            <tr><td><code>condition</code></td><td>function/any</td><td>While condition</td></tr>
+            <tr><td><code>iterable</code></td><td>array</td><td>Items to iterate (for_in)</td></tr>
+            <tr><td><code>actions</code></td><td>array</td><td>Actions to execute each iteration</td></tr>
+            <tr><td><code>loop_enabled</code></td><td>boolean</td><td>Whether the loop is active</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===================== BOOLEAN LOGIC ===================== -->
+      <h2 id="boolean-logic">Boolean Logic</h2>
+      <p>Evaluate boolean expressions with AND, OR, NOT, XOR, NAND, NOR.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> check = crescent.<span class="tok-fn">boolean</span>({
+  boolean_id: <span class="tok-str">'access_check'</span>,
+  value1: <span class="tok-key">true</span>,
+  value2: <span class="tok-key">false</span>,
+  operator: <span class="tok-str">'AND'</span>
+});
+
+check.<span class="tok-fn">evaluate</span>(); <span class="tok-com">// false</span></code></pre>
+      </div>
+
+      <h3>Chaining</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> result = crescent.<span class="tok-fn">boolean</span>({ boolean_id: <span class="tok-str">'a'</span>, value1: <span class="tok-key">true</span>, operator: <span class="tok-str">'NOT'</span> })
+  .<span class="tok-fn">and</span>(crescent.<span class="tok-fn">boolean</span>({ boolean_id: <span class="tok-str">'b'</span>, value1: <span class="tok-key">true</span> }))
+  .<span class="tok-fn">evaluate</span>();</code></pre>
+      </div>
+
+      <h3>Operators</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Operator</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>AND</code></td><td>Both values must be true</td></tr>
+            <tr><td><code>OR</code></td><td>At least one value must be true</td></tr>
+            <tr><td><code>NOT</code></td><td>Negates the first value</td></tr>
+            <tr><td><code>XOR</code></td><td>Exactly one value is true</td></tr>
+            <tr><td><code>NAND</code></td><td>NOT AND</td></tr>
+            <tr><td><code>NOR</code></td><td>NOT OR</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===================== API CALLS ===================== -->
+      <h2 id="api-calls">API Calls</h2>
+      <p>Make HTTP requests to external APIs.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> api = crescent.<span class="tok-fn">api_call</span>({
+  api_call_id: <span class="tok-str">'fetch_users'</span>,
+  url: <span class="tok-str">'https://api.example.com/users'</span>,
+  method: <span class="tok-str">'GET'</span>,
+  headers: { <span class="tok-str">'Authorization'</span>: <span class="tok-str">'Bearer token123'</span> },
+  timeout: <span class="tok-num">30000</span>
+});
+
+<span class="tok-com">// Execute</span>
+<span class="tok-key">const</span> response = <span class="tok-key">await</span> api.<span class="tok-fn">call</span>();</code></pre>
+      </div>
+
+      <h3>API Call Configuration</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>api_call_id</code></td><td>string</td><td>Unique identifier</td></tr>
+            <tr><td><code>url</code></td><td>string</td><td>Request URL</td></tr>
+            <tr><td><code>method</code></td><td>string</td><td>HTTP method (GET, POST, PUT, PATCH, DELETE)</td></tr>
+            <tr><td><code>headers</code></td><td>object</td><td>Request headers</td></tr>
+            <tr><td><code>body</code></td><td>any</td><td>Request body (POST/PUT/PATCH)</td></tr>
+            <tr><td><code>timeout</code></td><td>number</td><td>Timeout in ms (default: 30000)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===================== API SERVER ===================== -->
+      <h2 id="api-server">API Server</h2>
+      <p>Create REST API endpoints.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> api = crescent.<span class="tok-fn">api_make</span>({
+  api_id: <span class="tok-str">'my_api'</span>,
+  port: <span class="tok-num">3000</span>,
+  host: <span class="tok-str">'localhost'</span>,
+  cors: <span class="tok-key">true</span>
+});
+
+<span class="tok-com">// Add endpoints</span>
+api.<span class="tok-fn">add_endpoint</span>(<span class="tok-str">'GET'</span>, <span class="tok-str">'/users'</span>, (req, res) =&gt; {
+  res.<span class="tok-fn">writeHead</span>(<span class="tok-num">200</span>, { <span class="tok-str">'Content-Type'</span>: <span class="tok-str">'application/json'</span> });
+  res.<span class="tok-fn">end</span>(JSON.<span class="tok-fn">stringify</span>({ users: [] }));
+});
+
+api.<span class="tok-fn">add_endpoint</span>(<span class="tok-str">'POST'</span>, <span class="tok-str">'/users'</span>, (req, res) =&gt; {
+  <span class="tok-key">const</span> user = req.body;
+  res.<span class="tok-fn">writeHead</span>(<span class="tok-num">201</span>, { <span class="tok-str">'Content-Type'</span>: <span class="tok-str">'application/json'</span> });
+  res.<span class="tok-fn">end</span>(JSON.<span class="tok-fn">stringify</span>({ created: user }));
+});
+
+<span class="tok-com">// Start the server</span>
+<span class="tok-key">await</span> api.<span class="tok-fn">start</span>();
+
+<span class="tok-com">// Stop the server</span>
+<span class="tok-key">await</span> api.<span class="tok-fn">stop</span>();</code></pre>
+      </div>
+
+      <h3>Path Parameters</h3>
+      <p>Use <code>:param</code> syntax for dynamic routes:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>api.<span class="tok-fn">add_endpoint</span>(<span class="tok-str">'GET'</span>, <span class="tok-str">'/users/:id'</span>, (req, res) =&gt; {
+  <span class="tok-key">const</span> userId = req.params.id;
+  <span class="tok-com">// ...</span>
+});</code></pre>
+      </div>
+
+      <h3>Middleware</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>api.<span class="tok-fn">use</span>((req, res, next) =&gt; {
+  console.<span class="tok-fn">log</span>(<span class="tok-str">`${req.method} ${req.url}`</span>);
+  <span class="tok-fn">next</span>();
+});</code></pre>
+      </div>
+
+      <!-- ===================== COLLECT ===================== -->
+      <h2 id="collect">Collect</h2>
+      <p>Gather data from multiple sources (layers, objects, pages).</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-key">const</span> collect = crescent.<span class="tok-fn">collect</span>({
+  collect_id: <span class="tok-str">'form_data'</span>,
+  sources: [nameInput, emailInput],
+  transform: (data) =&gt; ({ ...data, submitted_at: Date.<span class="tok-fn">now</span>() }),
+  validate: (data) =&gt; data.email &amp;&amp; data.email.<span class="tok-fn">includes</span>(<span class="tok-str">'@'</span>)
+});
+
+<span class="tok-key">const</span> formData = collect.<span class="tok-fn">collect</span>();</code></pre>
+      </div>
+
+      <h3>Collect Methods</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>collect.<span class="tok-fn">collect</span>();           <span class="tok-com">// Gather from all sources</span>
+collect.<span class="tok-fn">add_source</span>(source);  <span class="tok-com">// Add a data source</span>
+collect.<span class="tok-fn">set_transform</span>(fn);   <span class="tok-com">// Set transform function</span>
+collect.<span class="tok-fn">set_validate</span>(fn);    <span class="tok-com">// Set validation function</span>
+collect.<span class="tok-fn">send</span>(url, options);  <span class="tok-com">// Collect and send to API</span></code></pre>
+      </div>
+
+      <!-- ===================== DATABASE ===================== -->
+      <h2 id="database">Database</h2>
+      <p>Crescent.js includes a built-in database with a clean CRUD API.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code><span class="tok-com">// Access the database</span>
+<span class="tok-key">const</span> db = crescent.db;
+
+<span class="tok-com">// Create a collection</span>
+db.<span class="tok-fn">create</span>(<span class="tok-str">'users'</span>);
+
+<span class="tok-com">// Insert documents</span>
+db.<span class="tok-fn">insert</span>(<span class="tok-str">'users'</span>, { _id: <span class="tok-str">'1'</span>, name: <span class="tok-str">'Alice'</span>, age: <span class="tok-num">30</span> });
+db.<span class="tok-fn">insert_many</span>(<span class="tok-str">'users'</span>, [
+  { _id: <span class="tok-str">'2'</span>, name: <span class="tok-str">'Bob'</span>, age: <span class="tok-num">25</span> },
+  { _id: <span class="tok-str">'3'</span>, name: <span class="tok-str">'Charlie'</span>, age: <span class="tok-num">35</span> }
+]);
+
+<span class="tok-com">// Find documents</span>
+<span class="tok-key">const</span> all = db.<span class="tok-fn">find</span>(<span class="tok-str">'users'</span>);
+<span class="tok-key">const</span> alice = db.<span class="tok-fn">find_one</span>(<span class="tok-str">'users'</span>, { name: <span class="tok-str">'Alice'</span> });
+<span class="tok-key">const</span> byId = db.<span class="tok-fn">find_by_id</span>(<span class="tok-str">'users'</span>, <span class="tok-str">'1'</span>);
+
+<span class="tok-com">// Update documents</span>
+db.<span class="tok-fn">update</span>(<span class="tok-str">'users'</span>, { name: <span class="tok-str">'Alice'</span> }, { age: <span class="tok-num">31</span> });
+db.<span class="tok-fn">update_one</span>(<span class="tok-str">'users'</span>, { name: <span class="tok-str">'Bob'</span> }, { age: <span class="tok-num">26</span> });
+
+<span class="tok-com">// Delete documents</span>
+db.<span class="tok-fn">delete</span>(<span class="tok-str">'users'</span>, { name: <span class="tok-str">'Charlie'</span> });
+db.<span class="tok-fn">delete_one</span>(<span class="tok-str">'users'</span>, { _id: <span class="tok-str">'2'</span> });
+
+<span class="tok-com">// Count, sort, limit</span>
+<span class="tok-key">const</span> count = db.<span class="tok-fn">count</span>(<span class="tok-str">'users'</span>);
+<span class="tok-key">const</span> sorted = db.<span class="tok-fn">sort</span>(<span class="tok-str">'users'</span>, {}, <span class="tok-str">'age'</span>, <span class="tok-str">'asc'</span>);
+<span class="tok-key">const</span> limited = db.<span class="tok-fn">limit</span>(<span class="tok-str">'users'</span>, {}, <span class="tok-num">10</span>);
+
+<span class="tok-com">// Collection management</span>
+db.<span class="tok-fn">list_collections</span>();
+db.<span class="tok-fn">exists</span>(<span class="tok-str">'users'</span>);
+db.<span class="tok-fn">drop</span>(<span class="tok-str">'users'</span>);</code></pre>
+      </div>
+
+      <!-- ===================== UTILITIES ===================== -->
+      <h2 id="utilities">Global Utility Functions</h2>
+      <p>Crescent.js provides built-in utility functions:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="copy-btn" type="button"></button></div>
+<pre><code>crescent.<span class="tok-fn">print</span>(value);              <span class="tok-com">// Console.log and return value</span>
+crescent.<span class="tok-fn">add</span>(a, b);                 <span class="tok-com">// Addition</span>
+crescent.<span class="tok-fn">subtract</span>(a, b);            <span class="tok-com">// Subtraction</span>
+crescent.<span class="tok-fn">multiply</span>(a, b);            <span class="tok-com">// Multiplication</span>
+crescent.<span class="tok-fn">divide</span>(a, b);              <span class="tok-com">// Division (throws on /0)</span>
+crescent.<span class="tok-fn">sqrt</span>(n);                   <span class="tok-com">// Square root</span>
+crescent.<span class="tok-fn">sin</span>(n);                    <span class="tok-com">// Sine</span>
+crescent.<span class="tok-fn">cos</span>(n);                    <span class="tok-com">// Cosine</span>
+crescent.<span class="tok-fn">tan</span>(n);                    <span class="tok-com">// Tangent</span>
+crescent.<span class="tok-fn">get_timestamp</span>();           <span class="tok-com">// Current timestamp</span>
+crescent.<span class="tok-fn">redirect</span>(url);             <span class="tok-com">// Browser redirect</span>
+crescent.<span class="tok-fn">connect_and_pull</span>(url, options);  <span class="tok-com">// Fetch JSON from URL</span></code></pre>
+      </div>
+
+      <nav class="pagenav">
+        <a href="frontend.html"><span class="label">← Previous</span><span class="title">Frontend</span></a>
+        <a class="next" href="authentication.html"><span class="label">Next →</span><span class="title">Authentication</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog — crescent.js</title>
+  <meta name="description" content="Release history and updates for Crescent.js." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">🌙</div>
+      <div class="brand-name">crescent<span>.js</span></div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Start</div>
+      <a class="nav-link" href="index.html"><span class="nav-emoji">🏠</span> Home</a>
+      <a class="nav-link" href="getting-started.html"><span class="nav-emoji">🚀</span> Getting Started</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Guides</div>
+      <a class="nav-link" href="frontend.html"><span class="nav-emoji">🎨</span> Frontend</a>
+      <a class="nav-link" href="backend.html"><span class="nav-emoji">⚙️</span> Backend</a>
+      <a class="nav-link" href="authentication.html"><span class="nav-emoji">🔐</span> Authentication</a>
+      <a class="nav-link" href="deployment.html"><span class="nav-emoji">📦</span> Deployment</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-link" href="api-reference.html"><span class="nav-emoji">📚</span> API Reference</a>
+      <a class="nav-link" href="configuration.html"><span class="nav-emoji">⚙️</span> Configuration</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Project</div>
+      <a class="nav-link" href="changelog.html"><span class="nav-emoji">📜</span> Changelog</a>
+      <a class="nav-link" href="contributing.html"><span class="nav-emoji">🤝</span> Contributing</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-search"><input type="text" placeholder="Search docs…" /></div>
+      </div>
+      <div class="topbar-links">
+        <a class="icon-btn" href="https://www.npmjs.com/package/crescent-js" target="_blank" rel="noopener">npm</a>
+        <a class="icon-btn" href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <section class="thumb">
+        <span class="thumb-emoji">📜</span>
+        <h1 class="thumb-title">Changelog</h1>
+        <p class="thumb-subtitle">What shipped, what's coming — release history and updates for Crescent.js.</p>
+        <span class="thumb-badge"><span class="dot"></span> Latest: v1.0.0</span>
+      </section>
+
+      <h2 id="v1.0.0">v1.0.0</h2>
+      <p>Initial release of Crescent.js.</p>
+
+      <h3>Frontend</h3>
+      <ul>
+        <li><strong>Pages</strong> — Top-level containers with cartesian coordinate positioning</li>
+        <li><strong>Objects</strong> — Layer containers with clipping and background support</li>
+        <li><strong>Layers</strong> — Text, image, shape, and input layer types</li>
+        <li><strong>Transitions</strong> — Fade, slide, scale, rotate, and custom animations</li>
+        <li><strong>Triggers</strong> — Click, hover, input, submit, load, and custom event handlers</li>
+        <li><strong>Responsive</strong> — Configurable breakpoints for mobile, tablet, and desktop</li>
+      </ul>
+
+      <h3>Backend</h3>
+      <ul>
+        <li><strong>Functions</strong> — Reusable server-side functions with enable/disable</li>
+        <li><strong>Conditionals</strong> — Boolean branching with true/false actions</li>
+        <li><strong>Loops</strong> — For, while, and for-in iteration with action execution</li>
+        <li><strong>Boolean Logic</strong> — AND, OR, NOT, XOR, NAND, NOR operators with chaining</li>
+        <li><strong>API Calls</strong> — HTTP client with GET, POST, PUT, PATCH, DELETE support</li>
+        <li><strong>API Server</strong> — REST API creation with endpoints, middleware, and CORS</li>
+        <li><strong>Collect</strong> — Data gathering from layers, objects, and pages with validation</li>
+        <li><strong>Database</strong> — Built-in CRUD database with collections, queries, and sorting</li>
+      </ul>
+
+      <h3>Utilities</h3>
+      <ul>
+        <li>Math operations: <code>add</code>, <code>subtract</code>, <code>multiply</code>, <code>divide</code>, <code>sqrt</code>, <code>sin</code>, <code>cos</code>, <code>tan</code></li>
+        <li><code>print()</code>, <code>get_timestamp()</code>, <code>redirect()</code>, <code>connect_and_pull()</code></li>
+      </ul>
+
+      <h2 id="upcoming">Upcoming</h2>
+      <div class="callout note">
+        <div class="callout-icon">🔮</div>
+        <div class="callout-body">
+          <strong>On the roadmap:</strong>
+          <ul style="margin: 8px 0 0;">
+            <li>Enhanced transition library</li>
+            <li>Performance optimizations</li>
+            <li>Additional input layer types</li>
+            <li>SSR improvements</li>
+          </ul>
+        </div>
+      </div>
+
+      <nav class="pagenav">
+        <a href="configuration.html"><span class="label">← Previous</span><span class="title">Configuration</span></a>
+        <a class="next" href="contributing.html"><span class="label">Next →</span><span class="title">Contributing</span></a>
+      </nav>
+
+    </main>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/hnw5667/crescent-js">GitHub</a>
+        <a href="https://www.npmjs.com/package/crescent-js">npm</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="contributing.html">Contributing</a>
+      </div>
+      <div>Released under the MIT License with AI Training Restrictions. 🌙 crescent.js</div>
+    </footer>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>
