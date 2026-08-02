@@ -8,25 +8,25 @@ interface CalloutProps {
 
 const styles = {
   note: {
-    container: 'border-purple-400/30 bg-purple-500/5',
+    container: 'border-purple-400/25 bg-purple-500/[0.06]',
     iconColor: 'text-purple-400',
     title: 'text-purple-300',
     icon: Info,
   },
   info: {
-    container: 'border-sky-400/30 bg-sky-500/5',
+    container: 'border-sky-400/25 bg-sky-500/[0.06]',
     iconColor: 'text-sky-400',
     title: 'text-sky-300',
     icon: AlertCircle,
   },
   warning: {
-    container: 'border-amber-400/30 bg-amber-500/5',
+    container: 'border-amber-400/25 bg-amber-500/[0.06]',
     iconColor: 'text-amber-400',
     title: 'text-amber-300',
     icon: TriangleAlert,
   },
   tip: {
-    container: 'border-emerald-400/30 bg-emerald-500/5',
+    container: 'border-emerald-400/25 bg-emerald-500/[0.06]',
     iconColor: 'text-emerald-400',
     title: 'text-emerald-300',
     icon: Lightbulb,
@@ -39,7 +39,7 @@ export function Callout({ type = 'note', title, children }: CalloutProps) {
 
   return (
     <div
-      className={`my-6 flex gap-3 rounded-xl border p-4 ${config.container}`}
+      className={`my-6 flex gap-3 rounded-lg border-l-2 p-4 ${config.container}`}
     >
       <Icon className={`mt-0.5 h-5 w-5 shrink-0 ${config.iconColor}`} />
       <div className="min-w-0">
@@ -48,7 +48,7 @@ export function Callout({ type = 'note', title, children }: CalloutProps) {
             {title || type.charAt(0).toUpperCase() + type.slice(1)}
           </p>
         )}
-        <div className="text-sm leading-relaxed text-slate-400 [&_code]:text-[13px]">
+        <div className="text-sm leading-relaxed text-zinc-400 [&_code]:text-[13px]">
           {children}
         </div>
       </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Check, Copy } from 'lucide-react';
+import { Check, Copy, Terminal } from 'lucide-react';
 
 interface CodeBlockProps {
   code: string;
@@ -111,7 +111,7 @@ const tokenClass: Record<Token['type'], string> = {
   plain: 'text-slate-300',
   keyword: 'text-purple-400',
   string: 'text-emerald-400',
-  comment: 'text-slate-500 italic',
+  comment: 'text-zinc-500 italic',
   number: 'text-amber-400',
   function: 'text-sky-400',
   property: 'text-pink-400',
@@ -134,21 +134,15 @@ export function CodeBlock({ code, language = 'js', filename, title }: CodeBlockP
   const headerTitle = title || filename || language;
 
   return (
-    <div className="group/code my-8 overflow-hidden rounded-xl border border-white/10 bg-[#0d0d14] shadow-xl shadow-black/20">
-      <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.03] px-4 py-2.5">
-        <div className="flex items-center gap-2">
-          <span className="flex gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
-            <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
-            <span className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
-          </span>
-          {headerTitle && (
-            <span className="ml-2 font-mono text-xs text-white/40">{headerTitle}</span>
-          )}
+    <div className="my-6 overflow-hidden rounded-lg border border-white/10 bg-[#0b0b0f]">
+      <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.03] px-4 py-2.5">
+        <div className="flex min-w-0 items-center gap-2">
+          <Terminal className="h-3.5 w-3.5 shrink-0 text-zinc-500" />
+          <span className="truncate font-mono text-xs text-zinc-400">{headerTitle}</span>
         </div>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+          className="flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs text-zinc-500 transition-colors hover:bg-white/10 hover:text-white"
         >
           {copied ? (
             <>
