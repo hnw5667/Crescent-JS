@@ -65,7 +65,7 @@ npm test
 
 ### Bug Fixes
 
-1. Check if the bug is already reported in [Issues](https://github.com/hnw5667/crescent-js/issues)
+1. Check if the bug is already reported in [Issues](https://github.com/hnw5667/Crescent-JS/issues)
 2. If not, open a new issue describing the bug
 3. Fork and create a branch (`fix/bug-name`)
 4. Write a fix with a clear commit message

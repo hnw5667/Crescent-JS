@@ -10,7 +10,7 @@ import { Button } from './ui/button';
 const navItems = [
   { label: 'Docs', href: '/docs/getting-started' },
   { label: 'API Reference', href: '/docs/api-reference' },
-  { label: 'GitHub', href: 'https://github.com/hnw5667/crescent-js', external: true },
+  { label: 'GitHub', href: 'https://github.com/hnw5667/Crescent-JS', external: true },
 ];
 
 export function Navbar() {

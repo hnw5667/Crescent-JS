@@ -9,8 +9,8 @@ Thank you for your interest in contributing to Crescent.js! This guide will help
 1. **Fork** the repository on GitHub
 2. **Clone** your fork locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/rocket.js.git
-   cd rocket.js
+   git clone https://github.com/YOUR_USERNAME/Crescent-JS.git
+   cd Crescent-JS
    ```
 3. **Install** dependencies:
    ```bash

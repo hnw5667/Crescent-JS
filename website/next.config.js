@@ -4,8 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/crescent-js' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/crescent-js/' : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/Crescent-JS' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/Crescent-JS/' : '',
 };
 
 module.exports = nextConfig;

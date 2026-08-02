@@ -26,11 +26,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hnw5667/crescent-js.git"
+    "url": "https://github.com/hnw5667/Crescent-JS.git"
   },
-  "homepage": "https://hnw5667.github.io/crescent-js",
+  "homepage": "https://hnw5667.github.io/Crescent-JS",
   "bugs": {
-    "url": "https://github.com/hnw5667/crescent-js/issues"
+    "url": "https://github.com/hnw5667/Crescent-JS/issues"
   },
   "files": [
     "src/phase1/",

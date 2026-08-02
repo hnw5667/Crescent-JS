@@ -137,7 +137,7 @@ export default function Home() {
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <a href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/hnw5667/Crescent-JS" target="_blank" rel="noopener noreferrer">
                 <Button size="lg" variant="outline" className="group">
                   <Github className="mr-2 w-4 h-4" />
                   View on GitHub
@@ -226,7 +226,7 @@ export default function Home() {
               <Link href="/docs/getting-started" className="text-sm text-white/40 hover:text-white transition-colors">
                 Docs
               </Link>
-              <a href="https://github.com/hnw5667/crescent-js" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
+              <a href="https://github.com/hnw5667/Crescent-JS" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
                 <Github className="w-4 h-4" />
                 GitHub
               </a>
