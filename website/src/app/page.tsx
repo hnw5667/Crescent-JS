@@ -5,6 +5,8 @@ import { ArrowRight, Layers, Server, Database, Shield, Code2, Zap, Moon, Github 
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { PrismBackground } from '@/components/prism-background';
+import { DiscordIcon, NpmIcon } from '@/components/brand-icons';
+import { GITHUB_URL, DISCORD_URL, NPM_URL } from '@/lib/links';
 import { useEffect, useState } from 'react';
 
 const features = [
@@ -100,7 +102,14 @@ export default function Home() {
             <div className={mounted ? 'animate-fade-in' : 'opacity-0'}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 mb-8">
                 <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse-glow" />
-                <span className="text-sm text-white/60">Now available on npm</span>
+                <a
+                  href={NPM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-white/60 hover:text-white transition-colors"
+                >
+                  Now available on npm
+                </a>
               </div>
             </div>
 
@@ -137,10 +146,16 @@ export default function Home() {
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <a href="https://github.com/hnw5667/Crescent-JS" target="_blank" rel="noopener noreferrer">
+              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
                 <Button size="lg" variant="outline" className="group">
                   <Github className="mr-2 w-4 h-4" />
                   View on GitHub
+                </Button>
+              </a>
+              <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
+                <Button size="lg" variant="outline" className="group">
+                  <DiscordIcon className="mr-2 w-4 h-4" />
+                  Join Discord
                 </Button>
               </a>
             </div>
@@ -209,8 +224,18 @@ export default function Home() {
             <p className="text-white/50 mb-8 text-lg">
               Install Crescent.js and start building your next full-stack application today.
             </p>
-            <div className="code-block inline-block text-left">
-              <code className="text-purple-300">npm install crescent-js</code>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a href={NPM_URL} target="_blank" rel="noopener noreferrer">
+                <Button size="lg" variant="outline" className="group">
+                  <NpmIcon className="mr-2 w-4 h-4" />
+                  npm install crescent-js
+                </Button>
+              </a>
+              <Link href="/contact">
+                <Button size="lg" variant="outline" className="group">
+                  Contact us
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -226,9 +251,20 @@ export default function Home() {
               <Link href="/docs/getting-started" className="text-sm text-white/40 hover:text-white transition-colors">
                 Docs
               </Link>
-              <a href="https://github.com/hnw5667/Crescent-JS" target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
+              <Link href="/contact" className="text-sm text-white/40 hover:text-white transition-colors">
+                Contact
+              </Link>
+              <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
                 <Github className="w-4 h-4" />
                 GitHub
+              </a>
+              <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
+                <DiscordIcon className="w-4 h-4" />
+                Discord
+              </a>
+              <a href={NPM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
+                <NpmIcon className="w-3 h-3" />
+                npm
               </a>
             </div>
           </div>
