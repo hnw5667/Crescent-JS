@@ -30,7 +30,7 @@ export default function DocsLayout({
             <div className="mx-auto max-w-3xl doc-content">{children}</div>
           </main>
 
-          <div className="sticky top-24 hidden w-56 shrink-0 xl:block">
+          <div className="sticky top-24 hidden w-56 shrink-0 self-start xl:block">
             <TableOfContents />
           </div>
         </div>
