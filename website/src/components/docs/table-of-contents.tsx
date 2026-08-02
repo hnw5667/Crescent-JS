@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface Heading {
   id: string;
@@ -9,12 +10,15 @@ interface Heading {
 }
 
 export function TableOfContents() {
+  const pathname = usePathname();
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>('');
 
   useEffect(() => {
     const main = document.querySelector('main');
     if (!main) return;
+
+    setActiveId('');
 
     const elements = Array.from(main.querySelectorAll('h2[id], h3[id]')) as HTMLElement[];
     const items = elements.map((el) => ({
@@ -42,7 +46,7 @@ export function TableOfContents() {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]);
 
   if (headings.length === 0) {
     return null;
