@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 
 interface Heading {
   id: string;
@@ -10,7 +9,6 @@ interface Heading {
 }
 
 export function TableOfContents() {
-  const pathname = usePathname();
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>('');
 
@@ -18,35 +16,59 @@ export function TableOfContents() {
     const main = document.querySelector('main');
     if (!main) return;
 
-    setActiveId('');
+    let intersectionObserver: IntersectionObserver | null = null;
 
-    const elements = Array.from(main.querySelectorAll('h2[id], h3[id]')) as HTMLElement[];
-    const items = elements.map((el) => ({
-      id: el.id,
-      text: el.textContent || '',
-      level: el.tagName === 'H2' ? 2 : 3,
-    }));
+    const scan = () => {
+      const elements = Array.from(
+        main.querySelectorAll('h2[id], h3[id]')
+      ) as HTMLElement[];
 
-    setHeadings(items);
+      const items = elements.map((el) => ({
+        id: el.id,
+        text: el.textContent || '',
+        level: el.tagName === 'H2' ? 2 : 3,
+      }));
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-            break;
+      setHeadings((prev) =>
+        prev.length === items.length && prev.every((h, i) => h.id === items[i].id)
+          ? prev
+          : items
+      );
+      setActiveId('');
+
+      if (intersectionObserver) {
+        intersectionObserver.disconnect();
+      }
+
+      intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              setActiveId(entry.target.id);
+              break;
+            }
           }
-        }
-      },
-      { rootMargin: '-20% 0px -70% 0px' }
-    );
+        },
+        { rootMargin: '-20% 0px -70% 0px' }
+      );
 
-    for (const el of elements) {
-      observer.observe(el);
-    }
+      for (const el of elements) {
+        intersectionObserver.observe(el);
+      }
+    };
 
-    return () => observer.disconnect();
-  }, [pathname]);
+    scan();
+
+    // Re-scan whenever the article content changes (e.g. client-side
+    // navigation between doc pages), regardless of React commit timing.
+    const mutationObserver = new MutationObserver(scan);
+    mutationObserver.observe(main, { childList: true, subtree: true });
+
+    return () => {
+      mutationObserver.disconnect();
+      intersectionObserver?.disconnect();
+    };
+  }, []);
 
   if (headings.length === 0) {
     return null;
