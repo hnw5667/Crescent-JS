@@ -498,9 +498,9 @@ crescent.renderer.register_page(homePage);
 crescent.renderer.register_page(aboutPage);
 
 // Set base HTML (string or file path)
-crescent.renderer.basehtml('<html><body><div id="rocket-root"></div></body></html>');
+crescent.renderer.basehtml('<html><body><div id="crescent-root"></div></body></html>');
 
-// Define root mount point (default: #rocket-root)
+// Define root mount point (default: #crescent-root)
 crescent.renderer.root('#app');
 
 // Mount to a DOM container (browser mode)

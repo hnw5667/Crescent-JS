@@ -88,7 +88,8 @@ const users = db.insert_many('users', [
 ]);
 ```
 
-> **Note:** Each document should have a unique `_id` field.
+> **Note:** `_id` is generated automatically when a document is inserted. Providing your
+> own `_id` overrides the generated one.
 
 ---
 
@@ -247,17 +248,9 @@ api.start();
 
 ## Persistence
 
-By default, the database is stored in-memory and resets on application restart. To enable persistent storage, configure the database when initializing Crescent:
-
-```js
-const crescent = require('crescent-js');
-
-// Database configuration (if supported by your version)
-crescent.db.configure({
-  storage: 'file',
-  path: './data/db.json'
-});
-```
+Data is stored on disk by default, so it survives restarts. Each collection is a JSON
+file inside the `crescent_data/` directory next to your application; the directory is
+created automatically on first write.
 
 ---
 

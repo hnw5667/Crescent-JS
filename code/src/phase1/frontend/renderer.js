@@ -5,7 +5,7 @@ class RocketRenderer {
     this._currentPage = null;
 
     this._baseHTML = null;
-    this._rootSelector = "#rocket-root";
+    this._rootSelector = "#crescent-root";
   }
 
   /**

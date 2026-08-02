@@ -14,14 +14,16 @@ export default function ApiReferencePage() {
       />
 
       <Callout type="note" title="Convention">
-        All methods are called on the <code>crescent</code> instance unless noted otherwise.
+        Core methods are called on the <code>crescent</code> instance, database methods on{' '}
+        <code>crescent.db</code>, and authentication methods on{' '}
+        <code>crescent.auth</code>.
       </Callout>
 
       <h2 id="page">page()</h2>
       <p>Creates a new page container.</p>
       <CodeBlock
         language="js"
-        code={`crescent.page({
+        code={`const page = crescent.page({
   page_id: 'home',
   page_title: 'Home',
   page_description: 'Home page',
@@ -71,8 +73,8 @@ export default function ApiReferencePage() {
         language="js"
         code={`crescent.object({
   object_id: 'header',
-  size: { height: 80, width: '100%' },
-  position: { x: 0, y: 0 }
+  size: { height: 80, width: 600 },
+  page_position: { x: 0, y: 0 }
 });`}
       />
       <table>
@@ -98,22 +100,28 @@ export default function ApiReferencePage() {
             <td><code>{'{ height, width }'}</code></td>
           </tr>
           <tr>
-            <td><code>position</code></td>
+            <td><code>page_position</code></td>
             <td>object</td>
             <td>no</td>
             <td>Cartesian <code>{'{ x, y }'}</code></td>
           </tr>
           <tr>
-            <td><code>border_radius</code></td>
+            <td><code>page_index</code></td>
             <td>number</td>
             <td>no</td>
-            <td>Corner radius in px</td>
+            <td>Stacking order on the page</td>
           </tr>
           <tr>
-            <td><code>background_colour</code></td>
+            <td><code>bg_layer</code></td>
             <td>string</td>
             <td>no</td>
-            <td>RGB as <code>'r,g,b'</code></td>
+            <td>Layer rendered behind the object</td>
+          </tr>
+          <tr>
+            <td><code>object_enabled</code></td>
+            <td>boolean</td>
+            <td>no</td>
+            <td>Whether the object renders (default <code>true</code>)</td>
           </tr>
         </tbody>
       </table>
@@ -156,25 +164,37 @@ export default function ApiReferencePage() {
             <td><code>text</code></td>
             <td>string</td>
             <td>no</td>
-            <td>Text content (text layers)</td>
+            <td>Text content (text and shape layers)</td>
           </tr>
           <tr>
             <td><code>size</code></td>
             <td>number | object</td>
             <td>no</td>
-            <td>Font size or <code>{'{ h, w }'}</code></td>
+            <td>Font size for text, or <code>{'{ height, width }'}</code> for image/shape/input</td>
           </tr>
           <tr>
             <td><code>colour</code></td>
             <td>string</td>
             <td>no</td>
-            <td>Text colour as <code>'r,g,b'</code></td>
+            <td>Colour as <code>'r,g,b'</code> (text and shape layers)</td>
           </tr>
           <tr>
-            <td><code>source</code></td>
+            <td><code>image_location</code></td>
             <td>string</td>
             <td>no</td>
             <td>Image URL (image layers)</td>
+          </tr>
+          <tr>
+            <td><code>layer_vertices</code></td>
+            <td>number</td>
+            <td>no</td>
+            <td>Number of sides, e.g. <code>4</code> for a rectangle (shape layers)</td>
+          </tr>
+          <tr>
+            <td><code>input_method</code></td>
+            <td>string</td>
+            <td>no</td>
+            <td>Input style, e.g. <code>'text box'</code> (input layers)</td>
           </tr>
         </tbody>
       </table>
@@ -185,13 +205,13 @@ export default function ApiReferencePage() {
         language="js"
         code={`crescent.function({
   function_id: 'add',
-  parameters: ['a', 'b'],
+  params: ['a', 'b'],
   body: function (a, b) {
     return a + b;
   }
 });
 
-crescent.call_function('add', [2, 3]); // 5`}
+crescent.get_function('add').call(2, 3); // 5`}
       />
       <table>
         <thead>
@@ -210,7 +230,7 @@ crescent.call_function('add', [2, 3]); // 5`}
             <td>Unique identifier</td>
           </tr>
           <tr>
-            <td><code>parameters</code></td>
+            <td><code>params</code></td>
             <td>string[]</td>
             <td>no</td>
             <td>Argument names</td>
@@ -224,50 +244,22 @@ crescent.call_function('add', [2, 3]); // 5`}
         </tbody>
       </table>
 
-      <h2 id="api">api()</h2>
-      <p>Creates a REST endpoint.</p>
+      <h2 id="api_make">api_make()</h2>
+      <p>Creates an HTTP server with endpoints.</p>
       <CodeBlock
         language="js"
-        code={`crescent.api({
-  method: 'GET',
-  path: '/users',
-  handler: function (req, res) {
-    return { users: [] };
-  }
-});`}
-      />
-      <table>
-        <thead>
-          <tr>
-            <th>Property</th>
-            <th>Type</th>
-            <th>Required</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>method</code></td>
-            <td>string</td>
-            <td>yes</td>
-            <td>HTTP method: GET, POST, PUT, DELETE</td>
-          </tr>
-          <tr>
-            <td><code>path</code></td>
-            <td>string</td>
-            <td>yes</td>
-            <td>URL path</td>
-          </tr>
-          <tr>
-            <td><code>handler</code></td>
-            <td>function</td>
-            <td>yes</td>
-            <td>Receives <code>req</code>, <code>res</code></td>
-          </tr>
-        </tbody>
-      </table>
+        code={`const api = crescent.api_make({
+  api_id: 'main',
+  port: 3000
+});
 
-      <h2 id="db">Database Methods</h2>
+api.add_endpoint('GET', '/users', function (req, res) {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ users: [] }));
+});
+
+api.start();`}
+      />
       <table>
         <thead>
           <tr>
@@ -277,33 +269,82 @@ crescent.call_function('add', [2, 3]); // 5`}
         </thead>
         <tbody>
           <tr>
-            <td><code>create_table()</code></td>
-            <td>Creates a table with typed columns</td>
+            <td><code>add_endpoint(method, path, handler)</code></td>
+            <td>Registers a route. <code>method</code> is GET, POST, PUT, or DELETE; <code>handler</code> receives Node.js <code>req</code> and <code>res</code></td>
           </tr>
           <tr>
-            <td><code>create_row()</code></td>
-            <td>Inserts a row into a table</td>
+            <td><code>start()</code></td>
+            <td>Starts listening on the configured port</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="api_call">api_call()</h2>
+      <p>Makes an outgoing HTTP request.</p>
+      <CodeBlock
+        language="js"
+        code={`const request = crescent.api_call({
+  api_call_id: 'fetch_users',
+  url: 'https://api.example.com/users',
+  method: 'GET'
+});
+
+request.call().then(function (data) {
+  console.log(data);
+});`}
+      />
+
+      <h2 id="db">Database Methods</h2>
+      <p>Called on <code>crescent.db</code>. Data is stored in collections.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>create(collection)</code></td>
+            <td>Creates a new collection</td>
           </tr>
           <tr>
-            <td><code>get_all_rows()</code></td>
-            <td>Returns every row in a table</td>
+            <td><code>insert(collection, doc)</code></td>
+            <td>Inserts a record and returns it with its <code>_id</code></td>
           </tr>
           <tr>
-            <td><code>get_row()</code></td>
-            <td>Finds a row with a filter</td>
+            <td><code>insert_many(collection, docs)</code></td>
+            <td>Inserts multiple records at once</td>
           </tr>
           <tr>
-            <td><code>update_row()</code></td>
-            <td>Updates a row by <code>row_id</code></td>
+            <td><code>find(collection, query)</code></td>
+            <td>Returns all records matching a query</td>
           </tr>
           <tr>
-            <td><code>delete_row()</code></td>
-            <td>Deletes a row by <code>row_id</code></td>
+            <td><code>find_one(collection, query)</code></td>
+            <td>Returns the first record matching a query</td>
+          </tr>
+          <tr>
+            <td><code>find_by_id(collection, id)</code></td>
+            <td>Finds a record by <code>_id</code></td>
+          </tr>
+          <tr>
+            <td><code>update(collection, query, updates)</code></td>
+            <td>Updates all records matching a query</td>
+          </tr>
+          <tr>
+            <td><code>update_one(collection, query, updates)</code></td>
+            <td>Updates the first record matching a query</td>
+          </tr>
+          <tr>
+            <td><code>delete(collection, query)</code></td>
+            <td>Deletes all records matching a query</td>
           </tr>
         </tbody>
       </table>
 
       <h2 id="auth">Auth Methods</h2>
+      <p>Called on <code>crescent.auth</code>.</p>
       <table>
         <thead>
           <tr>
@@ -313,20 +354,36 @@ crescent.call_function('add', [2, 3]); // 5`}
         </thead>
         <tbody>
           <tr>
-            <td><code>signup()</code></td>
+            <td><code>signup().register(username, email, password)</code></td>
             <td>Creates a new user account</td>
           </tr>
           <tr>
-            <td><code>login()</code></td>
-            <td>Validates credentials and returns the user</td>
+            <td><code>login().authenticate(username, password)</code></td>
+            <td>Validates credentials, returns the user, a session token, and a cookie header</td>
           </tr>
           <tr>
-            <td><code>password()</code></td>
-            <td>Resets a user's password</td>
+            <td><code>login().verify_session(token)</code></td>
+            <td>Verifies a session token</td>
           </tr>
           <tr>
-            <td><code>oauth()</code></td>
+            <td><code>password.hash(password)</code></td>
+            <td>Returns <code>{'{ hash, salt }'}</code></td>
+          </tr>
+          <tr>
+            <td><code>password.verify(password, hash, salt)</code></td>
+            <td>Checks a password against a stored hash</td>
+          </tr>
+          <tr>
+            <td><code>password.check_strength(password)</code></td>
+            <td>Returns a strength score and label</td>
+          </tr>
+          <tr>
+            <td><code>oauth().add_provider(name, config)</code></td>
             <td>Configures an OAuth provider</td>
+          </tr>
+          <tr>
+            <td><code>oauth().get_authorize_url(provider)</code></td>
+            <td>Builds the authorization URL for a provider</td>
           </tr>
         </tbody>
       </table>
@@ -341,12 +398,16 @@ crescent.call_function('add', [2, 3]); // 5`}
         </thead>
         <tbody>
           <tr>
-            <td><code>add_object()</code></td>
+            <td><code>add_object(object)</code></td>
             <td>Adds an object to the page</td>
           </tr>
           <tr>
-            <td><code>set_object_position()</code></td>
+            <td><code>set_object_position(object_id, x, y)</code></td>
             <td>Sets an object's cartesian position</td>
+          </tr>
+          <tr>
+            <td><code>render()</code></td>
+            <td>Renders the page into the DOM</td>
           </tr>
         </tbody>
       </table>
@@ -354,7 +415,8 @@ crescent.call_function('add', [2, 3]); // 5`}
       <h2 id="next-steps">Next Steps</h2>
       <ul>
         <li>
-          <Link href="/docs/configuration">Configuration Guide</Link> — server and build options
+          <Link href="/docs/backend">Backend Guide</Link> — functions, loops, and APIs in
+          action
         </li>
         <li>
           <Link href="/docs/deployment">Deployment Guide</Link> — ship your app

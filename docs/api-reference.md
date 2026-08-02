@@ -90,7 +90,7 @@ Create a visual layer. Returns a layer instance.
 
 ### `crescent.object(config)`
 
-Create an object container. Returns a `RocketObject` instance.
+Create an object container. Returns a `CrescentObject` instance.
 
 **Spec format:**
 
@@ -137,7 +137,7 @@ object_ID/name = {
 
 ### `crescent.page(config)`
 
-Create a page. Returns a `RocketPage` instance.
+Create a page. Returns a `CrescentPage` instance.
 
 **Spec format:**
 
@@ -263,7 +263,7 @@ else
 
 ### `crescent.renderer`
 
-Access the `RocketRenderer` instance. Manages page rendering, navigation, and SSR.
+Access the `CrescentRenderer` instance. Manages page rendering, navigation, and SSR.
 
 **Renderer Methods:**
 
@@ -271,7 +271,7 @@ Access the `RocketRenderer` instance. Manages page rendering, navigation, and SS
 |--------|---------|-------------|
 | `register_page(page)` | this | Register a page for rendering |
 | `basehtml(htmlOrPath)` | this | Set base HTML string or file path |
-| `root(selector)` | this | Define root mount point inside base HTML (default `#rocket-root`) |
+| `root(selector)` | this | Define root mount point inside base HTML (default `#crescent-root`) |
 | `mount(container)` | this | Mount to a DOM container (browser mode) |
 | `navigate(page_id)` | this | Navigate to a registered page |
 | `render_full_page(page_id)` | string | SSR: render full HTML with base HTML |

@@ -6,8 +6,8 @@ const crypto = require('crypto');
 
 class Cookie {
   constructor(config = {}) {
-    this.secret = config.secret || 'rocket-default-secret-change-me';
-    this.cookie_name = config.cookie_name || 'rocket_session';
+    this.secret = config.secret || 'crescent-default-secret-change-me';
+    this.cookie_name = config.cookie_name || 'crescent_session';
     this.max_age = config.max_age || 86400000; // 24 hours
     this.http_only = config.http_only !== undefined ? config.http_only : true;
     this.secure = config.secure !== undefined ? config.secure : false;

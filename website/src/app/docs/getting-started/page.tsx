@@ -65,14 +65,14 @@ hero.add_layer(title);
 page.add_object(hero);
 
 // 5. Position the object using cartesian coordinates
-page.set_object_position('hero', 0, -100);
+page.set_object_position('hero', 0, 100);
 
 console.log('App created successfully!');`}
       />
 
       <Callout type="tip" title="Cartesian coordinates">
         Positions are measured from the center of the container. Positive x moves right,
-        positive y moves down. <code>set_object_position('hero', 0, -100)</code> moves the
+        positive y moves up. <code>set_object_position('hero', 0, 100)</code> moves the
         object 100px upward.
       </Callout>
 

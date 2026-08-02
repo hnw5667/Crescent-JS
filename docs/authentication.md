@@ -197,8 +197,8 @@ const clearCookie = cookie.clear_cookie_header();
 
 | Property | Default | Description |
 |----------|---------|-------------|
-| `secret` | `'rocket-default-secret-change-me'` | HMAC signing key |
-| `cookie_name` | `'rocket_session'` | Cookie name |
+| `secret` | `'crescent-default-secret-change-me'` | HMAC signing key |
+| `cookie_name` | `'crescent_session'` | Cookie name |
 | `max_age` | `86400000` | 24 hours in ms |
 | `http_only` | `true` | HttpOnly flag |
 | `secure` | `false` | Secure flag |

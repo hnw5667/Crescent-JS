@@ -7,7 +7,7 @@ const path = require('path');
 
 class FileManager {
   constructor(base_dir) {
-    this.base_dir = base_dir || path.join(process.cwd(), 'rocket_data');
+    this.base_dir = base_dir || path.join(process.cwd(), 'crescent_data');
     this._locks = new Map();
   }
 

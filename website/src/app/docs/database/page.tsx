@@ -16,149 +16,103 @@ export default function DatabasePage() {
       <h2 id="overview">Overview</h2>
       <p>
         Crescent.js ships with an embedded database that requires no external setup. Create
-        tables, insert records, query with filters, and update or delete data — all through
-        the <code>crescent.db</code> API.
+        collections, insert records, query with filters, and update or delete data — all
+        through the <code>crescent.db</code> API.
       </p>
 
       <Callout type="info" title="Zero configuration">
-        The database is stored locally as <code>crescent.db</code> and works out of the box.
-        No connection strings, no migrations, no ORM.
+        The database is stored locally and works out of the box. No connection strings, no
+        migrations, no ORM.
       </Callout>
 
-      <h2 id="creating-tables">Creating Tables</h2>
+      <h2 id="creating-collections">Creating Collections</h2>
       <CodeBlock
-        filename="create-table.js"
-        code={`// Create a table for users
-crescent.db.create_table({
-  table_id: 'users',
-  columns: {
-    id: 'INTEGER',
-    name: 'TEXT',
-    email: 'TEXT'
-  }
-});
+        filename="create-collection.js"
+        code={`// Create a collection for users
+crescent.db.create('users');
 
-// Create a table for products
-crescent.db.create_table({
-  table_id: 'products',
-  columns: {
-    id: 'INTEGER',
-    name: 'TEXT',
-    price: 'REAL'
-  }
-});`}
+// Create a collection for products
+crescent.db.create('products');`}
       />
 
-      <h2 id="creating-rows">Creating Rows</h2>
+      <h2 id="inserting-records">Inserting Records</h2>
       <CodeBlock
-        filename="create-rows.js"
-        code={`crescent.db.create_row({
-  table_id: 'users',
-  row: {
-    name: 'Alice',
-    email: 'alice@example.com'
-  }
-});
-
-crescent.db.create_row({
-  table_id: 'users',
-  row: {
-    name: 'Bob',
-    email: 'bob@example.com'
-  }
-});`}
+        filename="insert-records.js"
+        code={`crescent.db.insert('users', { name: 'Alice', email: 'alice@example.com' });
+crescent.db.insert('users', { name: 'Bob', email: 'bob@example.com' });`}
       />
 
-      <h2 id="reading-rows">Reading Rows</h2>
+      <h2 id="reading-records">Reading Records</h2>
       <p>
-        Retrieve all rows or query with filters. Use <code>get_all_rows</code> for a full
-        table scan, or provide a <code>filter</code> with a column and value.
+        Retrieve all records or query with a filter object. Use <code>find</code> for every
+        match and <code>find_one</code> for the first match.
       </p>
       <CodeBlock
-        filename="read-rows.js"
+        filename="read-records.js"
         code={`// Get all users
-const all = crescent.db.get_all_rows({ table_id: 'users' });
+const all = crescent.db.find('users');
 
 // Get a specific user
-const alice = crescent.db.get_row({
-  table_id: 'users',
-  filter: { column: 'name', value: 'Alice' }
-});
+const alice = crescent.db.find_one('users', { name: 'Alice' });
 
 console.log(alice);`}
       />
 
-      <Callout type="tip" title="Filters">
-        Filters match a single column against a value. Combine multiple queries to narrow
-        down results, or loop over results for more complex filtering.
+      <Callout type="tip" title="Queries">
+        Queries are plain objects: <code>{'{ name: "Alice" }'}</code> matches every record
+        where <code>name</code> equals <code>"Alice"</code>. Omit the query to return all
+        records.
       </Callout>
 
-      <h2 id="updating-rows">Updating Rows</h2>
+      <h2 id="updating-records">Updating Records</h2>
       <CodeBlock
-        filename="update-rows.js"
-        code={`crescent.db.update_row({
-  table_id: 'users',
-  row_id: 1,
-  row: {
-    email: 'alice@newdomain.com'
-  }
-});`}
+        filename="update-records.js"
+        code={`crescent.db.update(
+  'users',
+  { name: 'Alice' },
+  { email: 'alice@newdomain.com' }
+);`}
       />
 
-      <h2 id="deleting-rows">Deleting Rows</h2>
+      <h2 id="deleting-records">Deleting Records</h2>
       <CodeBlock
-        filename="delete-rows.js"
-        code={`crescent.db.delete_row({
-  table_id: 'users',
-  row_id: 2
-});`}
+        filename="delete-records.js"
+        code={`crescent.db.delete('users', { name: 'Bob' });`}
       />
 
       <h2 id="full-example">Full Example</h2>
       <p>Here is a complete CRUD flow combined with an API endpoint:</p>
       <CodeBlock
         filename="db-api.js"
-        code={`// Create a users table on startup
-crescent.db.create_table({
-  table_id: 'users',
-  columns: {
-    id: 'INTEGER',
-    name: 'TEXT',
-    email: 'TEXT'
-  }
+        code={`// Create a users collection on startup
+crescent.db.create('users');
+
+const api = crescent.api_make({
+  api_id: 'main',
+  port: 3000
 });
 
 // GET /users - list all users
-crescent.api({
-  method: 'GET',
-  path: '/users',
-  handler: function () {
-    return crescent.db.get_all_rows({ table_id: 'users' });
-  }
+api.add_endpoint('GET', '/users', function (req, res) {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(crescent.db.find('users')));
 });
 
 // POST /users - create a user
-crescent.api({
-  method: 'POST',
-  path: '/users',
-  handler: function (req) {
-    crescent.db.create_row({
-      table_id: 'users',
-      row: {
-        name: req.body.name,
-        email: req.body.email
-      }
-    });
-    return { success: true };
-  }
-});`}
+api.add_endpoint('POST', '/users', function (req, res) {
+  crescent.db.insert('users', req.body);
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ success: true }));
+});
+
+api.start();`}
       />
 
       <h2 id="next-steps">Next Steps</h2>
       <ul>
         <li>
-          <Link href="/docs/authentication">Authentication Guide</Link> — secure your app with
-          signup and login
+          <Link href="/docs/authentication">Authentication Guide</Link> — secure your app
+          with signup and login
         </li>
         <li>
           <Link href="/docs/api-reference">API Reference</Link> — every method in detail
