@@ -79,7 +79,7 @@ console.log('App created successfully!');
 crescent-js/
 ├── code/                  # Framework source code
 ├── docs/                  # Documentation markdown files
-├── website/               # Next.js documentation website
+├── website/               # Documentation website
 ├── README.md
 ├── LICENSE
 ├── CODE_OF_CONDUCT.md
