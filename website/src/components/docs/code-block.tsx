@@ -134,7 +134,7 @@ export function CodeBlock({ code, language = 'js', filename, title }: CodeBlockP
   const headerTitle = title || filename || language;
 
   return (
-    <div className="group/code my-6 overflow-hidden rounded-xl border border-white/10 bg-[#0d0d14] shadow-xl shadow-black/20">
+    <div className="group/code my-8 overflow-hidden rounded-xl border border-white/10 bg-[#0d0d14] shadow-xl shadow-black/20">
       <div className="flex items-center justify-between border-b border-white/5 bg-white/[0.03] px-4 py-2.5">
         <div className="flex items-center gap-2">
           <span className="flex gap-1.5">

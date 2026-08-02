@@ -25,11 +25,13 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const isDocs = pathname.startsWith('/docs');
+
   return (
     <nav
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        scrolled
+        scrolled || isDocs
           ? 'bg-black/60 backdrop-blur-xl border-b border-white/5'
           : 'bg-transparent',
       )}

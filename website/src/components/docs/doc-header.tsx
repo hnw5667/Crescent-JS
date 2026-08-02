@@ -9,7 +9,7 @@ interface DocHeaderProps {
 
 export function DocHeader({ title, description, badge }: DocHeaderProps) {
   return (
-    <header className="mb-10">
+    <header className="mb-14">
       <nav className="mb-4 flex items-center gap-1.5 text-sm text-white/35">
         <Link href="/" className="transition-colors hover:text-white/70">
           Home
