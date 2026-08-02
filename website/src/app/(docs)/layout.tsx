@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { Sidebar } from '@/components/sidebar';
+import { TableOfContents } from '@/components/docs/table-of-contents';
 import { StarsBackground } from '@/components/stars-background';
 
 export const metadata: Metadata = {
@@ -17,10 +18,17 @@ export default function DocsLayout({
   return (
     <div className="relative min-h-screen">
       <StarsBackground />
-      <div className="relative z-10 pt-24 pb-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex gap-10">
+      <div className="relative z-10 pt-20 pb-24">
+        <div className="mx-auto flex max-w-7xl gap-8 px-4 sm:px-6">
           <Sidebar />
-          <main className="flex-1 min-w-0 doc-content">{children}</main>
+
+          <main className="min-w-0 flex-1">
+            <div className="mx-auto max-w-3xl doc-content">{children}</div>
+          </main>
+
+          <div className="sticky top-24 hidden w-56 shrink-0 xl:block">
+            <TableOfContents />
+          </div>
         </div>
       </div>
     </div>

@@ -1,85 +1,119 @@
+import Link from 'next/link';
+import { DocHeader } from '@/components/docs/doc-header';
+import { CodeBlock } from '@/components/docs/code-block';
+import { Callout } from '@/components/docs/callout';
+import { DocPagination } from '@/components/docs/doc-pagination';
+
 export default function DeploymentPage() {
   return (
     <>
-      <h1>Deployment Guide</h1>
-      <p>Deploy your Crescent.js applications to production.</p>
+      <DocHeader
+        title="Deployment"
+        description="Ship your Crescent.js application to production."
+        badge="Reference"
+      />
 
-      <hr />
+      <h2 id="overview">Overview</h2>
+      <p>
+        Because Crescent.js is a standard Node.js application, you can deploy it to any
+        platform that runs Node.js — a VPS, a container, or a PaaS.
+      </p>
 
-      <h2>Running in Production</h2>
-      <pre><code>{`# Run on a specific port
-crescent run src/app.js 8080
+      <h2 id="building">Building</h2>
+      <p>Create an optimized production build of your app:</p>
+      <CodeBlock
+        language="bash"
+        code={`crescent build`}
+      />
+      <p>
+        The build step bundles your pages, layers, and functions into a single production
+        artifact ready to serve.
+      </p>
 
-# Auto-run on port 3000
-crescent run src/app.js`}</code></pre>
+      <h2 id="serving">Serving</h2>
+      <p>
+        Run the production build with the same CLI you use in development. Configure the port
+        through the <code>PORT</code> environment variable:
+      </p>
+      <CodeBlock
+        language="bash"
+        code={`PORT=8080 crescent run build/`}
+      />
 
-      <hr />
+      <h2 id="environment-variables">Environment Variables</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>PORT</code></td>
+            <td>Port to listen on</td>
+          </tr>
+          <tr>
+            <td><code>AUTH_SECRET</code></td>
+            <td>Secret used to sign auth tokens</td>
+          </tr>
+          <tr>
+            <td><code>DATABASE_FILE</code></td>
+            <td>Path to the database file</td>
+          </tr>
+        </tbody>
+      </table>
 
-      <h2>Vercel</h2>
-      <p>Create a <code>vercel.json</code>:</p>
-      <pre><code>{`{
-  "builds": [{ "src": "src/**/*.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "src/app.js" }]
-}`}</code></pre>
+      <Callout type="tip" title="Persistent storage">
+        If your host uses ephemeral filesystems, mount a persistent volume for the database
+        file so data survives restarts.
+      </Callout>
 
-      <hr />
+      <h2 id="docker">Docker</h2>
+      <p>Here is a minimal <code>Dockerfile</code> for deploying your app:</p>
+      <CodeBlock
+        filename="Dockerfile"
+        language="bash"
+        code={`FROM node:20-alpine
 
-      <h2>Railway / Render / Heroku</h2>
-      <p>These platforms auto-detect Node.js apps. Add a start script to <code>package.json</code>:</p>
-      <pre><code>{`{
-  "scripts": {
-    "start": "crescent run src/app.js $PORT"
-  }
-}`}</code></pre>
-
-      <hr />
-
-      <h2>Docker</h2>
-      <pre><code>{`FROM node:18-alpine
 WORKDIR /app
-COPY package*.json ./
+
+COPY package.json ./
 RUN npm install
+
 COPY . .
-EXPOSE 3000
-CMD ["crescent", "run", "src/app.js"]`}</code></pre>
+RUN npx crescent build
 
-      <pre><code>docker build -t crescent-app .
-docker run -p 3000:3000 crescent-app</code></pre>
+EXPOSE 8080
 
-      <hr />
+CMD ["node", "build/server.js"]`}
+      />
 
-      <h2>GitHub Pages</h2>
-      <p>Crescent.js requires a Node.js server for backend functionality, so GitHub Pages alone cannot run Crescent apps. Use platforms like Railway, Render, or Vercel for backend hosting alongside static hosting if needed.</p>
-
-      <hr />
-
-      <h2>Environment Variables</h2>
-      <pre><code>PORT=3000
-NODE_ENV=production
-DB_PATH=./data/db.json
-SESSION_SECRET=your-secret-key</code></pre>
-
-      <hr />
-
-      <h2>Health Check Endpoint</h2>
-      <pre><code>{`const api = crescent.api_make({ api_id: 'api', port: 3000 });
-
-api.add_endpoint('GET', '/health', (req, res) => {
-  res.writeHead(200);
-  res.end('OK');
-});
-
-api.start();`}</code></pre>
-
-      <hr />
-
-      <h2>Performance Tips</h2>
+      <h2 id="deployment-platforms">Deployment Platforms</h2>
       <ul>
-        <li>Use ratio-based scaling — objects resize automatically across devices</li>
-        <li>Minimize layer count — fewer layers means faster rendering</li>
-        <li>Group related operations — batch layer additions before rendering</li>
-        <li>Use middleware for request logging and monitoring</li>
+        <li>
+          <strong>VPS / Cloud VM</strong> — run the production build behind a reverse proxy
+        </li>
+        <li>
+          <strong>Docker</strong> — use the Dockerfile above on any container platform
+        </li>
+        <li>
+          <strong>PaaS</strong> — most Node.js platforms detect the build and start commands
+          automatically
+        </li>
       </ul>
+
+      <h2 id="next-steps">Next Steps</h2>
+      <ul>
+        <li>
+          <Link href="/docs/api-reference">API Reference</Link> — explore every method
+        </li>
+        <li>
+          <Link href="/docs/configuration">Configuration Guide</Link> — finalize your config
+        </li>
+      </ul>
+
+      <DocPagination />
     </>
   );
 }

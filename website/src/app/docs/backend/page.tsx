@@ -1,182 +1,154 @@
+import Link from 'next/link';
+import { DocHeader } from '@/components/docs/doc-header';
+import { CodeBlock } from '@/components/docs/code-block';
+import { Callout } from '@/components/docs/callout';
+import { DocPagination } from '@/components/docs/doc-pagination';
+
 export default function BackendPage() {
   return (
     <>
-      <h1>Backend Guide</h1>
-      <p>Write server-side logic with functions, conditionals, loops, API calls, and more.</p>
+      <DocHeader
+        title="Backend Guide"
+        description="Write server-side logic with functions, conditionals, loops, and API endpoints."
+        badge="Guides"
+      />
 
-      <hr />
-
-      <h2>Functions</h2>
-      <pre><code>{`const greet = crescent.function({
-  function_id: 'greet',
-  params: ['name'],
-  body: (name) => 'Hello, ' + name + '!'
-});
-
-const result = greet.call('World'); // "Hello, World!"`}</code></pre>
-
-      <h3>Methods</h3>
-      <table>
-        <thead>
-          <tr><th>Method</th><th>Description</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>call(...args)</code></td><td>Execute with arguments</td></tr>
-          <tr><td><code>set_enabled(bool)</code></td><td>Enable or disable</td></tr>
-          <tr><td><code>set_body(fn)</code></td><td>Replace function body</td></tr>
-        </tbody>
-      </table>
-
-      <hr />
-
-      <h2>Conditionals</h2>
-      <pre><code>{`const check = crescent.conditional({
-  conditional_id: 'age_check',
-  if: {
-    check: () => user.age >= 18,
-    actions: [{ type: 'call_function', function: grantAccess }]
-  },
-  else_if: [
-    {
-      check: () => user.age >= 13,
-      actions: [{ type: 'call_function', function: limitedAccess }]
-    }
-  ],
-  else: {
-    actions: [{ type: 'call_function', function: denyAccess }]
+      <h2 id="functions">Functions</h2>
+      <p>
+        Functions are the core of your backend logic. Define a function with a unique{' '}
+        <code>function_id</code>, a list of parameters, and a body that executes when it is
+        called.
+      </p>
+      <CodeBlock
+        filename="functions.js"
+        code={`crescent.function({
+  function_id: 'greet_user',
+  parameters: ['name', 'age'],
+  body: function (name, age) {
+    return 'Hello ' + name + '! You are ' + age + ' years old.';
   }
 });
 
-const result = check.evaluate(); // 'if', 'else_if', or 'else'`}</code></pre>
+// Call the function
+crescent.call_function('greet_user', ['Alice', 25]);`}
+      />
 
-      <hr />
+      <Callout type="tip" title="Reusable logic">
+        Functions are reusable across pages and events. Define them once and call them
+        anywhere in your application.
+      </Callout>
 
-      <h2>Loops</h2>
-
-      <h3>For Loop</h3>
-      <pre><code>{`const loop = crescent.loop({
-  loop_id: 'count',
-  loop_type: 'for',
-  start: 0,
-  end: 10,
-  step: 1,
-  actions: [(i) => console.log(i)]
+      <h2 id="conditionals">Conditionals</h2>
+      <p>
+        Branch your logic using <code>conditionals</code>. A conditional evaluates a condition
+        and routes to different functions based on the result.
+      </p>
+      <CodeBlock
+        filename="conditionals.js"
+        code={`crescent.conditional({
+  conditional_id: 'is_adult',
+  condition: 'age >= 18',
+  true: 'adult_flow',
+  false: 'minor_flow'
 });
 
-loop.run();`}</code></pre>
+crescent.conditional({
+  conditional_id: 'adult_flow',
+  condition: 'true',
+  true: 'show_welcome'
+});`}
+      />
 
-      <h3>While Loop</h3>
-      <pre><code>{`const loop = crescent.loop({
-  loop_id: 'process',
-  loop_type: 'while',
-  condition: () => hasMoreItems(),
-  actions: [(i) => processNext()]
-});
+      <h2 id="loops">Loops</h2>
+      <p>
+        Iterate over collections with <code>loops</code>. Each iteration receives the current
+        item and its index, and can call functions for each one.
+      </p>
+      <CodeBlock
+        filename="loops.js"
+        code={`crescent.loop({
+  loop_id: 'render_items',
+  items: ['apple', 'banana', 'cherry'],
+  body: function (item, index) {
+    console.log(index + ': ' + item);
+  }
+});`}
+      />
 
-loop.run();`}</code></pre>
-
-      <h3>For-In Loop</h3>
-      <pre><code>{`const loop = crescent.loop({
-  loop_id: 'iterate',
-  loop_type: 'for_in',
-  iterable: ['a', 'b', 'c'],
-  actions: [(item) => console.log(item)]
-});
-
-loop.run();`}</code></pre>
-
-      <hr />
-
-      <h2>Boolean Logic</h2>
-      <pre><code>{`const check = crescent.boolean({
-  boolean_id: 'access_check',
-  value1: true,
-  value2: false,
-  operator: 'AND'
-});
-
-check.evaluate(); // false`}</code></pre>
-
-      <table>
-        <thead>
-          <tr><th>Operator</th><th>Description</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>AND</code></td><td>Both true</td></tr>
-          <tr><td><code>OR</code></td><td>At least one true</td></tr>
-          <tr><td><code>NOT</code></td><td>Negate</td></tr>
-          <tr><td><code>XOR</code></td><td>Exactly one true</td></tr>
-          <tr><td><code>NAND</code></td><td>NOT AND</td></tr>
-          <tr><td><code>NOR</code></td><td>NOT OR</td></tr>
-        </tbody>
-      </table>
-
-      <hr />
-
-      <h2>API Calls</h2>
-      <pre><code>{`const api = crescent.api_call({
-  api_call_id: 'fetch_users',
-  url: 'https://api.example.com/users',
+      <h2 id="apis">API Endpoints</h2>
+      <p>
+        Create REST API endpoints with <code>crescent.api()</code>. Each endpoint listens for
+        an HTTP method and a path, and executes a handler with the request and response
+        objects.
+      </p>
+      <CodeBlock
+        filename="apis.js"
+        code={`crescent.api({
   method: 'GET',
-  headers: { 'Authorization': 'Bearer token123' },
-  timeout: 30000
+  path: '/users',
+  handler: function (req, res) {
+    return { users: ['Alice', 'Bob'] };
+  }
 });
 
-const response = await api.call();`}</code></pre>
+crescent.api({
+  method: 'POST',
+  path: '/users',
+  handler: function (req, res) {
+    const body = req.body;
+    return { created: true, user: body };
+  }
+});`}
+      />
 
-      <hr />
+      <Callout type="info" title="Request handling">
+        Handlers receive Express-style <code>req</code> and <code>res</code> objects. Return
+        values are sent as JSON responses automatically.
+      </Callout>
 
-      <h2>API Server</h2>
-      <pre><code>{`const api = crescent.api_make({
-  api_id: 'my_api',
-  port: 3000,
-  host: 'localhost',
-  cors: true
+      <h2 id="combining">Combining It All</h2>
+      <p>
+        Functions, conditionals, loops, and APIs compose together. A common pattern is an API
+        endpoint that validates input, loops over data, and returns a result.
+      </p>
+      <CodeBlock
+        filename="full-example.js"
+        code={`// Create a backend function
+crescent.function({
+  function_id: 'validate_email',
+  parameters: ['email'],
+  body: function (email) {
+    return email.includes('@');
+  }
 });
 
-api.add_endpoint('GET', '/users', (req, res) => {
-  res.json({ users: [] });
-});
+// Use it in an API endpoint
+crescent.api({
+  method: 'POST',
+  path: '/signup',
+  handler: function (req, res) {
+    const valid = crescent.call_function('validate_email', [req.body.email]);
+    if (!valid) {
+      return { error: 'Invalid email address' };
+    }
+    return { status: 'ok' };
+  }
+});`}
+      />
 
-api.add_endpoint('GET', '/users/:id', (req, res) => {
-  const userId = req.params.id;
-  // ...
-});
+      <h2 id="next-steps">Next Steps</h2>
+      <ul>
+        <li>
+          <Link href="/docs/database">Database Guide</Link> — persist data with the built-in
+          database
+        </li>
+        <li>
+          <Link href="/docs/authentication">Authentication Guide</Link> — protect your
+          endpoints
+        </li>
+      </ul>
 
-api.use((req, res, next) => {
-  console.log('Request received');
-  next();
-});
-
-await api.start();`}</code></pre>
-
-      <hr />
-
-      <h2>Collect</h2>
-      <pre><code>{`const collect = crescent.collect({
-  collect_id: 'form_data',
-  sources: [nameInput, emailInput],
-  transform: (data) => ({ ...data, submitted_at: Date.now() }),
-  validate: (data) => data.email?.includes('@')
-});
-
-const formData = collect.collect();`}</code></pre>
-
-      <hr />
-
-      <h2>Global Utilities</h2>
-      <pre><code>{`crescent.print(value);
-crescent.add(a, b);
-crescent.subtract(a, b);
-crescent.multiply(a, b);
-crescent.divide(a, b);
-crescent.sqrt(n);
-crescent.sin(n);
-crescent.cos(n);
-crescent.tan(n);
-crescent.get_timestamp();
-crescent.redirect(url);
-crescent.connect_and_pull(url, options);`}</code></pre>
+      <DocPagination />
     </>
   );
 }
