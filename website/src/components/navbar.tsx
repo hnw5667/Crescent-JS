@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Github } from 'lucide-react';
@@ -14,14 +15,20 @@ const navItems = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const basePath =
+    process.env.NODE_ENV === 'production' ? '/Crescent-JS' : '';
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#0a0a0f]/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 w-full max-w-[1400px] items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 text-sm shadow-lg shadow-purple-600/30">
-            🌙
-          </span>
+          <Image
+            src={`${basePath}/logo.svg`}
+            alt="Crescent.js logo"
+            width={28}
+            height={28}
+            className="h-7 w-7 rounded-lg object-contain"
+          />
           <span className="text-[15px] font-semibold tracking-tight text-white">
             Crescent.js
           </span>
