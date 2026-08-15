@@ -2,6 +2,17 @@
 
 The complete source code for the Crescent.js framework, imported from the npm package `crescent-js`.
 
+> **v1.0.4** adds Compression, Encrypted Tunnels, and an Optimised Component Cache.
+
+## Documentation Website
+
+Full, up-to-date documentation lives at:
+
+- **Website** — <https://hnw5667.github.io/Crescent-JS>
+- **GitHub** — <https://github.com/hnw5667/Crescent-JS>
+- **Reddit** — <https://www.reddit.com/r/CrescentJS/>
+- **npm** — <https://www.npmjs.com/package/crescent-js>
+
 ## Structure
 
 ```
@@ -54,4 +65,5 @@ crescent run <FILE_PATH> [PORT]
 npm test
 ```
 
-The full documentation is available in the root [`docs/`](../docs) folder.
+The full documentation is available in the root [`docs/`](../docs) folder and on the
+[documentation website](https://hnw5667.github.io/Crescent-JS).

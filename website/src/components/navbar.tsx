@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, Github } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { DiscordIcon, NpmIcon } from '@/components/brand-icons';
-import { GITHUB_URL, DISCORD_URL, NPM_URL } from '@/lib/links';
+import { DiscordIcon, NpmIcon, RedditIcon } from '@/components/brand-icons';
+import { GITHUB_URL, DISCORD_URL, NPM_URL, REDDIT_URL } from '@/lib/links';
 
 const navItems = [
   { label: 'Docs', href: '/docs/getting-started' },
@@ -36,7 +36,7 @@ export function Navbar() {
             Crescent.js
           </span>
           <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-medium text-zinc-400">
-            v1.0.3
+            v1.0.4
           </span>
         </Link>
 
@@ -89,6 +89,15 @@ export function Navbar() {
           >
             <DiscordIcon className="h-4 w-4" />
           </a>
+          <a
+            href={REDDIT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Join our subreddit"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
+          >
+            <RedditIcon className="h-4 w-4" />
+          </a>
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-md text-zinc-400 transition-colors hover:bg-white/5 hover:text-white md:hidden"
@@ -138,6 +147,15 @@ export function Navbar() {
             >
               <DiscordIcon className="h-4 w-4" />
               Discord
+            </a>
+            <a
+              href={REDDIT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-zinc-400 hover:bg-white/5 hover:text-white"
+            >
+              <RedditIcon className="h-4 w-4" />
+              Reddit
             </a>
             <a
               href={NPM_URL}

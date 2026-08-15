@@ -3,6 +3,7 @@
  */
 
 const http = require('http');
+const { prepare, unwrap } = require('../cipher');
 
 class ApiMake {
   constructor(config) {
@@ -11,6 +12,7 @@ class ApiMake {
     this.host = config.host || 'localhost';
     this.endpoints = config.endpoints || [];
     this.cors = config.cors !== undefined ? config.cors : true;
+    this.secret = config.secret || 'crescent-default-secret';
     this._server = null;
     this._middleware = [];
   }
@@ -40,12 +42,11 @@ class ApiMake {
           }
         }
 
-        // Parse body
         let body = '';
         req.on('data', chunk => body += chunk);
         req.on('end', () => {
           try {
-            req.body = body ? JSON.parse(body) : {};
+            req.body = body ? unwrap(body, this.secret) : {};
           } catch {
             req.body = {};
           }
@@ -89,12 +90,12 @@ class ApiMake {
       try {
         endpoint.handler(req, res);
       } catch (err) {
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Internal Server Error' }));
+        res.writeHead(500, { 'Content-Type': 'application/octet-stream' });
+        res.end(prepare({ error: 'Internal Server Error' }, this.secret));
       }
     } else {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Not Found' }));
+      res.writeHead(404, { 'Content-Type': 'application/octet-stream' });
+      res.end(prepare({ error: 'Not Found' }, this.secret));
     }
   }
 

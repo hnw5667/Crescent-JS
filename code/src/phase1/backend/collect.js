@@ -8,6 +8,7 @@ class Collect {
     this.sources = config.sources || [];
     this.transform = config.transform || null;
     this.validate = config.validate || null;
+    this.secret = config.secret || 'crescent-default-secret';
     this._data = null;
   }
 
@@ -72,12 +73,30 @@ class Collect {
    */
   async send(url, options = {}) {
     const data = this.collect();
+    const secret = options.secret || this.secret;
+
+    let encrypted;
+    let decryptFn;
+    if (typeof window === 'undefined') {
+      const { prepare, unwrap } = require('../cipher');
+      encrypted = prepare(data, secret);
+      decryptFn = (raw) => unwrap(raw, secret);
+    } else {
+      const payload = typeof data === 'string' ? data : JSON.stringify(data);
+      const compressed = btoa(pako ? pako.gzip(payload) : payload);
+      const meta = JSON.stringify({ type: 'json' });
+      encrypted = btoa(meta + '|' + compressed);
+      decryptFn = (raw) => { try { return JSON.parse(raw); } catch { return raw; } };
+    }
+
     const response = await fetch(url, {
       method: options.method || 'POST',
-      headers: { 'Content-Type': 'application/json', ...options.headers },
-      body: JSON.stringify(data)
+      headers: { 'Content-Type': 'application/octet-stream', ...options.headers },
+      body: encrypted
     });
-    return response.json();
+    const raw = await response.text();
+    try { return decryptFn(raw); }
+    catch { return raw; }
   }
 }
 

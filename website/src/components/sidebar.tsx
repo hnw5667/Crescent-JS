@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, BookOpen, Boxes, Database, KeyRound, Sparkles, SlidersHorizontal, Rocket, Globe, Command, FileCode2, Settings, Upload } from 'lucide-react';
+import { Menu, X, BookOpen, Boxes, Database, KeyRound, Sparkles, SlidersHorizontal, Rocket, Globe, Command, FileCode2, Settings, Upload, Zap, Shield, Archive } from 'lucide-react';
 import { useState } from 'react';
 import { docsNav } from '@/lib/docs-nav';
 import { cn } from '@/lib/utils';
@@ -11,6 +11,7 @@ const sectionIcons: Record<string, React.ReactNode> = {
   'Getting Started': <Rocket className="h-3.5 w-3.5" />,
   Guides: <BookOpen className="h-3.5 w-3.5" />,
   Reference: <Command className="h-3.5 w-3.5" />,
+  'v1.0.4 Features': <Zap className="h-3.5 w-3.5" />,
 };
 
 const itemIcons: Record<string, React.ReactNode> = {
@@ -22,6 +23,9 @@ const itemIcons: Record<string, React.ReactNode> = {
   'API Reference': <BookOpen className="h-3.5 w-3.5" />,
   Configuration: <Settings className="h-3.5 w-3.5" />,
   Deployment: <Upload className="h-3.5 w-3.5" />,
+  Compression: <Archive className="h-3.5 w-3.5" />,
+  'Encrypted Tunnels': <Shield className="h-3.5 w-3.5" />,
+  'Component Cache': <Boxes className="h-3.5 w-3.5" />,
 };
 
 interface SidebarContentProps {

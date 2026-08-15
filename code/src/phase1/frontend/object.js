@@ -52,6 +52,9 @@ class RocketObject {
     this._element = null;
     this._transition = null;
 
+    // Modification tracking (used by the optimised component cache)
+    this.modified_at = (config && config.modified_at) || Date.now();
+
     // Initialize from config if provided
     if (config.layers_config) {
       for (const layer of config.layers_config) {
@@ -279,6 +282,7 @@ class RocketObject {
 
   set_property(name, value) {
     this[name] = value;
+    this.modified_at = Date.now();
     if (this._element) {
       switch (name) {
         case 'size':

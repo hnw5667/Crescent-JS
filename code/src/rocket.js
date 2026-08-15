@@ -24,6 +24,11 @@ const ApiCall = require('./phase1/backend/api_call');
 const ApiMake = require('./phase1/backend/api_make');
 const Collect = require('./phase1/backend/collect');
 const RocketBoolean = require('./phase1/backend/boolean');
+const { EncryptedTunnel, createTunnel } = require('./phase1/backend/tunnel');
+
+// Phase 1 - Optimisation
+const ComponentCache = require('./phase1/frontend/component_cache');
+const Cipher = require('./phase1/cipher');
 
 // Phase 1 - Database
 const DatabaseSyntax = require('./phase1/database/syntax');
@@ -53,6 +58,8 @@ class Rocket {
     this._apis = {};
     this._responsive = null;
     this._renderer = new Renderer();
+    this._tunnel = null;
+    this._componentCache = null;
 
     // Database
     this._fileManager = new FileManager();
@@ -166,7 +173,51 @@ class Rocket {
   get_timestamp() { return Date.now(); }
   redirect(url) { if (typeof window !== 'undefined') window.location = url; }
   connect_and_pull(url, options = {}) {
+    if (typeof window === 'undefined' && this._tunnel && this._tunnel.is_open()) {
+      options.headers = Object.assign({ 'Content-Type': 'application/octet-stream' }, options.headers || {});
+      if (options.body !== undefined && options.method && options.method.toUpperCase() !== 'GET') {
+        options.body = this._tunnel.send(options.body);
+      }
+    }
+    if (typeof window !== 'undefined') {
+      return fetch(url, options).then(r => r.text()).then(raw => {
+        try { return Cipher.unwrap(raw, options.secret || 'crescent-default-secret'); }
+        catch { try { return JSON.parse(raw); } catch { return raw; } }
+      });
+    }
     return fetch(url, options).then(r => r.json());
+  }
+
+  // ===== COMPRESSION & CIPHER =====
+  compress(data, secret) {
+    if (secret) return Cipher.prepare(data, secret);
+    return Cipher.compress(typeof data === 'string' ? data : JSON.stringify(data));
+  }
+  decompress(compressed, secret) {
+    if (secret) return Cipher.unwrap(compressed, secret);
+    return Cipher.decompress(compressed);
+  }
+
+  // ===== ENCRYPTED TUNNELS =====
+  tunnel(config = {}) {
+    if (config && config.tunnel_id && this._tunnel && this._tunnel.tunnel_id === config.tunnel_id) {
+      return this._tunnel;
+    }
+    this._tunnel = createTunnel(config);
+    return this._tunnel;
+  }
+
+  // ===== OPTIMISED COMPONENT CACHE =====
+  component_cache(config = {}) {
+    if (!this._componentCache) {
+      this._componentCache = new ComponentCache(config);
+    }
+    return this._componentCache;
+  }
+  render_page_payload(page, config = {}) {
+    const cache = this.component_cache(config);
+    const pageConfig = page && page.config ? page.config : { page_id: page && page.page_id };
+    return Object.assign({}, pageConfig, cache.build_page_payload(page));
   }
 
   // ===== DATABASE =====

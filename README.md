@@ -18,6 +18,9 @@ Crescent.js is a full-stack JavaScript framework that gives you everything you n
 - **Built-in Database** — Zero-configuration CRUD database
 - **Authentication** — Signup, login, OAuth, and session handling
 - **Responsive by Default** — Built-in responsive design using ratio-based scaling
+- **Compression** — All text and JSON packets compressed (openable anywhere)
+- **Encrypted Tunnels** — Automatic AES-256-GCM encryption when data is sent out
+- **Optimised Components** — Cached components make frontend rendering faster
 - **Zero Config** — Get started immediately with sensible defaults
 
 ---
@@ -69,6 +72,9 @@ console.log('App created successfully!');
 | [API Reference](./docs/api-reference.md) | Complete API documentation |
 | [Configuration](./docs/configuration.md) | All configuration options |
 | [Deployment](./docs/deployment.md) | Deploying to production |
+| [Compression](./docs/compression.md) | Compressing text and JSON packets |
+| [Encrypted Tunnels](./docs/encrypted-tunnels.md) | Automatic encrypted data tunnels |
+| [Component Cache](./docs/component-cache.md) | Optimising frontend rendering |
 | [Changelog](./docs/changelog.md) | Release history and updates |
 
 ---
@@ -131,3 +137,11 @@ This project is licensed under the terms described in the [LICENSE](./LICENSE) f
 ## Contribute
 
 If you find this project useful, consider starring the repo and contributing! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+---
+
+## Community
+
+- **Website** — [hnw5667.github.io/Crescent-JS](https://hnw5667.github.io/Crescent-JS)
+- **Reddit** — [r/CrescentJS](https://www.reddit.com/r/CrescentJS/)
+- **npm** — [crescent-js](https://www.npmjs.com/package/crescent-js)

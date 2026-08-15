@@ -65,6 +65,26 @@ export const docsNav: DocSection[] = [
       },
     ],
   },
+  {
+    title: 'v1.0.4 Features',
+    items: [
+      {
+        title: 'Compression',
+        description: 'Compress text and JSON packets so they open anywhere.',
+        href: '/docs/compression',
+      },
+      {
+        title: 'Encrypted Tunnels',
+        description: 'Automatically encrypt outbound data with AES-256-GCM.',
+        href: '/docs/encrypted-tunnels',
+      },
+      {
+        title: 'Component Cache',
+        description: 'Optimise frontend rendering by caching components.',
+        href: '/docs/component-cache',
+      },
+    ],
+  },
 ];
 
 export const flatDocs = docsNav.flatMap((section) => section.items);

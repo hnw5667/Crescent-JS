@@ -4,10 +4,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const { encrypt, decrypt } = require('../cipher');
 
 class FileManager {
-  constructor(base_dir) {
+  constructor(base_dir, secret) {
     this.base_dir = base_dir || path.join(process.cwd(), 'crescent_data');
+    this.secret = secret || 'crescent-default-secret';
     this._locks = new Map();
   }
 
@@ -32,11 +34,12 @@ class FileManager {
    */
   read_collection(collection) {
     this._ensureDir();
-    const filePath = this._filePath(collection);
+    const filePath = this._filePath(collection) + '.enc';
     if (!fs.existsSync(filePath)) return [];
     try {
       const data = fs.readFileSync(filePath, 'utf8');
-      return JSON.parse(data);
+      const decrypted = decrypt(data, this.secret);
+      return JSON.parse(decrypted);
     } catch {
       return [];
     }
@@ -47,8 +50,9 @@ class FileManager {
    */
   write_collection(collection, data) {
     this._ensureDir();
-    const filePath = this._filePath(collection);
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+    const filePath = this._filePath(collection) + '.enc';
+    const encrypted = encrypt(JSON.stringify(data, null, 2), this.secret);
+    fs.writeFileSync(filePath, encrypted, 'utf8');
     return true;
   }
 
@@ -56,7 +60,7 @@ class FileManager {
    * Delete a collection file
    */
   delete_collection(collection) {
-    const filePath = this._filePath(collection);
+    const filePath = this._filePath(collection) + '.enc';
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
       return true;
@@ -70,15 +74,15 @@ class FileManager {
   list_collections() {
     this._ensureDir();
     return fs.readdirSync(this.base_dir)
-      .filter(f => f.endsWith('.json'))
-      .map(f => f.replace('.json', ''));
+      .filter(f => f.endsWith('.enc'))
+      .map(f => f.replace('.enc', ''));
   }
 
   /**
    * Check if collection exists
    */
   collection_exists(collection) {
-    return fs.existsSync(this._filePath(collection));
+    return fs.existsSync(this._filePath(collection) + '.enc');
   }
 
   /**

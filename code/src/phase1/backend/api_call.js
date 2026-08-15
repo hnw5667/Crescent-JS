@@ -4,6 +4,7 @@
 
 const http = require('http');
 const https = require('https');
+const { prepare, unwrap, isJSON } = require('../cipher');
 
 class ApiCall {
   constructor(config) {
@@ -13,13 +14,11 @@ class ApiCall {
     this.headers = config.headers || {};
     this.body = config.body || null;
     this.timeout = config.timeout || 30000;
+    this.secret = config.secret || 'crescent-default-secret';
     this._response = null;
     this._error = null;
   }
 
-  /**
-   * Execute the API call
-   */
   call() {
     return new Promise((resolve, reject) => {
       const urlObj = new URL(this.url);
@@ -42,9 +41,8 @@ class ApiCall {
         res.on('data', chunk => data += chunk);
         res.on('end', () => {
           try {
-            const parsed = JSON.parse(data);
-            this._response = parsed;
-            resolve(parsed);
+            this._response = unwrap(data, this.secret);
+            resolve(this._response);
           } catch {
             this._response = data;
             resolve(data);
@@ -63,7 +61,7 @@ class ApiCall {
       });
 
       if (this.body && (this.method === 'POST' || this.method === 'PUT' || this.method === 'PATCH')) {
-        req.write(typeof this.body === 'string' ? this.body : JSON.stringify(this.body));
+        req.write(prepare(this.body, this.secret));
       }
 
       req.end();

@@ -1,6 +1,6 @@
 {
   "name": "crescent-js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Crescent.js — A full-stack JavaScript framework with frontend rendering, backend logic, database, and authentication",
   "main": "src/rocket.js",
   "bin": {
@@ -33,6 +33,7 @@
     "url": "https://github.com/hnw5667/Crescent-JS/issues"
   },
   "files": [
+    "src/cli/",
     "src/phase1/",
     "src/rocket.js",
     "LICENSE",
