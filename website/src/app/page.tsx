@@ -5,8 +5,8 @@ import { ArrowRight, Layers, Server, Database, Shield, Code2, Zap, Moon, Github 
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { PrismBackground } from '@/components/prism-background';
-import { DiscordIcon, NpmIcon, RedditIcon } from '@/components/brand-icons';
-import { GITHUB_URL, DISCORD_URL, NPM_URL, REDDIT_URL } from '@/lib/links';
+import { DiscordIcon, NpmIcon } from '@/components/brand-icons';
+import { GITHUB_URL, DISCORD_URL, NPM_URL } from '@/lib/links';
 import { useEffect, useState } from 'react';
 
 const features = [
@@ -158,12 +158,6 @@ export default function Home() {
                   Join Discord
                 </Button>
               </a>
-              <a href={REDDIT_URL} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="outline" className="group">
-                  <RedditIcon className="mr-2 w-4 h-4" />
-                  r/CrescentJS
-                </Button>
-              </a>
             </div>
 
             {/* Code Preview */}
@@ -267,10 +261,6 @@ export default function Home() {
               <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
                 <DiscordIcon className="w-4 h-4" />
                 Discord
-              </a>
-              <a href={REDDIT_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
-                <RedditIcon className="w-4 h-4" />
-                Reddit
               </a>
               <a href={NPM_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
                 <NpmIcon className="w-3 h-3" />

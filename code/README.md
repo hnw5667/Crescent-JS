@@ -10,7 +10,6 @@ Full, up-to-date documentation lives at:
 
 - **Website** — <https://hnw5667.github.io/Crescent-JS>
 - **GitHub** — <https://github.com/hnw5667/Crescent-JS>
-- **Reddit** — <https://www.reddit.com/r/CrescentJS/>
 - **npm** — <https://www.npmjs.com/package/crescent-js>
 
 ## Structure

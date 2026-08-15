@@ -143,5 +143,4 @@ If you find this project useful, consider starring the repo and contributing! Se
 ## Community
 
 - **Website** — [hnw5667.github.io/Crescent-JS](https://hnw5667.github.io/Crescent-JS)
-- **Reddit** — [r/CrescentJS](https://www.reddit.com/r/CrescentJS/)
 - **npm** — [crescent-js](https://www.npmjs.com/package/crescent-js)

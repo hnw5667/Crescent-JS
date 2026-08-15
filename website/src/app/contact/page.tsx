@@ -4,8 +4,8 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Send, Loader2, CheckCircle2, XCircle, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DISCORD_WEBHOOK_URL, DISCORD_URL, REDDIT_URL } from '@/lib/links';
-import { DiscordIcon, RedditIcon } from '@/components/brand-icons';
+import { DISCORD_WEBHOOK_URL, DISCORD_URL } from '@/lib/links';
+import { DiscordIcon } from '@/components/brand-icons';
 
 const categories = [
   { value: 'recommendation', label: 'Recommendation' },
@@ -156,15 +156,6 @@ export default function ContactPage() {
               >
                 <DiscordIcon className="h-4 w-4" />
                 Prefer Discord? Join our server
-              </a>
-              <a
-                href={REDDIT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 text-sm text-zinc-400 transition-colors hover:text-white"
-              >
-                <RedditIcon className="h-4 w-4" />
-                r/CrescentJS
               </a>
             </div>
           </form>
