@@ -66,7 +66,7 @@ export const docsNav: DocSection[] = [
     ],
   },
   {
-    title: 'v1.0.4 Features',
+    title: 'Optimisation',
     items: [
       {
         title: 'Compression',

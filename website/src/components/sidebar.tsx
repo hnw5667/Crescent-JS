@@ -2,16 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, BookOpen, Boxes, Database, KeyRound, Sparkles, SlidersHorizontal, Rocket, Globe, Command, FileCode2, Settings, Upload, Zap, Shield, Archive } from 'lucide-react';
-import { useState } from 'react';
-import { docsNav } from '@/lib/docs-nav';
+import { Menu, X, ChevronDown, BookOpen, Boxes, Database, KeyRound, Sparkles, Rocket, Command, FileCode2, Settings, Upload, Zap, Shield, Archive } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { docsNav, type DocSection } from '@/lib/docs-nav';
+import { usePageHeadings } from '@/lib/use-page-headings';
 import { cn } from '@/lib/utils';
 
 const sectionIcons: Record<string, React.ReactNode> = {
   'Getting Started': <Rocket className="h-3.5 w-3.5" />,
   Guides: <BookOpen className="h-3.5 w-3.5" />,
   Reference: <Command className="h-3.5 w-3.5" />,
-  'v1.0.4 Features': <Zap className="h-3.5 w-3.5" />,
+  Optimisation: <Zap className="h-3.5 w-3.5" />,
 };
 
 const itemIcons: Record<string, React.ReactNode> = {
@@ -28,52 +29,147 @@ const itemIcons: Record<string, React.ReactNode> = {
   'Component Cache': <Boxes className="h-3.5 w-3.5" />,
 };
 
+function isItemActive(href: string, pathname: string) {
+  return pathname === href || pathname.startsWith(href + '/');
+}
+
+function activeSections(pathname: string) {
+  return docsNav
+    .filter((section) => section.items.some((item) => isItemActive(item.href, pathname)))
+    .map((section) => section.title);
+}
+
 interface SidebarContentProps {
   pathname: string;
   onNavigate?: () => void;
 }
 
 function SidebarContent({ pathname, onNavigate }: SidebarContentProps) {
+  const headings = usePageHeadings();
+
+  // Sections the user has expanded/collapsed. The section holding the active
+  // page is always expanded (unless the user explicitly collapses it).
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+  const [tocOpenHref, setTocOpenHref] = useState<string | null>(null);
+
+  const activeHref = docsNav
+    .flatMap((section) => section.items)
+    .find((item) => isItemActive(item.href, pathname))?.href;
+
+  // Open the TOC for the active page whenever the route changes.
+  useEffect(() => {
+    setTocOpenHref(activeHref ?? null);
+  }, [pathname, activeHref]);
+
+  const isExpanded = (section: DocSection) =>
+    collapsedSections[section.title] === undefined
+      ? section.items.some((item) => isItemActive(item.href, pathname))
+      : !collapsedSections[section.title];
+
+  const toggleSection = (title: string) => {
+    setCollapsedSections((prev) => {
+      const currentExpanded =
+        prev[title] === undefined
+          ? activeSections(pathname).includes(title)
+          : !prev[title];
+      return { ...prev, [title]: currentExpanded };
+    });
+  };
+
+  const toggleToc = (href: string) => {
+    setTocOpenHref((current) => (current === href ? null : href));
+  };
+
+  const tocOpen = (item: { href: string }) =>
+    item.href === activeHref && tocOpenHref === item.href && headings.length > 0;
+
   return (
     <nav className="space-y-7">
       {docsNav.map((section) => (
         <div key={section.title}>
-          <h3 className="mb-2 flex items-center gap-2 px-3 text-xs font-medium uppercase tracking-wider text-zinc-500">
+          <button
+            type="button"
+            onClick={() => toggleSection(section.title)}
+            aria-expanded={isExpanded(section)}
+            className="mb-2 flex w-full items-center gap-2 rounded-md px-3 py-1 text-xs font-medium uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-300"
+          >
             {sectionIcons[section.title]}
-            {section.title}
-          </h3>
-          <ul className="space-y-0.5">
-            {section.items.map((item) => {
-              const isActive =
-                pathname === item.href || pathname.startsWith(item.href + '/');
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={onNavigate}
-                    className={cn(
-                      'group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors',
-                      isActive
-                        ? 'bg-purple-500/10 font-medium text-white'
-                        : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100',
+            <span className="flex-1 text-left">{section.title}</span>
+            <ChevronDown
+              className={cn(
+                'h-3.5 w-3.5 shrink-0 transition-transform',
+                isExpanded(section) ? '' : '-rotate-90',
+              )}
+            />
+          </button>
+
+          {isExpanded(section) && (
+            <ul className="space-y-0.5">
+              {section.items.map((item) => {
+                const isActive = isItemActive(item.href, pathname);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={(e) => {
+                        if (isActive) {
+                          e.preventDefault();
+                          toggleToc(item.href);
+                        } else {
+                          onNavigate?.();
+                        }
+                      }}
+                      className={cn(
+                        'group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors',
+                        isActive
+                          ? 'bg-purple-500/10 font-medium text-white'
+                          : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100',
+                      )}
+                    >
+                      {itemIcons[item.title] && (
+                        <span
+                          className={cn(
+                            'shrink-0 transition-colors',
+                            isActive ? 'text-purple-400' : 'text-zinc-600 group-hover:text-zinc-400',
+                          )}
+                        >
+                          {itemIcons[item.title]}
+                        </span>
+                      )}
+                      {item.title}
+                      {isActive && (
+                        <ChevronDown
+                          className={cn(
+                            'ml-auto h-3.5 w-3.5 shrink-0 transition-transform',
+                            tocOpen(item) ? '' : '-rotate-90',
+                          )}
+                        />
+                      )}
+                    </Link>
+
+                    {tocOpen(item) && (
+                      <ul className="ml-2 mt-1 space-y-0.5 border-l border-white/10">
+                        {headings.map((heading) => (
+                          <li key={heading.id}>
+                            <a
+                              href={`#${heading.id}`}
+                              onClick={onNavigate}
+                              className={cn(
+                                'block border-l-2 border-transparent py-1 pr-2 text-xs leading-snug text-zinc-500 transition-colors hover:border-white/20 hover:text-zinc-300',
+                                heading.level === 2 ? 'pl-4' : 'pl-7',
+                              )}
+                            >
+                              {heading.text}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
                     )}
-                  >
-                    {itemIcons[item.title] && (
-                      <span
-                        className={cn(
-                          'shrink-0 transition-colors',
-                          isActive ? 'text-purple-400' : 'text-zinc-600 group-hover:text-zinc-400',
-                        )}
-                      >
-                        {itemIcons[item.title]}
-                      </span>
-                    )}
-                    {item.title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       ))}
     </nav>
