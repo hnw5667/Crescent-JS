@@ -18,6 +18,11 @@ export const docsNav: DocSection[] = [
         description: 'Install Crescent.js and build your first application.',
         href: '/docs/getting-started',
       },
+      {
+        title: 'TypeScript',
+        description: 'Use Crescent.js from TypeScript with bundled type definitions.',
+        href: '/docs/typescript',
+      },
     ],
   },
   {

@@ -1,6 +1,7 @@
 /**
- * Test runner - runs all Phase 1 test suites for Crescent.js v1.0.4.
- * Suites: compression (10023), encrypted tunnels (10024), component cache (10025).
+ * Test runner - runs all Phase 1 test suites for Crescent.js.
+ * Suites: compression (10023), encrypted tunnels (10024), component cache (10025),
+ * CLI (crescent run), TypeScript compatibility (v1.0.5).
  */
 
 const { spawnSync } = require('child_process');
@@ -10,7 +11,8 @@ const suites = [
   { name: 'Compression (Task 10023)', file: 'test_compression.js' },
   { name: 'Encrypted Tunnels (Task 10024)', file: 'test_encryption_tunnel.js' },
   { name: 'Component Cache (Task 10025)', file: path.join('frontend', 'test_component_cache.js') },
-  { name: 'CLI (crescent run)', file: 'test_cli.js' }
+  { name: 'CLI (crescent run)', file: 'test_cli.js' },
+  { name: 'TypeScript Compatibility (v1.0.5)', file: 'test_typescript.js' }
 ];
 
 let failedSuites = 0;

@@ -4,6 +4,29 @@ Release history and updates for Crescent.js.
 
 ---
 
+## v1.0.5
+
+### New Features
+- **TypeScript Support** — Crescent.js now ships official type definitions via `index.d.ts`.
+  The npm package exposes a `"types"` field so TypeScript consumers get full auto-complete and
+  type checking out of the box:
+  - The default export is the singleton `crescent` instance, typed as `Rocket` — every method
+    (`layer`, `function`, `boolean`, `page`, `transition`, `trigger`, `responsive`,
+    `conditional`, `loop`, `api_call`, `api_make`, `collect`, `compress`, `tunnel`, …) is
+    strictly typed.
+  - Every class is available as a named export for use as a type or value, e.g.
+    `import { Rocket, RocketPage, TextLayer, Transition } from 'crescent-js'`.
+  - Full configuration interfaces for every feature: `LayerConfig`, `ObjectConfig`,
+    `PageConfig`, `TransitionConfig`, `TriggerConfig`, `ResponsiveConfig`, `FunctionConfig`,
+    `ConditionalConfig`, `LoopConfig`, `ApiCallConfig`, `ApiMakeConfig`, `CollectConfig`,
+    `BooleanConfig`, `TunnelConfig`, `ComponentCacheConfig`, auth configs, and more.
+  - `layer(config)` is overloaded so setting `layer_type` narrows the return type to the
+    concrete layer class (`TextLayer`, `ImageLayer`, `ShapeLayer`, `InputLayer`).
+  - The TypeScript suite (`test/typescript`) runs `tsc --noEmit` against a consumer fixture
+    that exercises the entire public API and is part of the full `npm test` run.
+
+---
+
 ## v1.0.4
 
 ### New Features

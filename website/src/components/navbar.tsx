@@ -36,7 +36,7 @@ export function Navbar() {
             Crescent.js
           </span>
           <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-medium text-zinc-400">
-            v1.0.4
+            v1.0.5
           </span>
         </Link>
 

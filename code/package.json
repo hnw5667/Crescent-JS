@@ -1,8 +1,9 @@
 {
   "name": "crescent-js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Crescent.js — A full-stack JavaScript framework with frontend rendering, backend logic, database, and authentication",
   "main": "src/rocket.js",
+  "types": "index.d.ts",
   "bin": {
     "crescent": "src/cli/bin.js"
   },
@@ -36,8 +37,12 @@
     "src/cli/",
     "src/phase1/",
     "src/rocket.js",
+    "index.d.ts",
     "LICENSE",
     "README.md"
   ],
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
 }

@@ -2,7 +2,8 @@
 
 The complete source code for the Crescent.js framework, imported from the npm package `crescent-js`.
 
-> **v1.0.4** adds Compression, Encrypted Tunnels, and an Optimised Component Cache.
+> **v1.0.5** adds TypeScript type definitions (index.d.ts). v1.0.4 added Compression,
+> Encrypted Tunnels, and an Optimised Component Cache.
 
 ## Documentation Website
 
@@ -47,6 +48,25 @@ crescent.db.insert('users', { name: 'Alice' });
 
 // Auth
 const result = await crescent.auth.signup().register('john', 'john@example.com', 'SecureP@ss1');
+```
+
+## TypeScript
+
+Crescent.js ships official type definitions (`index.d.ts`). TypeScript consumers get full
+type checking and auto-complete out of the box:
+
+```ts
+import crescent, { Rocket, TextLayer, Transition } from 'crescent-js';
+
+// The default export is the typed singleton
+const page = crescent.page({ page_id: 'home', size: { height: 800, width: 1200 } });
+
+// `layer_type` narrows the return type to the concrete layer class
+const title: TextLayer = crescent.layer({ layer_id: 'title', layer_type: 'text', text: 'Hi' });
+
+// Classes are available as named exports for values and types
+const custom: Rocket = new crescent.Rocket();
+const transition = new Transition({ time: '1s', changes: [] });
 ```
 
 ## Running
