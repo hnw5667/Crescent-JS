@@ -12,6 +12,13 @@ out/
 dist/
 build/
 
+# Test-generated artifacts (rebuilt at test time)
+code/test/backend/compiled_app.js
+code/test/browser/bundle.js
+code/crescent_data/
+code/crescent_cache/
+code/.backend-cache/
+
 # Env files
 .env
 .env.local

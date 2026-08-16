@@ -14,5 +14,5 @@
       "crescent-js": ["../.."]
     }
   },
-  "include": ["fixture.ts"]
+  "include": ["app.ts"]
 }

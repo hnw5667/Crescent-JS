@@ -10,6 +10,10 @@
   "scripts": {
     "test": "node test/phase1/test_all.js",
     "test:phase1": "node test/phase1/test_all.js",
+    "test:typescript": "node test/phase1/test_typescript.js",
+    "test:backend": "node test/backend/test_backend.js",
+    "test:browser": "node test/browser/test_browser.js",
+    "prepublishOnly": "node test/phase1/test_all.js",
     "start": "node src/rocket.js",
     "crescent": "node src/cli/run.js"
   },

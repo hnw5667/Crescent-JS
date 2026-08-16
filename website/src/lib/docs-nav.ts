@@ -88,6 +88,11 @@ export const docsNav: DocSection[] = [
         description: 'Optimise frontend rendering by caching components.',
         href: '/docs/component-cache',
       },
+      {
+        title: 'Bundling',
+        description: 'Send the browser a single small file that renders your app.',
+        href: '/docs/bundling',
+      },
     ],
   },
 ];

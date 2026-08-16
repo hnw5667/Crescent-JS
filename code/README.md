@@ -2,8 +2,8 @@
 
 The complete source code for the Crescent.js framework, imported from the npm package `crescent-js`.
 
-> **v1.0.5** adds TypeScript type definitions (index.d.ts). v1.0.4 added Compression,
-> Encrypted Tunnels, and an Optimised Component Cache.
+> **v1.0.5** adds official TypeScript type definitions (`index.d.ts`).
+> v1.0.4 introduced Compression, Encrypted Tunnels, and an Optimised Component Cache.
 
 ## Documentation Website
 
@@ -26,6 +26,7 @@ code/
 │       ├── backend/           # Functions, conditionals, loops, API calls, API server
 │       ├── database/          # Built-in CRUD database (syntax, query engine, file storage)
 │       └── auth/              # Signup, login, OAuth, password, session cookies
+├── index.d.ts                 # Official TypeScript types (v1.0.5)
 ├── package.json
 └── LICENSE
 ```
@@ -81,8 +82,14 @@ crescent run <FILE_PATH> [PORT]
 ## Tests
 
 ```bash
-npm test
+npm test                # full suite: compression, tunnels, cache, CLI, TS
+npm run test:backend    # TypeScript backend harness (db/auth/api/compression/…)
+npm run test:browser    # TypeScript frontend rendered in a real browser
+npm run test:typescript # tsc --noEmit against the consumer fixture
 ```
+
+Every suite runs automatically before publishing (`prepublishOnly`), so a broken
+or unverified framework cannot be shipped.
 
 The full documentation is available in the root [`docs/`](../docs) folder and on the
 [documentation website](https://hnw5667.github.io/Crescent-JS).

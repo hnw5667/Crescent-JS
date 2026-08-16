@@ -12,7 +12,8 @@
     "baseUrl": ".",
     "paths": {
       "crescent-js": ["../.."]
-    }
+    },
+    "types": []
   },
-  "include": ["fixture.ts"]
+  "include": ["app.ts", "env.d.ts"]
 }

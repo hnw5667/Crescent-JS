@@ -24,6 +24,19 @@ Release history and updates for Crescent.js.
     concrete layer class (`TextLayer`, `ImageLayer`, `ShapeLayer`, `InputLayer`).
   - The TypeScript suite (`test/typescript`) runs `tsc --noEmit` against a consumer fixture
     that exercises the entire public API and is part of the full `npm test` run.
+  - A backend harness (`test/backend`) type-checks and runs in Node against the real framework —
+    covering the database, live search, auth, compression, encrypted tunnels, functions, loops,
+    conditionals, booleans, collect, component cache, and an encrypted `api_make`/`api_call`
+    HTTP round-trip.
+  - A frontend harness (`test/browser`) type-checks a comprehensive dummy page and renders it in
+    a real headless browser to verify pages, objects, all four layer types, transitions,
+    triggers, responsive, and multi-page navigation all load and behave correctly.
+
+### Documentation
+- Added a [TypeScript guide](./typescript.md).
+- Added a [Bundling guide](./bundling.md) under Optimisation describing how the framework
+  sends the browser a single small JavaScript file that understands and renders your app on
+  the client.
 
 ---
 

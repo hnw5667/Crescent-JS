@@ -65,6 +65,11 @@ declare namespace rocket {
     list_elements?: string[];
   }
 
+  // Text layers treat `size` as a font size (number) or a box Size.
+  interface TextLayerConfig extends Omit<LayerConfig, 'size'> {
+    size?: number | Size;
+  }
+
   interface ObjectConfig {
     object_id: string;
     object_enabled?: boolean;
@@ -101,6 +106,7 @@ declare namespace rocket {
   }
 
   interface TransitionConfig {
+    transition_id?: string;
     objects?: RocketObject[];
     time?: string | number;
     changes?: TransitionChange[];
@@ -118,6 +124,7 @@ declare namespace rocket {
   }
 
   interface TriggerConfig {
+    trigger_id?: string;
     layer_id: string;
     event?: 'click' | 'hover' | 'scroll' | 'keypress' | 'focus' | 'submit';
     condition?: (event: Event, layer: BaseLayer) => boolean;
@@ -283,7 +290,7 @@ declare namespace rocket {
     opacity: string | number;
     rounded_corners: string | number;
     rotate: string | number;
-    size: Size;
+    size: Size | number | string;
     position: Point;
     index: number;
     _element: HTMLElement | null;
@@ -725,7 +732,7 @@ declare namespace rocket {
   class Rocket {
     constructor();
 
-    layer(config: LayerConfig & { layer_type: 'text' }): TextLayer;
+    layer(config: TextLayerConfig & { layer_type: 'text' }): TextLayer;
     layer(config: LayerConfig & { layer_type: 'image' }): ImageLayer;
     layer(config: LayerConfig & { layer_type: 'shape' }): ShapeLayer;
     layer(config: LayerConfig & { layer_type: 'input' }): InputLayer;
@@ -778,10 +785,26 @@ declare namespace rocket {
     get_loop(id: string): Loop | undefined;
     get_boolean(id: string): RocketBoolean | undefined;
     get_api(id: string): ApiMake | undefined;
+
+    // Publically-visible registries (used by the renderer, triggers and
+    // consumers for lookup / bookkeeping). Mix of id -> instance maps.
+    _pages: Record<string, RocketPage>;
+    _objects: Record<string, RocketObject>;
+    _layers: Record<string, BaseLayer>;
+    _functions: Record<string, RocketFunction>;
+    _transitions: Record<string, Transition>;
+    _triggers: Record<string, Trigger>;
+    _conditionals: Record<string, Conditional>;
+    _loops: Record<string, Loop>;
+    _booleans: Record<string, RocketBoolean>;
+    _collects: Record<string, Collect>;
+    _apis: Record<string, ApiMake>;
+    _responsive: Responsive | null;
+    _renderer: RocketRenderer;
   }
 
   // ===== Singleton API (the default export is a Rocket instance) =====
-  function layer(config: LayerConfig & { layer_type: 'text' }): TextLayer;
+  function layer(config: TextLayerConfig & { layer_type: 'text' }): TextLayer;
   function layer(config: LayerConfig & { layer_type: 'image' }): ImageLayer;
   function layer(config: LayerConfig & { layer_type: 'shape' }): ShapeLayer;
   function layer(config: LayerConfig & { layer_type: 'input' }): InputLayer;
@@ -835,6 +858,20 @@ declare namespace rocket {
   function get_boolean(id: string): RocketBoolean | undefined;
   function get_api(id: string): ApiMake | undefined;
 
+  const _pages: Record<string, RocketPage>;
+  const _objects: Record<string, RocketObject>;
+  const _layers: Record<string, BaseLayer>;
+  const _functions: Record<string, RocketFunction>;
+  const _transitions: Record<string, Transition>;
+  const _triggers: Record<string, Trigger>;
+  const _conditionals: Record<string, Conditional>;
+  const _loops: Record<string, Loop>;
+  const _booleans: Record<string, RocketBoolean>;
+  const _collects: Record<string, Collect>;
+  const _apis: Record<string, ApiMake>;
+  const _responsive: Responsive | null;
+  const _renderer: RocketRenderer;
+
   // Explicit export clause so the reserved word `function` can be exported
   // as a member (via the internal `_function` alias).
   export {
@@ -846,6 +883,8 @@ declare namespace rocket {
     db, liveSearch, auth, renderer,
     get_page, get_object, get_layer, get_function, get_transition, get_trigger,
     get_conditional, get_loop, get_boolean, get_api,
+    _pages, _objects, _layers, _functions, _transitions, _triggers,
+    _conditionals, _loops, _booleans, _collects, _apis, _responsive, _renderer,
     Size, Point, CartesianRange, ScalingRatios, TextProperty, LayerConfig,
     ObjectConfig, PageConfig, TransitionChange, TransitionConfig, TriggerAction,
     TriggerConfig, ResponsiveConfig, FunctionConfig, BranchAction, Branch,

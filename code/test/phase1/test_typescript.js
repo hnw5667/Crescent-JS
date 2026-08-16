@@ -1,5 +1,5 @@
 /**
- * Task - TypeScript compatibility test (v1.0.5).
+ * Task — TypeScript compatibility test (v1.0.5).
  *
  * Verifies that the package is TypeScript-ready:
  *   1. package.json exposes a "types" field pointing at index.d.ts,

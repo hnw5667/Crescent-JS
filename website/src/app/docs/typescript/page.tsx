@@ -1,4 +1,4 @@
-import { DocHeader } from '@/components/docs/doc-header';
+﻿import { DocHeader } from '@/components/docs/doc-header';
 import { CodeBlock } from '@/components/docs/code-block';
 import { Callout } from '@/components/docs/callout';
 import { DocPagination } from '@/components/docs/doc-pagination';
@@ -16,14 +16,14 @@ export default function TypeScriptPage() {
       <p>
         Since v1.0.5 the npm package <code>crescent-js</code> includes an{' '}
         <code>index.d.ts</code> declaration file. The <code>types</code> field in{' '}
-        <code>package.json</code> points at it, so TypeScript finds it automatically — no extra
+        <code>package.json</code> points at it, so TypeScript finds it automatically ΓÇö no extra
         setup or <code>@types</code> package is needed.
       </p>
 
       <h2 id="setup">Setup</h2>
       <p>
-        The framework itself is written in JavaScript, but you can use it from TypeScript
-        projects. Install the package as usual:
+        The framework itself is written in JavaScript and ships its own bundled type
+        definitions, so there is nothing else to install.
       </p>
       <CodeBlock
         code={`npm install crescent-js`}
@@ -31,13 +31,14 @@ export default function TypeScriptPage() {
       />
 
       <Callout type="tip" title="Zero extra dependencies">
-        Type definitions are bundled in the package — there is nothing else to install.
+        Type definitions are bundled in the package ΓÇö there is nothing else to install.
       </Callout>
 
       <h2 id="default-export">The Typed Singleton</h2>
       <p>
-        The default export is the singleton <code>crescent</code> instance. Every method is
-        strictly typed, so you get auto-complete and compile-time errors for wrong configs:
+        The default export is the singleton <code>crescent</code> instance, typed as{' '}
+        <code>Rocket</code>. Every method is strictly typed, so you get auto-complete and
+        compile-time errors for wrong configs:
       </p>
       <CodeBlock
         filename="app.ts"
@@ -55,7 +56,7 @@ crescent.db.insert('users', { name: 'Alice' });`}
 
       <h2 id="named-exports">Named Exports</h2>
       <p>
-        Every class is available as a named export — usable both as a <em>type</em> and as a{' '}
+        Every class is available as a named export ΓÇö usable both as a <em>type</em> and as a{' '}
         <em>value</em> (constructor):
       </p>
       <CodeBlock

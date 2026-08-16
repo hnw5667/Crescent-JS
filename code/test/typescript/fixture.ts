@@ -1,5 +1,5 @@
 /**
- * TypeScript compatibility fixture.
+ * TypeScript compatibility fixture (v1.0.5).
  *
  * Imports the package the way a real TypeScript consumer would and
  * exercises the public API so `tsc --noEmit` proves that:

@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Crescent TS In-Browser Test</title>
+  </head>
+  <body>
+    <div id="crescent-root"></div>
+
+    <script>
+      // Minimal CommonJS shim that loads the real Crescent.js frontend
+      // modules (same files as src/phase1/frontend/*.js) exactly as the
+      // framework's own renderer/trigger code expects.
+      window.__errors__ = [];
+      window.addEventListener('error', function (e) {
+        window.__errors__.push(String(e.message) + ' @ ' + e.filename + ':' + e.lineno);
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        window.__errors__.push('unhandled: ' + e.reason);
+      });
+      window.__modules__ = {};
+      function __req(id) {
+        id = String(id).replace(/\\/g, '/');
+        // relative requires resolve from the requesting module's dir
+        if (id.charAt(0) === '.') {
+          const stack = (__req.caller && __req.caller.mod) || window.__current__;
+          const dir = stack.dir + '/';
+          id = dir + id;
+        }
+        const mod = window.__modules__[id];
+        if (!mod) throw new Error('module not loaded: ' + id);
+        return mod.exports;
+      }
+      window.__ensure = function (id, src) {
+        id = id.replace(/\\/g, '/');
+        if (window.__modules__[id]) return;
+        const mod = { exports: {}, id: id, dir: id.slice(0, id.lastIndexOf('/')) };
+        window.__modules__[id] = mod;
+        window.__current__ = mod;
+        const fn = new Function('require', 'module', 'exports', src);
+        fn(function (r) {
+          if (r.charAt(0) === '.') {
+            const dir2 = mod.dir + '/';
+            return __req(dir2 + r);
+          }
+          return __req(r);
+        }, mod, mod.exports);
+      };
+    </script>
+
+    <script src="bundle.js"></script>
+
+    <script>
+      // Parse the compiled bundle (which writes into window.__previous) and
+      // pull out the rendered result so the headless test can read it.
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          var root = document.querySelector('#crescent-root');
+          var layerTypeCounts = {};
+          var layerTexts = {};
+          if (root) {
+            var els = root.querySelectorAll('[data-layer-type]');
+            els.forEach(function (el) {
+              var t = el.getAttribute('data-layer-type');
+              layerTypeCounts[t] = (layerTypeCounts[t] || 0) + 1;
+              if (t === 'text') {
+                var p = el.querySelector('p');
+                if (p) layerTexts[el.getAttribute('data-layer-id')] = p.textContent;
+              }
+            });
+          }
+          var listLabels = Array.from(document.querySelectorAll('label span')).map(function (s) {
+            return s.textContent;
+          });
+          var rectEl = document.querySelector('[data-layer-id="accent_rect"]');
+          var rectBg = rectEl ? getComputedStyle(rectEl).backgroundColor : null;
+          window.__RESULT__ = {
+            rendered: !!(window.__TS_RENDERED__),
+            rootHasChildren: !!(root && root.children.length),
+            layerTypeCounts: layerTypeCounts,
+            layerTexts: layerTexts,
+            title: document.title,
+            pages: window.crescent ? Object.keys(window.crescent._pages || {}) : [],
+            hasCrescent: !!window.crescent,
+            layerKeys: window.crescent ? Object.keys(window.crescent._layers || {}) : [],
+            state: window.__TS_STATE__ || null,
+            rectBg: rectBg,
+            listLabels: listLabels,
+            hasSvg: !!root.querySelector('svg'),
+            errors: window.__errors__
+          };
+          var pre = document.getElementById('crescent-result');
+          if (pre) pre.textContent = JSON.stringify(window.__RESULT__);
+        }, 300);
+      });
+    </script>
+    <script type="text/plain" id="crescent-result"></script>
+  </body>
+</html>
