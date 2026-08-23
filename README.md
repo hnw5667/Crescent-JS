@@ -21,6 +21,7 @@ Crescent.js is a full-stack JavaScript framework that gives you everything you n
 - **Compression** — All text and JSON packets compressed (openable anywhere)
 - **Encrypted Tunnels** — Automatic AES-256-GCM encryption when data is sent out
 - **Optimised Components** — Cached components make frontend rendering faster
+- **JS-First Components (v1.0.6)** — Write components in pure JS; framework generates HTML with `section-{id}` at build time, bundles JS+HTML, and hydrates via `rocket.js`
 - **Zero Config** — Get started immediately with sensible defaults
 
 ---
@@ -72,9 +73,11 @@ console.log('App created successfully!');
 | [API Reference](./docs/api-reference.md) | Complete API documentation |
 | [Configuration](./docs/configuration.md) | All configuration options |
 | [Deployment](./docs/deployment.md) | Deploying to production |
+| [JS-First Guide](./docs/js-first.md) | JS-first authoring, build-time HTML, section IDs, bundling & hydration |
 | [Compression](./docs/compression.md) | Compressing text and JSON packets |
 | [Encrypted Tunnels](./docs/encrypted-tunnels.md) | Automatic encrypted data tunnels |
-| [Component Cache](./docs/component-cache.md) | Optimising frontend rendering |
+| [Component Cache](./docs/component-cache.md) | Optimising frontend rendering (now with HTML+JS) |
+| [Bundling](./docs/bundling.md) | Unified JS+HTML bundling and deployment |
 | [Changelog](./docs/changelog.md) | Release history and updates |
 
 ---

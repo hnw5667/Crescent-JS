@@ -172,6 +172,45 @@ Page_ID/name = {
 
 ---
 
+## JS-First Component Configuration (v1.0.6)
+
+```js
+{
+  component_id: 'hero',                     // string, required — also sanitized to id="section-{id}" wrapper
+  component_name: 'hero',                  // string — display name (default component_id)
+  component_enabled: true,                 // boolean
+  size: { height: 300, width: 800 },       // object — wrapper dimensions
+  style: { colour: '240,240,255' },        // object — component-level default CSS
+  className: 'my-hero',                    // string — wrapper class
+  sections: [                              // array or { name: config } object map
+    {
+      section_id: 'title',                // string, required — becomes id="section-title"
+      type: 'text',                       // 'text'|'image'|'shape'|'input'|'section' (alias layer_type)
+      text: 'Hello Crescent',             // string — content (alias content, html (raw))
+      image_location: 'https://...',      // string — for type:'image'
+      // built-in CSS (applied at build-time + hydration):
+      size: 32,                           // number or { height, width }
+      colour: '255,255,255',
+      opacity: '100%',
+      rounded_corners: '8px',
+      rotate: '0deg',
+      font: 'sans-serif',
+      bold: true,
+      spacing: '0px',
+      position: { x: 0, y: 0 },
+      index: 0,
+      // hooks:
+      onHydrate: (el, section) => {},     // function — called when hydrated
+      tag: 'div'                          // string — HTML tag (default div)
+    }
+  ]
+}
+```
+
+Section IDs are sanitized (`sanitizeSectionName`) to lower-case, dashes for spaces, stripped illegal chars. Example: `"My Title"` → `id="section-my-title"` plus `data-section="My Title"` for stable mapping. See [JS-First Guide](./js-first.md).
+
+---
+
 ## Transition Configuration
 
 **Spec format:**

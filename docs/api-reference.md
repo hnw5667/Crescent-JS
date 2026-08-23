@@ -447,6 +447,71 @@ Create a data collector.
 
 ---
 
+## JS-First API (v1.0.6)
+
+### `crescent.component(config)`
+
+JS-First authoring. Define a component entirely in JavaScript — framework generates HTML with `section-{name}` IDs. See [JS-First Guide](./js-first.md).
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `config.component_id` | string | required | Unique identifier (becomes `id="section-{id}"` on wrapper) |
+| `config.component_name` | string | `component_id` | Display name |
+| `config.size` | object | — | `{ height, width }` in px |
+| `config.style` | object | `{}` | Component-level default styles |
+| `config.className` | string | `''` | CSS class for wrapper |
+| `config.sections` | array/object | `[]` | Array of `SectionConfig` or `{ name: config }` map |
+| `config.component_enabled` | boolean | `true` | Visibility |
+
+**SectionConfig fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `section_id` / `name` / `section_name` / `id` | string | Required — determines `id="section-{name}"` (sanitized) |
+| `type` / `layer_type` | string | `text`, `image`, `shape`, `input`, `section` (default) |
+| `text` / `content` / `html` | string | Content (`html` raw, `text` escaped) |
+| `image_location` | string | For `type: 'image'` |
+| `size`, `colour`, `opacity`, `rounded_corners`, `rotate`, `font`, `bold`, `spacing`, `position`, `index` | any | Built-in CSS properties applied at generation + hydration |
+| `onHydrate` | function | `onHydrate(el, section)` called during hydration |
+
+**Component Methods:**
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `get_section(id)` | object/null | Get section config |
+| `get_sections()` | array | Ordered sections |
+| `get_section_ids()` | string[] | Ordered IDs |
+| `has_section(id)` | boolean | Exists |
+| `add_section(section)` | this | Add section |
+| `remove_section(id)` | this | Remove section |
+| `set_section_property(id, prop, value)` | this | Update section prop (bumps `modified_at`) |
+| `set_property(name, value)` | this | Update component prop |
+| `generate_html()` / `to_html()` | string | Build-time HTML |
+| `bundle()` | object | `{ component_id, js, html, sections, timestamp }` |
+| `hydrate(container)` | object | Hydrate inside container |
+| `bind_section(id, fn)` | this | Register binding `fn(el, section)` for hydration |
+| `render()` | HTMLElement | Client-side DOM element (fallback) |
+| `get_element()` | HTMLElement | Rendered element |
+| `serialize()` | object | Plain JSON for cache/bundling |
+
+### `crescent.generate_html(component)` / `crescent.generate_page_html(page)`
+
+Build-time HTML generation (Node, dev machine). Returns string with `section-{name}` markup.
+
+### `crescent.bundler(config)` / `crescent.build_bundle(compOrPage)` / `crescent.build_page_bundle(page)`
+
+Unified bundling. `bundler()` returns `Bundler`; `build_bundle` auto-detects page vs component.
+
+**Bundler Methods:** `generateHTML(comp)`, `bundleComponent(comp)`, `bundlePage(page)`, `bundle_all(list)`, `build(list, {outputDir, fileName, writeHtml, writeJs})`, `build_unified(list, outPath)`
+
+### `crescent.hydrate(container, component)` / `crescent.get_component(id)` / `crescent.get_components()`
+
+Runtime hydration via `rocket.js`. Finds each `section-{id}`, applies built-in CSS, fires `onHydrate`/`bind_section`, sets `data-hydrated`.
+
+Also: `crescent.component_cache(...).get_cached_html(id)`, `.store_html`, `.store_component_with_html`, `.build_page_payload_with_html`, and `crescent.render_page_payload_with_html`.
+
+---
+
 ## Utility Functions
 
 | Function | Returns | Description |
@@ -472,6 +537,8 @@ Create a data collector.
 |--------|---------|-------------|
 | `crescent.db` | DatabaseSyntax | Database instance |
 | `crescent.renderer` | Renderer | Renderer instance |
+| `crescent.html_generator` | HtmlGenerator | Build-time HTML generator |
+| `crescent.bundler_class` | Bundler | Bundler class |
 | `crescent.get_page(id)` | Page/null | Get page by ID |
 | `crescent.get_object(id)` | Object/null | Get object by ID |
 | `crescent.get_layer(id)` | Layer/null | Get layer by ID |
@@ -482,3 +549,5 @@ Create a data collector.
 | `crescent.get_loop(id)` | Loop/null | Get loop by ID |
 | `crescent.get_boolean(id)` | Boolean/null | Get boolean by ID |
 | `crescent.get_api(id)` | ApiMake/null | Get API by ID |
+| `crescent.get_component(id)` | JSComponent/null | Get JS-First component by ID |
+| `crescent.get_components()` | object | All JS-First components map |

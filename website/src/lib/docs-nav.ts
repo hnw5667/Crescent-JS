@@ -93,6 +93,11 @@ export const docsNav: DocSection[] = [
         description: 'Send the browser a single small file that renders your app.',
         href: '/docs/bundling',
       },
+      {
+        title: 'JS-First',
+        description: 'Write components in JS — HTML is generated at build time.',
+        href: '/docs/js-first',
+      },
     ],
   },
 ];

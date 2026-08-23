@@ -54,6 +54,31 @@ cache.resolve_component(heroObject);
 
 > **Fallback** — Without the tracker folder, every component resolves as
 > `{ type: 'normal', component }` — sent like before the optimisation existed.
+> For JS-First components the fallback still includes `component.html`.
+
+## JS-First HTML Caching (v1.0.6)
+
+JS-First components ship **build-time HTML alongside JS**. The cache stores both:
+
+```js
+const header = crescent.component({
+  component_id: 'header',
+  sections: [{ section_id: 'title', text: 'Hello' }]
+});
+cache.enable();
+
+const first = cache.resolve_component(header);
+// { type: 'update', id: 'header', position, index, component: { ..., html }, html }
+
+cache.get_cached_html('header'); // "<div id=\"section-header\" ...>..."
+cache.store_html('header', '<div>...</div>', header.serialize());
+cache.store_component_with_html(header, header.serialize(), '<div>...</div>');
+
+const second = cache.resolve_component(header);
+// edited check via modified_at; same timestamp -> { type: 'reuse', id, position, index, html }
+```
+
+Legacy `RocketObject` instances also generate HTML transparently (layers → sections) so the cache schema is backward compatible — entries carry `component.html` / `_html` and top-level `html`.
 
 ## Page Payloads
 
@@ -64,6 +89,14 @@ per object.
 const payload = crescent.render_page_payload(homePage);
 console.log(payload.components);
 // [ { type: 'reuse', id: 'hero', position, index }, ... ]
+
+// With HTML (JS-First unified bundles)
+const payloadWithHtml = crescent.render_page_payload_with_html(homePage);
+console.log(payloadWithHtml.components);
+// [ { type: 'update', id: 'header', component, html, position, index }, ... ]
+
+// Direct cache API
+const withHtml = cache.build_page_payload_with_html(homePage);
 ```
 
 ## Clearing the Cache

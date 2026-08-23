@@ -1,6 +1,8 @@
 # Frontend Guide
 
-Build UIs with pages, objects, layers, transitions, and triggers.
+Build UIs with pages, objects, layers, transitions, and triggers. For the new JS-first workflow — authoring in pure JS with build-time HTML — see the [JS-First Guide](./js-first.md).
+
+---
 
 ---
 
@@ -549,3 +551,37 @@ responsive.scale_object(myObject, 1200, 800, 600, 400);
 
 // Clean up
 responsive.destroy();
+
+---
+
+## JS-First Components (v1.0.6)
+
+> **JS-First** removes manual HTML. Write a component in JS — the framework generates HTML with `section-{name}` IDs, bundles JS+HTML, caches both, and hydrates via `rocket.js`. Full guide: [JS-First](./js-first.md).
+
+```js
+const hero = crescent.component({
+  component_id: 'hero',
+  size: { height: 300, width: 800 },
+  sections: [
+    { section_id: 'title', type: 'text', text: 'Hello Crescent', size: 32, colour: '255,255,255', bold: true },
+    { section_id: 'pic', type: 'image', image_location: 'https://example.com/img.png' },
+    { section_id: 'cta', type: 'shape', layer_vertices: 4, colour: '52,152,219', rounded_corners: '8px' }
+  ]
+});
+
+// Build time (Node) — HTML generated on dev machine, not client
+const html = crescent.generate_html(hero);
+// html contains <div id="section-title"> ... <div id="section-pic"> ... <div id="section-cta">
+
+// Unified bundle (JS + HTML) + cache
+const bundle = crescent.build_bundle(hero);
+const page = crescent.page({ page_id: 'home', size: { height: 800, width: 1200 } });
+page._jsComponents = new Map([['hero', hero]]);
+const pageBundle = crescent.build_bundle(page);
+
+// Runtime — rocket.js hydrates sections, applies built-in CSS, connects logic
+document.getElementById('app').innerHTML = pageBundle.html;
+crescent.hydrate(document.getElementById('app'), hero);
+```
+
+Section IDs are deterministic (`sanitizeSectionName`), cached (`cache.resolve_component` now returns `html`), and bundled (`crescent.bundler().build([...])` writes `bundle.json` + `html/*.html` + `js/*.json`).

@@ -30,6 +30,13 @@ const { EncryptedTunnel, createTunnel } = require('./phase1/backend/tunnel');
 const ComponentCache = require('./phase1/frontend/component_cache');
 const Cipher = require('./phase1/cipher');
 
+// JS-First Component System (v1.0.6)
+const JSComponent = require('./phase1/frontend/js_component');
+const HtmlGenerator = require('./phase1/frontend/html_generator');
+const Bundler = require('./phase1/frontend/bundler');
+// About Webpage (v1.0.7) — plain English frontend explanation generated from code
+const AboutGenerator = require('./phase1/frontend/about_generator');
+
 // Phase 1 - Database
 const DatabaseSyntax = require('./phase1/database/syntax');
 const QueryEngine = require('./phase1/database/query_engine');
@@ -70,6 +77,10 @@ class Rocket {
     // Auth
     this._password = new Password();
     this._cookie = new Cookie();
+
+    // JS-First Component System
+    this._components = {};
+    this._bundler = null;
   }
 
   // ===== FRONTEND =====
@@ -114,6 +125,86 @@ class Rocket {
   responsive(config) {
     this._responsive = new Responsive(config);
     return this._responsive;
+  }
+
+  // ===== JS-FIRST COMPONENT SYSTEM (v1.0.6) =====
+  /**
+   * JS-First: Users define components entirely in JavaScript.
+   * Framework generates full HTML + JS bindings (section-based IDs).
+   * @param {object} config - { component_id, sections: [{section_id, type, text/content, style}] }
+   */
+  component(config) {
+    const comp = new JSComponent(config);
+    this._components[config.component_id] = comp;
+    return comp;
+  }
+
+  /**
+   * Build-time HTML generation (runs on dev machine, not client-side).
+   * @param {JSComponent|object} comp
+   * @returns {string} HTML string with <div id="section-{name}"> IDs
+   */
+  generate_html(comp) {
+    return HtmlGenerator.generateComponentHTML(comp);
+  }
+
+  generate_page_html(page, components) {
+    return HtmlGenerator.generatePageHTML(page, components);
+  }
+
+  /**
+   * Unified bundler: final bundle includes both JS logic and pre-generated HTML,
+   * rocket.js bridges them at runtime for rendering. Also writes to component cache.
+   */
+  bundler(config) {
+    if (!this._bundler || (config && Object.keys(config).length)) {
+      const base = config || (this._componentCache ? { cacheConfig: this._componentCache.config } : {});
+      this._bundler = new Bundler(base);
+    }
+    return this._bundler;
+  }
+
+  build_bundle(componentOrPage, config) {
+    const bundler = this.bundler(config);
+    // Detect if it's a page (has objects or page_id + size) vs component
+    const isPage = componentOrPage && (componentOrPage.page_id !== undefined || componentOrPage.objects !== undefined || componentOrPage._jsComponents !== undefined);
+    if (isPage) return bundler.bundlePage(componentOrPage);
+    return bundler.bundleComponent(componentOrPage);
+  }
+
+  build_page_bundle(page, extraComponents, config) {
+    return this.bundler(config).bundlePage(page, extraComponents);
+  }
+
+  /**
+   * Runtime connection via rocket.js: hydrates pre-generated HTML sections,
+   * connects each HTML section to its JS component logic, applies built-in CSS.
+   * @param {HTMLElement} container - root element containing section-{id} elements
+   * @param {JSComponent|object} component - JS logic
+   */
+  hydrate(container, component) {
+    // If container is a string id, resolve it
+    let el = container;
+    if (typeof container === 'string') {
+      if (typeof document !== 'undefined') el = document.getElementById(container) || document.querySelector(container);
+    }
+    // If component is an id string, look it up
+    let comp = component;
+    if (typeof component === 'string') comp = this._components[component] || this.get_component(component);
+    if (!el || !comp) throw new Error('hydrate requires valid container and component');
+    return HtmlGenerator.hydrate(el, comp);
+  }
+
+  get_component(id) { return this._components[id]; }
+  get_components() { return this._components; }
+
+  // ===== ABOUT WEBPAGE (v1.0.7) =====
+  // Uses frontend code to generate about-webpage.txt in plain English
+  generate_about_webpage(options) {
+    return AboutGenerator.generateAboutWebpageText(options);
+  }
+  write_about_webpage(outPath, options) {
+    return AboutGenerator.writeAboutWebpage(outPath, options);
   }
 
   // ===== BACKEND =====
@@ -219,6 +310,11 @@ class Rocket {
     const pageConfig = page && page.config ? page.config : { page_id: page && page.page_id };
     return Object.assign({}, pageConfig, cache.build_page_payload(page));
   }
+  render_page_payload_with_html(page, config = {}) {
+    const cache = this.component_cache(config);
+    const pageConfig = page && page.config ? page.config : { page_id: page && page.page_id };
+    return Object.assign({}, pageConfig, cache.build_page_payload_with_html(page));
+  }
 
   // ===== DATABASE =====
   get db() { return this._db; }
@@ -240,6 +336,9 @@ class Rocket {
   get_page(id) { return this._pages[id]; }
   get_object(id) { return this._objects[id]; }
   get_layer(id) { return this._layers[id]; }
+  get html_generator() { return HtmlGenerator; }
+  get bundler_class() { return Bundler; }
+  get about_generator() { return AboutGenerator; }
   get_function(id) { return this._functions[id]; }
   get_transition(id) { return this._transitions[id]; }
   get_trigger(id) { return this._triggers[id]; }

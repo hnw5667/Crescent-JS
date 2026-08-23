@@ -82,9 +82,41 @@ my-app/
 
 ---
 
+## JS-First in One Minute (v1.0.6)
+
+Prefer defining components entirely in JavaScript — no manual HTML. The framework generates HTML at build time with `id="section-{name}"`, bundles it with JS, and hydrates it via `rocket.js`.
+
+```js
+const crescent = require('crescent-js');
+
+const hero = crescent.component({
+  component_id: 'hero',
+  sections: [
+    { name: 'title', layer_type: 'text', text: 'Hello, Crescent!', size: 32, colour: '0,0,0', bold: true },
+    { name: 'cta', layer_type: 'shape', colour: '52,152,219', size: { width: 200, height: 50 } }
+  ]
+});
+
+const html = crescent.generate_html(hero);          // build-time, Node
+const bundle = crescent.build_bundle(hero);         // { js, html } unified
+crescent.hydrate(document.getElementById('crescent-root'), hero); // runtime
+```
+
+Build for deployment:
+
+```bash
+crescent build src/app.js ./crescent_build  # pre-generates HTML, warms cache, writes bundle.json
+```
+
+See the [JS-First Component System guide](./js-first.md) for the full workflow.
+
+---
+
 ## Next Steps
 
+- [JS-First Guide](./js-first.md) — New JS-first workflow, section IDs, bundling & hydration
 - [Frontend Guide](./frontend.md) — Learn about pages, objects, layers, and rendering
 - [Backend Guide](./backend.md) — Functions, conditionals, loops, and APIs
 - [API Reference](./api-reference.md) — Complete method documentation
+- [Bundling](./bundling.md) — Unified JS+HTML bundling and `crescent build`
 - [Configuration](./configuration.md) — All configuration options

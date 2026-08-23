@@ -235,6 +235,77 @@ declare namespace rocket {
     position?: Point;
   }
 
+  // ===== JS-First Component System (v1.0.6) =====
+  interface SectionConfig {
+    section_id?: string;
+    section_name?: string;
+    name?: string;
+    id?: string;
+    type?: 'text' | 'image' | 'shape' | 'input' | 'section';
+    section_type?: string;
+    text?: string;
+    content?: string;
+    html?: string;
+    image_location?: string;
+    list_elements?: string[];
+    input_method?: string;
+    box_inner_text?: string;
+    box_length?: number;
+    select?: string | { min?: number; max?: number };
+    style?: Record<string, any>;
+    colour?: string;
+    opacity?: string | number;
+    size?: Size | number;
+    font?: string;
+    bold?: boolean;
+    className?: string;
+    class_name?: string;
+    tag?: string;
+    colour_text?: string;
+    rounded_corners?: string | number;
+    rotate?: string | number;
+    [key: string]: any;
+  }
+
+  interface JSComponentConfig {
+    component_id: string;
+    component_name?: string;
+    component_enabled?: boolean;
+    size?: Size;
+    style?: Record<string, any>;
+    className?: string;
+    class_name?: string;
+    sections?: SectionConfig[] | Record<string, SectionConfig>;
+    modified_at?: number;
+  }
+
+  interface ComponentBundle {
+    component_id: string;
+    html: string;
+    js: any;
+    css: string;
+    sections: string[];
+    bundled_at: number;
+  }
+
+  interface PageBundle {
+    page_id: string;
+    html: string;
+    bundles: ComponentBundle[];
+    bundled_at: number;
+    js: any;
+    cache_payload?: any;
+  }
+
+  interface BundlerConfig {
+    outDir?: string;
+    out_dir?: string;
+    bundleName?: string;
+    bundle_name?: string;
+    cacheConfig?: ComponentCacheConfig;
+    cache_config?: ComponentCacheConfig;
+  }
+
   interface OAuthProviderConfig {
     client_id: string;
     client_secret: string;
@@ -268,6 +339,7 @@ declare namespace rocket {
     position?: Point;
     index?: number;
     component?: any;
+    html?: string;
   }
 
   interface PagePayload {
@@ -595,12 +667,72 @@ declare namespace rocket {
     disable(): this;
     serialize_component(object: any): any;
     resolve_component(object: any, pagePosition?: Point, pageIndex?: number): ComponentResolution;
+    resolve_js_component(component: any, pagePosition?: Point, pageIndex?: number): ComponentResolution;
     store_component(object: any, component?: any): any;
+    store_html(id: string, html: string, js?: any): any;
     get_cached(id: string): any;
+    get_cached_html(id: string): string | null;
     load_cache(): any[];
     save_cache(entries: any[]): void;
     build_page_payload(page: RocketPage | any): { components: ComponentResolution[] };
+    build_page_payload_with_html(page: RocketPage | any): { components: ComponentResolution[] };
     clear(): this;
+  }
+
+  class JSComponent {
+    component_id: string;
+    component_name: string;
+    component_enabled: boolean;
+    size: Size | null;
+    style: Record<string, any>;
+    className: string;
+    modified_at: number;
+    sections: Map<string, SectionConfig>;
+    _element: HTMLElement | null;
+
+    constructor(config: JSComponentConfig);
+    add_section(section: SectionConfig): this;
+    remove_section(section_id: string): this;
+    get_section(section_id: string): SectionConfig | null;
+    get_sections(): SectionConfig[];
+    get_section_ids(): string[];
+    has_section(section_id: string): boolean;
+    set_property(name: string, value: any): this;
+    set_section_property(section_id: string, prop: string, value: any): this;
+    render(): HTMLElement | null;
+    get_element(): HTMLElement | null;
+    serialize(): any;
+    toJSON(): any;
+  }
+
+  class HtmlGenerator {
+    static generateSectionHTML(section: SectionConfig, componentStyle?: Record<string, any>): string;
+    static generateComponentHTML(component: JSComponent | JSComponentConfig | any): string;
+    static generatePageHTML(page: any, components?: any[]): string;
+    static createElement(component: JSComponent | any): HTMLElement;
+    static hydrate(container: HTMLElement, component: JSComponent | any): HTMLElement;
+    static styleToCss(section: SectionConfig, componentStyle?: Record<string, any>): string;
+    static escapeHtml(str: string): string;
+  }
+
+  class Bundler {
+    outDir: string;
+    bundleName: string;
+    cacheConfig: ComponentCacheConfig;
+    constructor(config?: BundlerConfig);
+    get cache(): ComponentCache;
+    generateHTML(component: JSComponent | any): string;
+    generatePageHTML(page: any, components?: any[]): string;
+    bundleComponent(component: JSComponent | any): ComponentBundle;
+    bundlePage(page: any, extraComponents?: any[]): PageBundle;
+    writeBundle(bundle: any, outPath?: string): { jsPath: string; htmlPath: string };
+    emitHydrationScript(bundle: any, outPath?: string): string;
+  }
+
+  class AboutGenerator {
+    static generateAboutWebpageText(options?: { version?: string }): string;
+    static writeAboutWebpage(outPath?: string, options?: { version?: string }): string;
+    static FRONTEND_DIR: string;
   }
 
   class DatabaseSyntax {
@@ -750,6 +882,21 @@ declare namespace rocket {
     collect(config: CollectConfig): Collect;
     boolean(config: BooleanConfig): RocketBoolean;
 
+    // JS-First (v1.0.6)
+    component(config: JSComponentConfig): JSComponent;
+    generate_html(component: JSComponent | any): string;
+    generate_page_html(page: any, components?: any[]): string;
+    bundler(config?: BundlerConfig): Bundler;
+    build_bundle(componentOrPage: any, config?: BundlerConfig): ComponentBundle | PageBundle;
+    build_page_bundle(page: any, extraComponents?: any[], config?: BundlerConfig): PageBundle;
+    hydrate(container: HTMLElement | string, component: JSComponent | string | any): HTMLElement;
+    get_component(id: string): JSComponent | undefined;
+    get_components(): Record<string, JSComponent>;
+
+    // About Webpage (v1.0.7) — plain English frontend explanation from code
+    generate_about_webpage(options?: { version?: string }): string;
+    write_about_webpage(outPath?: string, options?: { version?: string }): string;
+
     print(value: any): any;
     add(a: number, b: number): number;
     subtract(a: number, b: number): number;
@@ -769,11 +916,14 @@ declare namespace rocket {
     tunnel(config?: TunnelConfig): EncryptedTunnel;
     component_cache(config?: ComponentCacheConfig): ComponentCache;
     render_page_payload(page: RocketPage | any, config?: ComponentCacheConfig): PagePayload;
+    render_page_payload_with_html(page: RocketPage | any, config?: ComponentCacheConfig): PagePayload;
 
     get db(): DatabaseSyntax;
     get liveSearch(): LiveSearch;
     get auth(): Auth;
     get renderer(): RocketRenderer;
+    get html_generator(): typeof HtmlGenerator;
+    get bundler_class(): typeof Bundler;
 
     get_page(id: string): RocketPage | undefined;
     get_object(id: string): RocketObject | undefined;
@@ -801,6 +951,8 @@ declare namespace rocket {
     _apis: Record<string, ApiMake>;
     _responsive: Responsive | null;
     _renderer: RocketRenderer;
+    _components: Record<string, JSComponent>;
+    _bundler: Bundler | null;
   }
 
   // ===== Singleton API (the default export is a Rocket instance) =====
@@ -822,6 +974,21 @@ declare namespace rocket {
   function collect(config: CollectConfig): Collect;
   function boolean(config: BooleanConfig): RocketBoolean;
 
+  // JS-First (v1.0.6)
+  function component(config: JSComponentConfig): JSComponent;
+  function generate_html(component: JSComponent | any): string;
+  function generate_page_html(page: any, components?: any[]): string;
+  function bundler(config?: BundlerConfig): Bundler;
+  function build_bundle(componentOrPage: any, config?: BundlerConfig): ComponentBundle | PageBundle;
+  function build_page_bundle(page: any, extraComponents?: any[], config?: BundlerConfig): PageBundle;
+  function hydrate(container: HTMLElement | string, component: JSComponent | string | any): HTMLElement;
+  function get_component(id: string): JSComponent | undefined;
+  function get_components(): Record<string, JSComponent>;
+
+  // About Webpage (v1.0.7)
+  function generate_about_webpage(options?: { version?: string }): string;
+  function write_about_webpage(outPath?: string, options?: { version?: string }): string;
+
   function print(value: any): any;
   function add(a: number, b: number): number;
   function subtract(a: number, b: number): number;
@@ -841,11 +1008,15 @@ declare namespace rocket {
   function tunnel(config?: TunnelConfig): EncryptedTunnel;
   function component_cache(config?: ComponentCacheConfig): ComponentCache;
   function render_page_payload(page: RocketPage | any, config?: ComponentCacheConfig): PagePayload;
+  function render_page_payload_with_html(page: RocketPage | any, config?: ComponentCacheConfig): PagePayload;
 
   const db: DatabaseSyntax;
   const liveSearch: LiveSearch;
   const auth: Auth;
   const renderer: RocketRenderer;
+  const html_generator: typeof HtmlGenerator;
+  const bundler_class: typeof Bundler;
+  const about_generator: typeof AboutGenerator;
 
   function get_page(id: string): RocketPage | undefined;
   function get_object(id: string): RocketObject | undefined;
@@ -857,6 +1028,7 @@ declare namespace rocket {
   function get_loop(id: string): Loop | undefined;
   function get_boolean(id: string): RocketBoolean | undefined;
   function get_api(id: string): ApiMake | undefined;
+  function get_component(id: string): JSComponent | undefined;
 
   const _pages: Record<string, RocketPage>;
   const _objects: Record<string, RocketObject>;
@@ -871,6 +1043,8 @@ declare namespace rocket {
   const _apis: Record<string, ApiMake>;
   const _responsive: Responsive | null;
   const _renderer: RocketRenderer;
+  const _components: Record<string, JSComponent>;
+  const _bundler: Bundler | null;
 
   // Explicit export clause so the reserved word `function` can be exported
   // as a member (via the internal `_function` alias).
@@ -879,23 +1053,26 @@ declare namespace rocket {
     layer, object, page, transition, trigger, responsive, conditional, loop,
     api_call, api_make, collect, boolean, print, add, subtract, multiply,
     divide, sqrt, sin, cos, tan, get_timestamp, redirect, connect_and_pull,
-    compress, decompress, tunnel, component_cache, render_page_payload,
-    db, liveSearch, auth, renderer,
+    compress, decompress, tunnel, component_cache, render_page_payload, render_page_payload_with_html,
+    component, generate_html, generate_page_html, bundler, build_bundle, build_page_bundle, hydrate, get_component, get_components,
+    generate_about_webpage, write_about_webpage,
+    db, liveSearch, auth, renderer, html_generator, bundler_class, about_generator,
     get_page, get_object, get_layer, get_function, get_transition, get_trigger,
     get_conditional, get_loop, get_boolean, get_api,
     _pages, _objects, _layers, _functions, _transitions, _triggers,
-    _conditionals, _loops, _booleans, _collects, _apis, _responsive, _renderer,
+    _conditionals, _loops, _booleans, _collects, _apis, _responsive, _renderer, _components, _bundler,
     Size, Point, CartesianRange, ScalingRatios, TextProperty, LayerConfig,
     ObjectConfig, PageConfig, TransitionChange, TransitionConfig, TriggerAction,
     TriggerConfig, ResponsiveConfig, FunctionConfig, BranchAction, Branch,
     ConditionalConfig, LoopConfig, ApiCallConfig, ApiEndpoint, ApiMakeConfig,
     CollectConfig, BooleanConfig, TunnelConfig, ComponentCacheConfig,
+    SectionConfig, JSComponentConfig, ComponentBundle, PageBundle, BundlerConfig,
     OAuthProviderConfig, PasswordHash, PasswordStrength, SessionPayload,
     ComponentResolution, PagePayload, ConnectOptions, Auth,
     BaseLayer, TextLayer, ImageLayer, ShapeLayer, InputLayer, RocketObject,
     RocketPage, RocketRenderer, Transition, Trigger, Responsive, RocketFunction,
     Conditional, Loop, ApiCall, ApiMake, Collect, RocketBoolean, EncryptedTunnel,
-    ComponentCache, DatabaseSyntax, QueryEngine, FileManager, LiveSearch,
+    ComponentCache, JSComponent, HtmlGenerator, Bundler, AboutGenerator, DatabaseSyntax, QueryEngine, FileManager, LiveSearch,
     Signup, Login, OAuth, Password, Cookie, Rocket
   };
 }
