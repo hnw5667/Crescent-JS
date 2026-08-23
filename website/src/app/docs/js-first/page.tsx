@@ -9,7 +9,7 @@ export default function JsFirstPage() {
       <DocHeader
         title="JS-First Component System"
         description="Write components entirely in JavaScript. The framework generates HTML at build time with deterministic section IDs, bundles JS + HTML, and hydrates via rocket.js — plus a custom plain-English about-webpage.txt per page."
-        badge="v1.0.8"
+        badge="v2.0.0"
       />
 
       <h2 id="overview">Overview</h2>

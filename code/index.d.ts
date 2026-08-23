@@ -1021,15 +1021,15 @@ declare namespace rocket {
     _booleans: Record<string, RocketBoolean>;
     _collects: Record<string, Collect>;
     _apis: Record<string, ApiMake>;
-    _responsive: Responsive | null;
-    _renderer: RocketRenderer;
-    _components: Record<string, JSComponent>;
-    _bundler: Bundler | null;
-    _tabelManager: TabelManager;
-    _fileManager: FileManager;
-    _queryEngine: QueryEngine;
-    _db: DatabaseSyntax;
-    _liveSearch: LiveSearch;
+    _responsive?: Responsive | null;
+    _renderer?: RocketRenderer;
+    _components?: Record<string, JSComponent>;
+    _bundler?: Bundler | null;
+    _tabelManager?: TabelManager;
+    _fileManager?: FileManager;
+    _queryEngine?: QueryEngine;
+    _db?: DatabaseSyntax;
+    _liveSearch?: LiveSearch;
   }
 
   // ===== Singleton API (the default export is a Rocket instance) =====

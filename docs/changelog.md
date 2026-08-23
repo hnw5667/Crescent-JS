@@ -4,6 +4,15 @@ Release history and updates for Crescent.js.
 
 ---
 
+## v2.0.0
+
+### Major Release — Tested in Real Case
+
+- **Real-Case Verification:** All features up to v1.0.9 were tested together with random data in a real execution (`code/test/real_tabel_random.js`): creating tabels with columns, inserting random rows, verifying each row as its own object in sharded `.json` files, checking 160-bit hash bit-by-bit uniqueness, crossing `max_cells` to create second `.json`, handling multiple copies, hidden folders with `crescent tabels --show/--hide` (and `tables` alias), and querying a single tabel via normal searching (`find`, `findOne`, `update`, `delete`, `count`). Random snippet with 5 inserts confirmed sharding (2 parts), copies (`.copy1.json`), and retrieval.
+- **Version bump:** `code/package.json` `1.0.9` → `2.0.0`, `src/phase1/frontend/bundler.js` `version:'2.0.0'`, `website/src/components/navbar.tsx` `v2.0.0`, `code/about-webpage.txt` regenerated with `2.0.0`, `tasks/version.yaml` new `2.0.0` entry. No breaking API changes — major version marks stable, fully-tested foundation (JS-First, Tabel, About, Bundling, Caching, DB, Auth).
+
+---
+
 ## v1.0.9
 
 ### New Features
