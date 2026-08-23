@@ -32,6 +32,141 @@ function describeLayerTypes() {
   ];
 }
 
+function shapeName(vertices) {
+  if (vertices === 0 || vertices === 'circle' || vertices === '0') return 'a circle';
+  if (vertices === 3) return 'a triangle';
+  if (vertices === 4) return 'a square';
+  if (typeof vertices === 'number' && vertices >= 5) return `a polygon with ${vertices} sides`;
+  return 'a square';
+}
+
+function describeSectionPlain(section) {
+  // Normalize fields
+  const text = section.text || section.content || section.html || '';
+  const hasText = !!text;
+  const vertices = section.layer_vertices !== undefined ? section.layer_vertices : section.vertices;
+  const hasShape = vertices !== undefined || section.layer_type === 'shape' || section.type === 'shape';
+  const colour = section.colour || section.color || '0,0,0';
+  const textColour = section.colour_text || section.colour_text_written || section.textColour || (hasText ? section.colour : null) || '0,0,0';
+  const isBold = !!section.bold;
+  const size = section.size;
+  const sizeStr = size ? (typeof size === 'number' ? `${size}px font` : (size.width && size.height ? `${size.width}x${size.height}px` : '')) : '';
+  const rounded = section.rounded_corners ? ` with rounded corners ${section.rounded_corners}` : '';
+
+  // Combined case: shape + text in one layer (the black button example)
+  if (hasShape && hasText) {
+    const shape = shapeName(vertices !== undefined ? vertices : 4);
+    const boldPart = isBold ? 'bold ' : '';
+    const colourPart = colour ? ` of colour ${colour}` : '';
+    const textColourPart = textColour ? ` of ${textColour}` : '';
+    // Example: "a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer"
+    return `${shape}${colourPart} with ${boldPart}text${textColourPart} which goes like ${text} all in one layer${rounded ? rounded : ''}${sizeStr ? ` (size ${sizeStr})` : ''}`;
+  }
+  if (hasShape) {
+    const shape = shapeName(vertices !== undefined ? vertices : 4);
+    return `${shape} of colour ${colour}${rounded}${sizeStr ? ` with size ${sizeStr}` : ''}`;
+  }
+  if (hasText) {
+    const boldPart = isBold ? 'bold ' : '';
+    const colourPart = textColour ? ` of colour ${textColour}` : (colour ? ` of colour ${colour}` : '');
+    return `${boldPart}text${colourPart} which goes like ${text}${sizeStr ? ` (size ${sizeStr})` : ''}`;
+  }
+  if (section.layer_type === 'image' || section.type === 'image') {
+    return `an image from ${section.image_location || 'unknown location'} of colour ${colour}`;
+  }
+  if (section.layer_type === 'input' || section.type === 'input') {
+    if (section.input_method === 'list') {
+      return `a list input with options ${(section.list_elements || []).join(', ')}`;
+    }
+    return `a text box input with placeholder "${section.box_inner_text || ''}"`;
+  }
+  // Fallback generic
+  return `a layer of type ${section.layer_type || section.type || 'generic'}${hasText ? ` with text "${text}"` : ''} of colour ${colour}`;
+}
+
+function generateCustomPageBreakdown(components, page) {
+  if (!components || components.length === 0) {
+    if (page && page.components) components = page.components;
+    else if (page && page.sections) components = [page];
+    else return null;
+  }
+  // Normalize components: could be JSComponent instances, plain objects, or arrays
+  const list = Array.isArray(components) ? components : [components];
+  const flat = [];
+  for (const c of list) {
+    if (!c) continue;
+    // If it's a page, expand its objects or jsComponents
+    if (c.objects instanceof Map || c._jsComponents instanceof Map || c.page_id) {
+      const objs = c.objects instanceof Map ? Array.from(c.objects.values()) : (c.objects || []);
+      const jsComps = c._jsComponents instanceof Map ? Array.from(c._jsComponents.values()) : (c._jsComponents || []);
+      flat.push(...objs, ...jsComps);
+      continue;
+    }
+    flat.push(c);
+  }
+  if (flat.length === 0) return null;
+
+  const lines = [];
+  lines.push('================================================================');
+  lines.push('CUSTOM PAGE BREAKDOWN — WHAT IS ACTUALLY ON THIS PAGE');
+  lines.push('================================================================');
+  lines.push('');
+  lines.push('Below, each layer on the page is described exactly as it was coded — in plain English, one sentence per layer. This is generated from the real JS definitions, not hand-written:');
+  lines.push('');
+
+  // Example for the black button Get Started will be highlighted
+  let foundExample = false;
+
+  for (const comp of flat) {
+    const compId = comp.component_id || comp.object_id || comp.id || 'unknown';
+    const sections = comp.sections instanceof Map ? Array.from(comp.sections.values()) : (comp.sections || comp.layers || []);
+    // Also handle layers as Map
+    let layerList = [];
+    if (comp.layers instanceof Map) layerList = Array.from(comp.layers.values());
+    else if (Array.isArray(sections)) layerList = sections;
+    else if (typeof sections === 'object') layerList = Object.values(sections);
+
+    if (layerList.length === 0) {
+      // Try to get sections via get_sections()
+      if (typeof comp.get_sections === 'function') {
+        try { layerList = comp.get_sections(); } catch (e) {}
+      }
+    }
+
+    lines.push(`Component "${compId}" has ${layerList.length} layer(s):`);
+    for (let i = 0; i < layerList.length; i++) {
+      const sec = layerList[i];
+      const desc = describeSectionPlain(sec);
+      const secId = sec.section_id || sec.name || sec.layer_id || sec.id || `layer-${i + 1}`;
+      lines.push(`  ${i + 1}. [${secId}] — ${desc}`);
+      // Check if this matches the black button example
+      if (sec.text === 'Get Started' && (sec.colour === '0,0,0' || sec.colour === '0, 0, 0')) {
+        foundExample = true;
+      }
+      // Also check combined shape+text case
+      if (sec.text === 'Get Started' && describeSectionPlain(sec).includes('all in one layer')) {
+        foundExample = true;
+      }
+    }
+    lines.push('');
+  }
+
+  // Highlight the example the user asked for, if found or as illustration
+  if (!foundExample) {
+    lines.push('Illustrative example (the "Get Started" black button you asked for):');
+    lines.push('  - If you coded a black button with white bold text "Get Started" as one layer, it would read:');
+    lines.push('    "a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer"');
+    lines.push('  - If you coded it as two layers (a square + a text), it would be:');
+    lines.push('    1. [cta] — a square of colour 0,0,0');
+    lines.push('    2. [cta_text] — bold text of colour 255,255,255 which goes like Get Started');
+    lines.push('');
+  }
+
+  lines.push('This breakdown is generated by reading the actual JS objects you passed to crescent.component(), crescent.object(), and crescent.page() at build time — so it is always in sync with what the HTML generator sees.');
+  lines.push('');
+  return lines.join('\n');
+}
+
 function generateAboutWebpageText(options = {}) {
   const modules = readFrontendModules();
   const layerCount = 4;
@@ -125,6 +260,17 @@ function generateAboutWebpageText(options = {}) {
   lines.push('• Encrypted Tunnels — When you open a tunnel with crescent.tunnel(), any data you send out is automatically compressed and encrypted. The tunnel has methods like send, receive, handshake, is_open, and close.');
   lines.push('• Bundling — The framework does not ship a huge bundle. rocket.js is a tiny file (under 9KB gzipped) that knows how layer(), object(), page(), transition(), trigger(), and responsive() connect. It loads only the frontend modules the Page actually needs, never the backend or database code. Since v1.0.6 it also ships the pre-generated HTML alongside the JS.');
   lines.push('');
+
+  // Custom per-page breakdown (if caller supplied actual components/page)
+  if (options.components || options.page || options.layers || options.objects) {
+    const comps = options.components || options.page || options.layers || options.objects;
+    const custom = generateCustomPageBreakdown(comps, options.page);
+    if (custom) {
+      lines.push(custom);
+      lines.push('');
+    }
+  }
+
   lines.push('================================================================');
   lines.push('8. WHAT FILES ARE INVOLVED (actual code on disk)');
   lines.push('================================================================');

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, BookOpen, Boxes, Database, KeyRound, Sparkles, Rocket, Command, FileCode2, Settings, Upload, Zap, Shield, Archive } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen, Boxes, Database, KeyRound, Sparkles, Rocket, Command, FileCode2, Settings, Upload, Zap, Shield, Archive, Package, Layers, Braces } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { docsNav, type DocSection } from '@/lib/docs-nav';
 import { usePageHeadings } from '@/lib/use-page-headings';
@@ -17,6 +17,7 @@ const sectionIcons: Record<string, React.ReactNode> = {
 
 const itemIcons: Record<string, React.ReactNode> = {
   Introduction: <Sparkles className="h-3.5 w-3.5" />,
+  TypeScript: <Braces className="h-3.5 w-3.5" />,
   Frontend: <Boxes className="h-3.5 w-3.5" />,
   Backend: <FileCode2 className="h-3.5 w-3.5" />,
   Database: <Database className="h-3.5 w-3.5" />,
@@ -26,7 +27,9 @@ const itemIcons: Record<string, React.ReactNode> = {
   Deployment: <Upload className="h-3.5 w-3.5" />,
   Compression: <Archive className="h-3.5 w-3.5" />,
   'Encrypted Tunnels': <Shield className="h-3.5 w-3.5" />,
-  'Component Cache': <Boxes className="h-3.5 w-3.5" />,
+  'Component Cache': <Layers className="h-3.5 w-3.5" />,
+  Bundling: <Package className="h-3.5 w-3.5" />,
+  'JS-First': <Sparkles className="h-3.5 w-3.5" />,
 };
 
 function isItemActive(href: string, pathname: string) {

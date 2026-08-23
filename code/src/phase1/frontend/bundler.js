@@ -260,10 +260,10 @@ class Bundler {
       }
     }
 
-    // Generate about-webpage.txt alongside HTML (uses frontend code, plain English)
+    // Generate about-webpage.txt alongside HTML (uses frontend code, plain English) — custom per page
     if (AboutGenerator && options.writeAbout !== false) {
       try {
-        const aboutText = AboutGenerator.generateAboutWebpageText({ version: payload.version });
+        const aboutText = AboutGenerator.generateAboutWebpageText({ version: payload.version, components: components, page: components.length === 1 && components[0].page_id ? components[0] : null });
         // Write to build output
         fs.writeFileSync(path.join(outDir, 'about-webpage.txt'), aboutText, 'utf-8');
         // Also ensure code/about-webpage.txt stays in sync (for repo)
