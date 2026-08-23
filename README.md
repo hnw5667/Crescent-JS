@@ -22,6 +22,7 @@ Crescent.js is a full-stack JavaScript framework that gives you everything you n
 - **Encrypted Tunnels** — Automatic AES-256-GCM encryption when data is sent out
 - **Optimised Components** — Cached components make frontend rendering faster
 - **JS-First Components (v1.0.6)** — Write components in pure JS; framework generates HTML with `section-{id}` at build time, bundles JS+HTML, and hydrates via `rocket.js`
+- **About Webpage TXT (v1.0.7, custom per-page in v1.0.8)** — Build emits `about-webpage.txt` from `src/phase1/frontend/*.js` in plain English; v1.0.8 makes it custom per page (e.g. `a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer`)
 - **Zero Config** — Get started immediately with sensible defaults
 
 ---

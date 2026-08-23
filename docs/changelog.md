@@ -4,6 +4,22 @@ Release history and updates for Crescent.js.
 
 ---
 
+## v1.0.8
+
+### New Features
+- **Custom About Webpage TXT (per-page)** — `about-webpage.txt` is now custom for the actual page being built, not just generic:
+  - `AboutGenerator` (`src/phase1/frontend/about_generator.js`) now introspects the real `crescent.component()` / `crescent.object()` / `crescent.page()` definitions passed to `Bundler.build()` and emits a `CUSTOM PAGE BREAKDOWN` where each layer is described in plain English in the user-requested style — e.g. a black square with white bold `Get Started` becomes `a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer`. The helper `describeSectionPlain()` handles text, shape, image, input and combined shape+text cases.
+  - `Bundler.build()` now calls `generateAboutWebpageText({ version, components })` so the txt on disk (`<outDir>/about-webpage.txt` and `code/about-webpage.txt`) is always in sync with the bundled HTML’s actual layers. `crescent.generate_about_webpage({ components })` also supports custom.
+  - Home page version bump `v1.0.7` → `v1.0.8` in `website/src/components/navbar.tsx` and docs.
+  - Icons added for previously missing docs items: `TypeScript` → `<Braces>`, `Bundling` → `<Package>`, `JS-First` → `<Sparkles>`, `Component Cache` → `<Layers>` in `website/src/components/sidebar.tsx` (now every item has an icon).
+- **Staging Home Example** — the dummy `home` used for `about-webpage.txt` regeneration includes `hero_title`, `hero_subtitle` and the `get_started` black button as one combined layer to demonstrate the custom sentence.
+
+### Documentation
+- Updated `docs/js-first.md`, `website/src/app/docs/js-first/page.tsx` (badge `v1.0.8`, custom section), and home/navbar version.
+- Regenerated `code/about-webpage.txt` (12.8 KB → 13.8 KB) with custom breakdown.
+
+---
+
 ## v1.0.7
 
 ### New Features

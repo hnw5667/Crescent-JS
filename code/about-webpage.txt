@@ -2,10 +2,10 @@ About This Webpage — How The Frontend Is Made
 (Generated from the actual frontend code in src/phase1/frontend/ — plain English)
 
 This file was generated at build time alongside the HTML, using the real frontend source code.
-Build date: 2026-08-23T07:10:06.938Z
+Build date: 2026-08-23T07:27:21.450Z
 Frontend source directory: src/phase1/frontend/
 Modules found: about_generator.js, base_layer.js, bundler.js, component_cache.js, html_generator.js, image_layer.js, input_layer.js, js_component.js, object.js, page.js, renderer.js, responsive.js, shape_layer.js, text_layer.js, transition.js, trigger.js
-Framework version: 1.0.7
+Framework version: 1.0.8
 
 ================================================================
 1. BIG PICTURE — PAGES, OBJECTS, AND LAYERS

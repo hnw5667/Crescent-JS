@@ -218,7 +218,7 @@ class Bundler {
       return this.bundle_component(c);
     });
     return {
-      version: '1.0.7',
+      version: '1.0.8',
       generated_at: new Date().toISOString(),
       bundles: results
     };

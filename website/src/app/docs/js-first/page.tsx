@@ -8,13 +8,13 @@ export default function JsFirstPage() {
     <>
       <DocHeader
         title="JS-First Component System"
-        description="Write components entirely in JavaScript. The framework generates HTML at build time with deterministic section IDs, bundles JS + HTML, and hydrates via rocket.js — plus a plain-English about-webpage.txt."
-        badge="v1.0.7"
+        description="Write components entirely in JavaScript. The framework generates HTML at build time with deterministic section IDs, bundles JS + HTML, and hydrates via rocket.js — plus a custom plain-English about-webpage.txt per page."
+        badge="v1.0.8"
       />
 
       <h2 id="overview">Overview</h2>
       <p>
-        From v1.0.6 Crescent.js is <strong>JS-first</strong>: a single JavaScript source of truth generates both the JS logic and the full HTML. No manual HTML wiring is needed. Build-time HTML generation runs on your development machine, the bundle ships both artifacts together, and <code>rocket.js</code> hydrates the pre-generated DOM at runtime while applying built-in CSS and connecting each <code>id=&quot;section-&#123;name&#125;&quot;</code> to its JS logic. Generated HTML is cached alongside JS in <code>components-chacke.json</code>. Since <strong>v1.0.7</strong> the same build also emits <code>about-webpage.txt</code> — a plain-English explanation of how the frontend is made, generated directly from <code>src/phase1/frontend/*.js</code>.
+        From v1.0.6 Crescent.js is <strong>JS-first</strong>: a single JavaScript source of truth generates both the JS logic and the full HTML. No manual HTML wiring is needed. Build-time HTML generation runs on your development machine, the bundle ships both artifacts together, and <code>rocket.js</code> hydrates the pre-generated DOM at runtime while applying built-in CSS and connecting each <code>id=&quot;section-&#123;name&#125;&quot;</code> to its JS logic. Generated HTML is cached alongside JS in <code>components-chacke.json</code>. Since <strong>v1.0.7</strong> the same build also emits <code>about-webpage.txt</code> — a plain-English explanation of how the frontend is made, generated directly from <code>src/phase1/frontend/*.js</code>. In <strong>v1.0.8</strong> that file is now <em>custom per page</em>: it also lists each layer on the page in plain English, e.g. a black <code>Get Started</code> button reads as <code>a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer</code>.
       </p>
 
       <Callout type="tip" title="Single source of truth">
@@ -65,7 +65,7 @@ const pageHtml = crescent.generate_page_html(page);`}
 # crescent_build/bundle.json
 # crescent_build/html/<component_id>.html
 # crescent_build/js/<component_id>.json
-# crescent_build/about-webpage.txt  (v1.0.7, plain English)`}
+# crescent_build/about-webpage.txt  (v1.0.8, custom per-page plain English)`}
       />
       <CodeBlock
         filename="bundler"
@@ -74,8 +74,8 @@ const pageHtml = crescent.generate_page_html(page);`}
 const bundle = bundler.bundleComponent(hero);
 // { component_id, js, html, sections: [{ name, id }], timestamp }
 const result = bundler.build([hero, card], { outputDir: './out' });
-// result.path -> bundle.json, result.payload.version === '1.0.7'
-// also writes ./out/about-webpage.txt and code/about-webpage.txt`}
+// result.path -> bundle.json, result.payload.version === '1.0.8'
+// also writes ./out/about-webpage.txt and code/about-webpage.txt (custom per-page)`}
       />
 
       <h2 id="section-ids">Section-Based ID Assignment</h2>
@@ -150,24 +150,25 @@ crescent.build_page_bundle(page);
 const bundler = crescent.bundler();
 bundler.bundlePage(page);
 bundler.build([hero, card], { outputDir: './out' });
-// ./crescent_build/bundle.json -> { version:'1.0.7', generated_at, bundles:[{ component_id, js, html }] }`}
+// ./crescent_build/bundle.json -> { version:'1.0.8', generated_at, bundles:[{ component_id, js, html }] }`}
       />
 
-      <h2 id="about">About Webpage TXT (v1.0.7)</h2>
+      <h2 id="about">About Webpage TXT (v1.0.7 → v1.0.8 custom)</h2>
       <p>
-        With the HTML, the build also generates <code>about-webpage.txt</code> — a plain-English file that explains how the frontend is made, <strong>using the actual frontend code</strong> (<code>src/phase1/frontend/*.js</code>) as its source. It introspects the 16 frontend modules and describes Pages → Objects → Layers, cartesian coordinates, ratio-based scaling, Transitions/Triggers, Renderer, JS-First, and optimisations.
+        With the HTML, the build also generates <code>about-webpage.txt</code> — a plain-English file that explains how the frontend is made, <strong>using the actual frontend code</strong> (<code>src/phase1/frontend/*.js</code>) as its source. It introspects the 16 frontend modules and describes Pages → Objects → Layers, cartesian coordinates, ratio-based scaling, Transitions/Triggers, Renderer, JS-First, and optimisations. Since <strong>v1.0.8</strong> it is <em>custom per page</em>: pass your components/page and each layer is described — e.g. a black square with white bold <code>Get Started</code> becomes <code>a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer</code>.
       </p>
       <CodeBlock
         filename="about"
         language="javascript"
         code={`// Generate or write the file anywhere:
-crescent.generate_about_webpage({ version: '1.0.7' }); // returns string
-crescent.write_about_webpage('./about-webpage.txt'); // writes file
+crescent.generate_about_webpage({ version: '1.0.8' }); // generic
+crescent.generate_about_webpage({ version: '1.0.8', components: [hero] }); // custom per-page
+crescent.write_about_webpage('./about-webpage.txt', { components: [hero] });
 
-// Via Bundler (automatic alongside HTML):
-// ./out/about-webpage.txt  and  code/about-webpage.txt are written on every build
+// Via Bundler (automatic alongside HTML, now custom):
+// ./out/about-webpage.txt  and  code/about-webpage.txt are written on every build with CUSTOM PAGE BREAKDOWN
 const AboutGenerator = require('crescent-js/src/phase1/frontend/about_generator');
-AboutGenerator.generateAboutWebpageText();`}
+AboutGenerator.generateAboutWebpageText({ components: [hero] }); // includes square 0,0,0 + Get Started`}
       />
       <Callout type="tip" title="Plain English">
         Open <code>code/about-webpage.txt</code> or <code>crescent_build/about-webpage.txt</code> to read how the frontend works — no code knowledge required.

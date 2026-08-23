@@ -1,6 +1,6 @@
 {
   "name": "crescent-js",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Crescent.js — A full-stack JavaScript framework with frontend rendering, backend logic, database, and authentication",
   "main": "src/rocket.js",
   "types": "index.d.ts",
