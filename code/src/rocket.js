@@ -42,6 +42,7 @@ const DatabaseSyntax = require('./phase1/database/syntax');
 const QueryEngine = require('./phase1/database/query_engine');
 const FileManager = require('./phase1/database/file_manager');
 const LiveSearch = require('./phase1/database/live_search');
+const { TabelManager } = require('./phase1/database/tabel');
 
 // Phase 1 - Auth
 const Signup = require('./phase1/auth/signup');
@@ -73,6 +74,7 @@ class Rocket {
     this._queryEngine = new QueryEngine(this._fileManager);
     this._db = new DatabaseSyntax(this._queryEngine);
     this._liveSearch = new LiveSearch(this._queryEngine);
+    this._tabelManager = new TabelManager(this._fileManager.base_dir);
 
     // Auth
     this._password = new Password();
@@ -319,6 +321,21 @@ class Rocket {
   // ===== DATABASE =====
   get db() { return this._db; }
   get liveSearch() { return this._liveSearch; }
+
+  // ===== TABELS (v1.0.9) - User-configurable tables with columns, hashing, sharding, copies, hidden folders =====
+  table(config) { return this._tabelManager.table(config); }
+  tabel(config) { return this.table(config); }
+  create_table(config) { return this._tabelManager.createTable(config); }
+  create_tabel(config) { return this.create_table(config); }
+  get_table(name) { return this._tabelManager.getTable(name); }
+  get_tabel(name) { return this.get_table(name); }
+  list_tables() { return this._tabelManager.listTables(); }
+  list_tabels() { return this.list_tables(); }
+  drop_table(name) { return this._tabelManager.dropTable(name); }
+  drop_tabel(name) { return this.drop_table(name); }
+  get tabels() { return this._tabelManager; }
+  get tables() { return this._tabelManager; }
+  get tabelManager() { return this._tabelManager; }
 
   // ===== AUTH =====
   get auth() {

@@ -23,6 +23,10 @@ function usage() {
   console.error('Usage:');
   console.error('  crescent run <app.js> [port]        Run a Crescent.js app');
   console.error('  crescent build <app.js> [outDir]    Build-time HTML generation (JS-First) + unified bundle');
+  console.error('  crescent tabels --show              Show hidden tabel folders');
+  console.error('  crescent tabels --hide              Hide tabel folders');
+  console.error('  crescent tabels --list              List all tabels');
+  console.error('  (aliases: tables, tabel, table)');
   process.exit(1);
 }
 
@@ -40,6 +44,17 @@ function resolvePort(raw) {
 
 function main() {
   const args = process.argv.slice(2);
+
+  // Handle tabels/tables commands (hidden folder show/hide)
+  const tabelCmds = ['tabels', 'tables', 'tabel', 'table'];
+  if (args[0] && tabelCmds.includes(args[0])) {
+    const flag = args[1] || '--list';
+    const { TabelManager } = require('../phase1/database/tabel');
+    const manager = new TabelManager();
+    manager.handleCLI([flag]);
+    process.exit(0);
+    return;
+  }
 
   if (!args[0] || (args[0] !== 'run' && args[0] !== 'build')) usage();
   if (!args[1]) usage();

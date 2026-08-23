@@ -4,6 +4,25 @@ Release history and updates for Crescent.js.
 
 ---
 
+## v1.0.9
+
+### New Features
+- **Tabel System (User-Configurable Tables)** — New `crescent.table()` / `crescent.tabel()` API for the NoSQL DB:
+  - Configure with basic JS: `crescent.table({ table_name, columns: ['id','name','email'], max_cells: 1000, copies: 2, unique_columns: ['email'] })`. Each row is its own object in a `.json` file; multiple tabels supported.
+  - **Single-table queries** via normal searching: `tabel.find({ age: { $gte: 30 } })`, `findOne`, `findById`, `update`, `delete`, `count` — all work on one tabel’s sharded files.
+  - **Unique checks via 160-bit hash bit-by-bit:** each value in a `unique_columns` is hashed to SHA1 (40 hex = 160 bits → 160-char binary). On insert, the system filters existing rows’ hashes bit-by-bit: first bit clears non-matching, then second bit, etc., until a duplicate is found or proven unique. Stored as `_hash` on each row.
+  - **Sharding:** when a `.json` file’s cells (`rows * columns.length`) cross the user-set `max_cells`, the next insert creates a second `.json` (`part_1.json`, `part_2.json`, …) inside that tabel’s folder. Each tabel’s JSONs live together in one hidden folder.
+  - **Copies (redundancy):** `copies: 2` keeps `part_0.json` + `part_0.copy1.json` etc.; reads use primary files, copies provide redundancy.
+  - **Hidden folders:** each tabel’s folder is hidden by default (`.tabel_<name>` → dot-prefix, plus Windows `attrib +h`). `crescent tabels --show` renames to `tabel_<name>` (visible), `crescent tabels --hide` hides again; aliases `tables`/`tabel`/`table` also work. Folders live under `crescent_data/` (or custom `base_dir`).
+  - **Implementation:** `src/phase1/database/tabel.js` (`Tabel`, `TabelManager`, `sha1Hex`, `hexToBinary`) integrated via `src/rocket.js` (`crescent.table` / `tabel`, `create_table`, `get_table`, `list_tabels`, `drop_table`, `tabels` manager) and `src/cli/run.js` (`crescent tabels --show|hide|list`). All code inside `code/` only.
+
+### Documentation
+- New [Tabel Guide](./tabel.md) and updates to [Database Guide](./database.md), [Configuration](./configuration.md), [API Reference](./api-reference.md) for tabel.
+- Type definitions updated (`index.d.ts`: `TabelConfig`, `Tabel`, `TabelManager`, `crescent.table` etc.).
+- Bundled type definitions and `about-webpage.txt` remain at `v1.0.8` generation; `1.0.9` focuses on tabel.
+
+---
+
 ## v1.0.8
 
 ### New Features

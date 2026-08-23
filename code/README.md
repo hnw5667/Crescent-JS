@@ -2,6 +2,7 @@
 
 The complete source code for the Crescent.js framework, imported from the npm package `crescent-js`.
 
+> **v1.0.9** — Tabel system: `crescent.table({ table_name, columns, max_cells, copies, unique_columns })` with 160-bit hash unique checks, sharding, hidden folders (`crescent tabels --show/--hide`).
 > **v1.0.8** — Custom `about-webpage.txt` per page (e.g. `a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer`), home version `v1.0.8`, and icons for TypeScript/Bundling/JS-First.
 > **v1.0.7** added plain-English `about-webpage.txt` generated from `src/phase1/frontend/*.js` alongside HTML.
 > **v1.0.6** added JS-First Component System (`section-{name}` IDs, `rocket.js` hydration).
@@ -28,9 +29,9 @@ code/
 │       ├── backend/           # Functions, conditionals, loops, API calls, API server
 │       ├── database/          # Built-in CRUD database (syntax, query engine, file storage)
 │       └── auth/              # Signup, login, OAuth, password, session cookies
-├── index.d.ts                 # Official TypeScript types (v1.0.8)
+├── index.d.ts                 # Official TypeScript types (v1.0.9)
 ├── about-webpage.txt          # Plain-English frontend explanation (v1.0.7 custom per-page in v1.0.8)
-├── package.json               # v1.0.8
+├── package.json               # v1.0.9
 └── LICENSE
 ```
 

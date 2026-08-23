@@ -781,6 +781,62 @@ declare namespace rocket {
     unlock(collection: string): void;
   }
 
+  interface TabelConfig {
+    table_name?: string;
+    tableName?: string;
+    name?: string;
+    columns?: string[];
+    max_cells?: number;
+    maxCells?: number;
+    max_rows_per_file?: number;
+    maxRowsPerFile?: number;
+    copies?: number;
+    unique_columns?: string[];
+    uniqueColumns?: string[];
+    unique?: string[];
+    base_dir?: string;
+    baseDir?: string;
+    hidden?: boolean;
+  }
+
+  class Tabel {
+    table_name: string;
+    columns: string[];
+    max_cells: number;
+    copies: number;
+    unique_columns: string[];
+    hidden: boolean;
+    base_dir: string;
+    constructor(manager: TabelManager, config: TabelConfig);
+    insert(row: any): any;
+    find(query?: any): any[];
+    findOne(query?: any): any | null;
+    findById(id: string): any | null;
+    update(query: any, updates: any): number;
+    delete(query: any): number;
+    count(query?: any): number;
+    all(): any[];
+    info(): any;
+    drop(): boolean;
+  }
+
+  class TabelManager {
+    base_dir: string;
+    constructor(baseDir?: string);
+    createTable(config: TabelConfig): Tabel;
+    create(config: TabelConfig): Tabel;
+    getTable(tableName: string): Tabel | null;
+    table(config: TabelConfig | string): Tabel;
+    tabel(config: TabelConfig | string): Tabel;
+    hasTable(tableName: string): boolean;
+    exists(tableName: string): boolean;
+    listTables(): any[];
+    dropTable(tableName: string): boolean;
+    show(): number;
+    hide(): number;
+    handleCLI(args: string[]): any;
+  }
+
   class LiveSearch {
     constructor(query_engine: QueryEngine);
     build_index(collection: string, field: string): this;
@@ -918,8 +974,24 @@ declare namespace rocket {
     render_page_payload(page: RocketPage | any, config?: ComponentCacheConfig): PagePayload;
     render_page_payload_with_html(page: RocketPage | any, config?: ComponentCacheConfig): PagePayload;
 
+    // Tabels (v1.0.9) — user-configurable tables with columns, hashing, sharding, copies, hidden folders
+    table(config: TabelConfig | string): Tabel;
+    tabel(config: TabelConfig | string): Tabel;
+    create_table(config: TabelConfig): Tabel;
+    create_tabel(config: TabelConfig): Tabel;
+    get_table(name: string): Tabel | null;
+    get_tabel(name: string): Tabel | null;
+    list_tables(): any[];
+    list_tabels(): any[];
+    drop_table(name: string): boolean;
+    drop_tabel(name: string): boolean;
+
     get db(): DatabaseSyntax;
     get liveSearch(): LiveSearch;
+    get tabels(): TabelManager;
+    get tables(): TabelManager;
+    get tabelManager(): TabelManager;
+    get about_generator(): typeof AboutGenerator;
     get auth(): Auth;
     get renderer(): RocketRenderer;
     get html_generator(): typeof HtmlGenerator;
@@ -953,6 +1025,11 @@ declare namespace rocket {
     _renderer: RocketRenderer;
     _components: Record<string, JSComponent>;
     _bundler: Bundler | null;
+    _tabelManager: TabelManager;
+    _fileManager: FileManager;
+    _queryEngine: QueryEngine;
+    _db: DatabaseSyntax;
+    _liveSearch: LiveSearch;
   }
 
   // ===== Singleton API (the default export is a Rocket instance) =====
@@ -1030,6 +1107,22 @@ declare namespace rocket {
   function get_api(id: string): ApiMake | undefined;
   function get_component(id: string): JSComponent | undefined;
 
+  // Tabels (v1.0.9)
+  function table(config: TabelConfig | string): Tabel;
+  function tabel(config: TabelConfig | string): Tabel;
+  function create_table(config: TabelConfig): Tabel;
+  function create_tabel(config: TabelConfig): Tabel;
+  function get_table(name: string): Tabel | null;
+  function get_tabel(name: string): Tabel | null;
+  function list_tables(): any[];
+  function list_tabels(): any[];
+  function drop_table(name: string): boolean;
+  function drop_tabel(name: string): boolean;
+
+  const tabels: TabelManager;
+  const tables: TabelManager;
+  const tabelManager: TabelManager;
+
   const _pages: Record<string, RocketPage>;
   const _objects: Record<string, RocketObject>;
   const _layers: Record<string, BaseLayer>;
@@ -1056,7 +1149,8 @@ declare namespace rocket {
     compress, decompress, tunnel, component_cache, render_page_payload, render_page_payload_with_html,
     component, generate_html, generate_page_html, bundler, build_bundle, build_page_bundle, hydrate, get_component, get_components,
     generate_about_webpage, write_about_webpage,
-    db, liveSearch, auth, renderer, html_generator, bundler_class, about_generator,
+    table, tabel, create_table, create_tabel, get_table, get_tabel, list_tables, list_tabels, drop_table, drop_tabel,
+    db, liveSearch, auth, renderer, html_generator, bundler_class, about_generator, tabels, tables, tabelManager,
     get_page, get_object, get_layer, get_function, get_transition, get_trigger,
     get_conditional, get_loop, get_boolean, get_api,
     _pages, _objects, _layers, _functions, _transitions, _triggers,
@@ -1066,13 +1160,13 @@ declare namespace rocket {
     TriggerConfig, ResponsiveConfig, FunctionConfig, BranchAction, Branch,
     ConditionalConfig, LoopConfig, ApiCallConfig, ApiEndpoint, ApiMakeConfig,
     CollectConfig, BooleanConfig, TunnelConfig, ComponentCacheConfig,
-    SectionConfig, JSComponentConfig, ComponentBundle, PageBundle, BundlerConfig,
+    SectionConfig, JSComponentConfig, ComponentBundle, PageBundle, BundlerConfig, TabelConfig,
     OAuthProviderConfig, PasswordHash, PasswordStrength, SessionPayload,
     ComponentResolution, PagePayload, ConnectOptions, Auth,
     BaseLayer, TextLayer, ImageLayer, ShapeLayer, InputLayer, RocketObject,
     RocketPage, RocketRenderer, Transition, Trigger, Responsive, RocketFunction,
     Conditional, Loop, ApiCall, ApiMake, Collect, RocketBoolean, EncryptedTunnel,
-    ComponentCache, JSComponent, HtmlGenerator, Bundler, AboutGenerator, DatabaseSyntax, QueryEngine, FileManager, LiveSearch,
+    ComponentCache, JSComponent, HtmlGenerator, Bundler, AboutGenerator, Tabel, TabelManager, DatabaseSyntax, QueryEngine, FileManager, LiveSearch,
     Signup, Login, OAuth, Password, Cookie, Rocket
   };
 }

@@ -44,6 +44,11 @@ export const docsNav: DocSection[] = [
         href: '/docs/database',
       },
       {
+        title: 'Tabel',
+        description: 'User-configurable tables with columns, hashing, sharding, and hidden folders.',
+        href: '/docs/tabel',
+      },
+      {
         title: 'Authentication',
         description: 'Add signup, login, OAuth, and session handling.',
         href: '/docs/authentication',

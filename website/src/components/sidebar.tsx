@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, BookOpen, Boxes, Database, KeyRound, Sparkles, Rocket, Command, FileCode2, Settings, Upload, Zap, Shield, Archive, Package, Layers, Braces } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen, Boxes, Database, KeyRound, Sparkles, Rocket, Command, FileCode2, Settings, Upload, Zap, Shield, Archive, Package, Layers, Braces, Table } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { docsNav, type DocSection } from '@/lib/docs-nav';
 import { usePageHeadings } from '@/lib/use-page-headings';
@@ -21,6 +21,7 @@ const itemIcons: Record<string, React.ReactNode> = {
   Frontend: <Boxes className="h-3.5 w-3.5" />,
   Backend: <FileCode2 className="h-3.5 w-3.5" />,
   Database: <Database className="h-3.5 w-3.5" />,
+  Tabel: <Table className="h-3.5 w-3.5" />,
   Authentication: <KeyRound className="h-3.5 w-3.5" />,
   'API Reference': <BookOpen className="h-3.5 w-3.5" />,
   Configuration: <Settings className="h-3.5 w-3.5" />,
