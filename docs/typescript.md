@@ -1,12 +1,12 @@
-# TypeScript
+# TypeScript (v1.0.5 → v2.5.1)
 
-Use Crescent.js from TypeScript with full type checking and auto-complete.
+Use Crescent.js **v2.5.1** from TypeScript with full type checking and auto-complete.
 
 ---
 
 ## Overview
 
-Since v1.0.5 the npm package `crescent-js` includes an `index.d.ts` declaration file. The
+Since v1.0.5 (now **v2.5.1**) the npm package `crescent-js` includes an `index.d.ts` declaration file. The
 `types` field in `package.json` points at it, so TypeScript finds it automatically — no extra
 setup or `@types` package is needed. Every public method, class, and configuration interface is
 typed to match the real framework API.

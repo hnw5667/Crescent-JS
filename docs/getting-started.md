@@ -82,9 +82,9 @@ my-app/
 
 ---
 
-## JS-First in One Minute (v1.0.6)
+## JS-First in One Minute (v1.0.6 → v2.5.1)
 
-Prefer defining components entirely in JavaScript — no manual HTML. The framework generates HTML at build time with `id="section-{name}"`, bundles it with JS, and hydrates it via `rocket.js`.
+Prefer defining components entirely in JavaScript — no manual HTML. The framework generates HTML at build time with `id="section-{name}"`, bundles it with JS, and hydrates it via `rocket.js`. Current framework version is **v2.5.1**.
 
 ```js
 const crescent = require('crescent-js');
@@ -108,13 +108,26 @@ Build for deployment:
 crescent build src/app.js ./crescent_build  # pre-generates HTML, warms cache, writes bundle.json
 ```
 
-See the [JS-First Component System guide](./js-first.md) for the full workflow.
+Turn any folder into a **Tauri** desktop app (v2.5.1 — Tauri-only, needs Rust):
+
+```bash
+crescent app-build   # Tauri-only
+# 1) Path of folder to make an app
+# 2) Main .js file (Tauri WebView entry)
+# 3) Name of the app
+# 4) Logo image path (→ tauri.bundle.icon)
+# 5) Detects host OS and lets you pick Tauri target OS(s): windows / macos / linux
+# → writes <AppName>-standalone.zip in the same folder (one Tauri <App>-<os>/ per target)
+```
+
+See the [JS-First Component System guide](./js-first.md) and the new [App-Build Guide](./app-build.md) for full workflows.
 
 ---
 
 ## Next Steps
 
 - [JS-First Guide](./js-first.md) — New JS-first workflow, section IDs, bundling & hydration
+- [App-Build Guide](./app-build.md) — Turn any folder into a standalone app (v2.5.1)
 - [Frontend Guide](./frontend.md) — Learn about pages, objects, layers, and rendering
 - [Backend Guide](./backend.md) — Functions, conditionals, loops, and APIs
 - [API Reference](./api-reference.md) — Complete method documentation

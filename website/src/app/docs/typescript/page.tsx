@@ -9,7 +9,7 @@ export default function TypeScriptPage() {
       <DocHeader
         title="TypeScript"
         description="Crescent.js ships official type definitions so TypeScript consumers get full type checking and auto-complete out of the box."
-        badge="v1.0.5 Feature"
+        badge="v2.5.1"
       />
 
       <h2 id="overview">Overview</h2>

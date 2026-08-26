@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Layers, Server, Database, Shield, Code2, Zap, Moon, Github } from 'lucide-react';
+import { ArrowRight, Layers, Server, Database, Shield, Code2, Zap, Moon, Github, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { PrismBackground } from '@/components/prism-background';
@@ -39,6 +39,12 @@ const features = [
     title: 'Responsive by Default',
     description:
       'Ratio-based scaling ensures your application works across mobile, tablet, and desktop seamlessly.',
+  },
+  {
+    icon: Package,
+    title: 'App-Build (v2.5.1 — Tauri-only)',
+    description:
+      'Turn any folder into a Tauri app. crescent app-build → one zip with Tauri bundles (src-tauri + native binaries) per OS.',
   },
   {
     icon: Code2,

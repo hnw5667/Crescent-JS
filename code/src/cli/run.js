@@ -23,6 +23,7 @@ function usage() {
   console.error('Usage:');
   console.error('  crescent run <app.js> [port]        Run a Crescent.js app');
   console.error('  crescent build <app.js> [outDir]    Build-time HTML generation (JS-First) + unified bundle');
+  console.error('  crescent app-build                  Turn any folder into a standalone app (interactive)');
   console.error('  crescent tabels --show              Show hidden tabel folders');
   console.error('  crescent tabels --hide              Hide tabel folders');
   console.error('  crescent tabels --list              List all tabels');
@@ -44,6 +45,27 @@ function resolvePort(raw) {
 
 function main() {
   const args = process.argv.slice(2);
+
+  // Handle app-build (folder → standalone zip) — interactive
+  // Accept `crescent app-build`, `app_build`, `app:build`, and `crescent app build`
+  const isAppBuild = args[0] === 'app-build' || args[0] === 'app_build' || args[0] === 'app:build' || (args[0] === 'app' && args[1] === 'build');
+  if (isAppBuild) {
+    if (args.includes('--help') || args.includes('-h')) {
+      console.log('Usage: crescent app-build');
+      console.log('');
+      console.log('  Interactive prompts:');
+      console.log('    1) Path of the folder that needs to be made an app');
+      console.log('    2) Main .js file (first file that opens when user opens the app)');
+      console.log('    3) Name of the app');
+      console.log('    4) Logo of the app (image path)');
+      console.log('    5) Detect host OS and pick target OS(s) to build for');
+      console.log('  Result: a single .zip in the source folder, holding one standalone folder per target OS');
+      process.exit(0);
+    }
+    const appBuild = require('./app_build');
+    appBuild.cliMain();
+    return;
+  }
 
   // Handle tabels/tables commands (hidden folder show/hide)
   const tabelCmds = ['tabels', 'tables', 'tabel', 'table'];

@@ -9,7 +9,7 @@ export default function CompressionPage() {
       <DocHeader
         title="Compression"
         description="Compress all text and JSON packets so data travels small and opens anywhere."
-        badge="v1.0.4 Feature"
+        badge="v2.5.1"
       />
 
       <h2 id="overview">Overview</h2>

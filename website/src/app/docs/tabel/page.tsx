@@ -9,7 +9,7 @@ export default function TabelPage() {
       <DocHeader
         title="Tabel Guide"
         description="User-configurable tables with columns, 160-bit hash uniqueness, sharding, copies, and hidden folders."
-        badge="v1.0.9"
+        badge="v2.5.1"
       />
 
       <h2 id="overview">Overview</h2>

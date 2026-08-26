@@ -447,7 +447,7 @@ Create a data collector.
 
 ---
 
-## JS-First API (v1.0.6)
+## JS-First API (v1.0.6 → v2.5.1)
 
 ### `crescent.component(config)`
 

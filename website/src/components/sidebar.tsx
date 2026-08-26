@@ -22,6 +22,7 @@ const itemIcons: Record<string, React.ReactNode> = {
   Backend: <FileCode2 className="h-3.5 w-3.5" />,
   Database: <Database className="h-3.5 w-3.5" />,
   Tabel: <Table className="h-3.5 w-3.5" />,
+  'App-Build': <Package className="h-3.5 w-3.5" />,
   Authentication: <KeyRound className="h-3.5 w-3.5" />,
   'API Reference': <BookOpen className="h-3.5 w-3.5" />,
   Configuration: <Settings className="h-3.5 w-3.5" />,

@@ -2,6 +2,8 @@
 
 The complete source code for the Crescent.js framework, imported from the npm package `crescent-js`.
 
+> **v2.5.1 — Tauri-only (patch)** — App-Build: `crescent app-build` turns any folder into a **Tauri** standalone app (Rust + WebView, no Electron) — prompts for folder path, main `.js` entry, app name, logo, detects host OS and lets you pick target OS(s) (`windows` / `macos` / `linux`), scaffolds `src-tauri/tauri.conf.json` + icons and runs `tauri build`; writes a single `.zip` in the same folder holding one Tauri bundle per OS. Version bump `2.5.0` → `2.5.1` (previous `2.0.0` → `2.5.0`).
+> **v2.0.0** — Major tested release (JS-First, Tabel, About, Bundling, Caching, DB, Auth verified).
 > **v1.0.9** — Tabel system: `crescent.table({ table_name, columns, max_cells, copies, unique_columns })` with 160-bit hash unique checks, sharding, hidden folders (`crescent tabels --show/--hide`).
 > **v1.0.8** — Custom `about-webpage.txt` per page (e.g. `a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer`), home version `v1.0.8`, and icons for TypeScript/Bundling/JS-First.
 > **v1.0.7** added plain-English `about-webpage.txt` generated from `src/phase1/frontend/*.js` alongside HTML.
@@ -23,15 +25,17 @@ code/
 ├── src/
 │   ├── rocket.js              # Main entry point
 │   ├── cli/
-│   │   └── bin.js             # CLI entry (`crescent run`)
+│   │   ├── bin.js             # CLI entry (`crescent run`)
+│   │   ├── run.js             # CLI router (run / build / app-build / tabels)
+│   │   └── app_build.js       # v2.5.1 Tauri-only — `crescent app-build` (folder → Tauri standalone zip, Rust required)
 │   └── phase1/
 │       ├── frontend/          # Pages, objects, layers, transitions, triggers
 │       ├── backend/           # Functions, conditionals, loops, API calls, API server
 │       ├── database/          # Built-in CRUD database (syntax, query engine, file storage)
 │       └── auth/              # Signup, login, OAuth, password, session cookies
-├── index.d.ts                 # Official TypeScript types (v1.0.9)
-├── about-webpage.txt          # Plain-English frontend explanation (v1.0.7 custom per-page in v1.0.8)
-├── package.json               # v1.0.9
+├── index.d.ts                 # Official TypeScript types (v2.5.1)
+├── about-webpage.txt          # Plain-English frontend explanation (v1.0.7 custom per-page in v1.0.8, v2.5.1)
+├── package.json               # v2.5.1
 └── LICENSE
 ```
 
@@ -79,8 +83,10 @@ const transition = new Transition({ time: '1s', changes: [] });
 ```bash
 node src/rocket.js
 
-# Or via the CLI
+# Or via the CLI (v2.5.1 — Tauri-only for app-build)
 crescent run <FILE_PATH> [PORT]
+crescent build <FILE_PATH> [outDir]   # JS-First build
+crescent app-build                    # Tauri-only: turn folder into Tauri app (needs Rust + @tauri/cli)
 ```
 
 ## Tests

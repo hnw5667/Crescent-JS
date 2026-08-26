@@ -56,7 +56,7 @@ cache.resolve_component(heroObject);
 > `{ type: 'normal', component }` — sent like before the optimisation existed.
 > For JS-First components the fallback still includes `component.html`.
 
-## JS-First HTML Caching (v1.0.6)
+## JS-First HTML Caching (v1.0.6 → v2.5.1)
 
 JS-First components ship **build-time HTML alongside JS**. The cache stores both:
 

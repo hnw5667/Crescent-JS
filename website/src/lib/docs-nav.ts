@@ -49,6 +49,11 @@ export const docsNav: DocSection[] = [
         href: '/docs/tabel',
       },
       {
+        title: 'App-Build',
+        description: 'Turn any folder into a Tauri app — crescent app-build (v2.5.1 — Tauri-only).',
+        href: '/docs/app-build',
+      },
+      {
         title: 'Authentication',
         description: 'Add signup, login, OAuth, and session handling.',
         href: '/docs/authentication',

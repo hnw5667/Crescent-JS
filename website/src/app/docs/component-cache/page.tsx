@@ -9,7 +9,7 @@ export default function ComponentCachePage() {
       <DocHeader
         title="Component Cache"
         description="Optimise frontend rendering by caching components and only shipping IDs when they haven't changed."
-        badge="v1.0.4 Feature"
+        badge="v2.5.1"
       />
 
       <h2 id="overview">Overview</h2>

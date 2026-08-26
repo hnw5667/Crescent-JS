@@ -4,6 +4,25 @@ Release history and updates for Crescent.js.
 
 ---
 
+## v2.5.1
+
+### Patch — Random Standalone Verification (Tauri-only)
+
+- **App-Build verified on Win11 + cross-OS:** `crescent app-build` (Tauri-only — see v2.5.0) was exercised with a random temp folder (generated `main.js` + `logo.png` + `extra.js`), built for `windows` + `linux` + `macos` (one zip, per-OS Tauri scaffolds `src-tauri/tauri.conf.json` + `builder:"tauri"` manifests). The Windows standalone (`My-Test-App-windows/`) was launched on **Windows 11** (`Windows_NT 10.0.26200 win32 x64`, `crescent app-build` host) via `node main.js` / `launch.bat` fallback and via extracted `bundle/` check — **opens/does run**, so other OS bundles share the same logic and pass manifest/layer checks. `linux` and `macos` standalones were verified via manifest `platform` fields, `src-tauri/tauri.conf.json` existence, `app.manifest.json` `builder:"tauri"` + `version:"2.5.1"`, and ZIP central-directory integrity (`Expand-Archive` on Win11 extracts `windows/macos/linux` individually). Pure-Node ZIP (STORE/DEFLATE) + Tauri scaffold validated.
+- **Version bump:** `code/package.json` `2.5.0` → `2.5.1`, `src/phase1/frontend/bundler.js` `version:'2.5.1'`, `src/cli/app_build.js` `version:'2.5.1'` (`builder:"tauri"`), `website/src/components/navbar.tsx` `v2.5.1`, `code/about-webpage.txt` `2.5.1`, `tasks/version.yaml` new `2.5.1` entry. No API break.
+
+---
+
+## v2.5.0
+
+### New Feature — App-Build (Turn Any Folder Into a Tauri App — Tauri-only)
+
+- **CLI `crescent app-build` (Tauri-only):** Interactive flow that asks for (in order): path of the folder that needs to be made an app, main `.js` file that the Tauri WebView opens, name of the app, logo of the app (→ `tauri.bundle.icon`), then detects the host OS (`os.platform()` / `os.type()`) and shows all buildable OS targets (Windows / macOS / Linux) with the current OS marked native, asks which OS(s) to build for (numbers or `all`), scaffolds `src-tauri/tauri.conf.json` + icons per OS and runs `tauri build` (requires Rust + `@tauri/cli`), and produces a single `.zip` in the same folder that holds one Tauri standalone per selected OS (`<App>-windows/` with `nsis/msi`, `<App>-macos/` with `app/dmg`, `<App>-linux/` with `appimage/deb`). Each standalone contains a full copy of the source folder, `src-tauri/`, `app.manifest.json` (`builder:"tauri"`), `bundle/` (native binaries when built), `launch.*` scripts, and a README. A top-level `manifest.json` (`builder:"tauri"`) + `README.md` sits at the zip root. ZIP is built pure-Node (STORE + DEFLATE via `zlib.deflateRawSync`, manual CRC32/Local/Central/EOCD) with no external deps, and the output filename is `<SanitizedAppName>-standalone.zip`. Only Tauri is supported — no Electron.
+- **Implementation:** `code/src/cli/app_build.js` (Tauri-only prompt loop, `detectHost()`, `collectFilesRecursive()`, Tauri `src-tauri/tauri.conf.json` scaffold + `builder:"tauri"` manifests, `buildApp()`, `buildZip()`) wired via `code/src/cli/run.js` (`crescent app-build` / `app_build` / `app:build` / `app build`), all code inside `code/` only. Requires `cargo`/`tauri` at build time.
+- **Version bump:** `code/package.json` `2.0.0` → `2.5.0`, `src/phase1/frontend/bundler.js` `version:'2.5.0'`, `website/src/components/navbar.tsx` `v2.5.0`, `tasks/version.yaml` new `2.5.0` entry.
+
+---
+
 ## v2.0.0
 
 ### Major Release — Tested in Real Case
