@@ -19,6 +19,16 @@ export const docsNav: DocSection[] = [
         href: '/docs/getting-started',
       },
       {
+        title: 'Playground',
+        description: 'Interactive playground — frontend scaling and backend blocks.',
+        href: '/docs/playground',
+      },
+      {
+        title: 'Examples',
+        description: 'Full-stack contact form and auth system — pure Crescent.js.',
+        href: '/docs/examples',
+      },
+      {
         title: 'TypeScript',
         description: 'Use Crescent.js from TypeScript with bundled type definitions.',
         href: '/docs/typescript',

@@ -78,6 +78,8 @@ console.log('App created successfully!');
 | [Deployment](./docs/deployment.md) | Deploying to production |
 | [JS-First Guide](./docs/js-first.md) | JS-first authoring, build-time HTML, section IDs, bundling & hydration |
 | [App-Build Guide](./docs/app-build.md) | Turn any folder into a **Tauri** standalone app (v2.5.1 — Tauri-only) — `crescent app-build` |
+| [Playground](./docs/playground.md) | Interactive playground — frontend scaling + backend block editor |
+| [Examples](./docs/examples.md) | Contact form & Auth system — full-stack, pure Crescent.js |
 | [Compression](./docs/compression.md) | Compressing text and JSON packets |
 | [Encrypted Tunnels](./docs/encrypted-tunnels.md) | Automatic encrypted data tunnels |
 | [Component Cache](./docs/component-cache.md) | Optimising frontend rendering (now with HTML+JS) |
@@ -92,7 +94,10 @@ console.log('App created successfully!');
 crescent-js/
 ├── code/                  # Framework source code
 ├── docs/                  # Documentation markdown files
-├── website/               # Documentation website
+├── website/               # Documentation website (Next.js, GitHub Pages)
+├── examples/              # Example apps — pure Crescent.js
+│   ├── contact-form/      # name/email/contact form + DB + API
+│   └── auth-system/       # signup/login/session + protected dashboard
 ├── README.md
 ├── LICENSE
 ├── CODE_OF_CONDUCT.md

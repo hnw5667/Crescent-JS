@@ -45,10 +45,19 @@ class ApiMake {
         let body = '';
         req.on('data', chunk => body += chunk);
         req.on('end', () => {
-          try {
-            req.body = body ? unwrap(body, this.secret) : {};
-          } catch {
+          if (!body) {
             req.body = {};
+          } else {
+            try {
+              req.body = unwrap(body, this.secret);
+            } catch {
+              try {
+                req.body = JSON.parse(body);
+              } catch {
+                // Fallback: raw string if not JSON
+                req.body = body;
+              }
+            }
           }
 
           // Run middleware chain

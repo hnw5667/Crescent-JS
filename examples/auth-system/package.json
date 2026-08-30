@@ -1,0 +1,14 @@
+{
+  "name": "crescent-auth-system",
+  "version": "1.0.0",
+  "description": "Crescent.js example — fully working auth (signup, login, session, protected route) with frontend + backend + db",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
+  "dependencies": {
+    "crescent-js": "^2.5.1"
+  },
+  "keywords": ["crescent-js", "example", "auth", "fullstack"]
+}

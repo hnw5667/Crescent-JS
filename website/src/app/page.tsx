@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Layers, Server, Database, Shield, Code2, Zap, Moon, Github, Package } from 'lucide-react';
+import { ArrowRight, Layers, Server, Database, Shield, Code2, Zap, Moon, Github, Package, Play, Boxes } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { PrismBackground } from '@/components/prism-background';
@@ -183,6 +183,33 @@ export default function Home() {
                 <code className="text-white/70">{codeExample}</code>
               </pre>
             </div>
+
+            {/* Playground + Examples banner */}
+            <div
+              className={`mx-auto mt-10 grid max-w-2xl gap-3 sm:grid-cols-2 text-left ${
+                mounted ? 'animate-fade-in' : 'opacity-0'
+              }`}
+              style={{ animationDelay: '0.6s' }}
+            >
+              <Link href="/playground" className="group rounded-xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-md hover:border-white/15 hover:bg-white/[0.06] transition-colors">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-indigo-600"><Play className="h-3.5 w-3.5 text-white" /></span>
+                  Playground
+                  <ArrowRight className="ml-auto h-3.5 w-3.5 text-white/40 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+                <p className="mt-1.5 text-xs leading-relaxed text-white/50">Test scaling, build UIs visually and chain backend blocks — in the browser, export to <span className="font-mono text-white/70">app.js</span>.</p>
+                <div className="mt-2 inline-flex rounded-full bg-purple-500/15 px-2 py-0.5 text-[11px] font-medium text-purple-300">Frontend scaling • Block backend • Runs on GitHub Pages</div>
+              </Link>
+              <Link href="/docs/examples" className="group rounded-xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-md hover:border-white/15 hover:bg-white/[0.06] transition-colors">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10"><Boxes className="h-3.5 w-3.5 text-white" /></span>
+                  Examples
+                  <ArrowRight className="ml-auto h-3.5 w-3.5 text-white/40 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+                <p className="mt-1.5 text-xs leading-relaxed text-white/50">Two complete apps — <span className="text-white/80">contact form</span> + <span className="text-white/80">auth system</span> — pure Crescent.js.</p>
+                <div className="mt-2 font-mono text-[11px] text-white/40">examples/contact-form • examples/auth-system</div>
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -215,6 +242,101 @@ export default function Home() {
                   </CardHeader>
                 </Card>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Playground + Examples Showcase */}
+        <section className="py-20 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-3">
+                Try it <span className="gradient-text">live</span>, ship today.
+              </h2>
+              <p className="text-white/40 max-w-2xl mx-auto">
+                The new playground runs entirely in the browser (GitHub Pages static export). Two full-stack example apps ship in <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs">examples/</code> — pure Crescent.js.
+              </p>
+            </div>
+            <div className="grid gap-5 lg:grid-cols-3">
+              <Card className="group relative overflow-hidden border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-indigo-500/10 p-6 hover:border-violet-500/30 transition-colors">
+                <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-violet-500/10 blur-3xl" />
+                <div className="relative">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600">
+                    <Play className="h-5 w-5 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">Playground</CardTitle>
+                  <CardDescription className="mt-2 text-sm leading-relaxed">
+                    Build a frontend visually, test cartesian scaling at 375 / 768 / 1200px, and chain backend blocks (Validate → DB → API) like nodes. Exports Crescent code.
+                  </CardDescription>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link href="/playground">
+                      <Button size="sm" className="group/btn">
+                        Open Playground <ArrowRight className="ml-1 h-3 w-3 group-hover/btn:translate-x-0.5 transition-transform" />
+                      </Button>
+                    </Link>
+                    <Link href="/docs/playground">
+                      <Button size="sm" variant="outline">
+                        Docs
+                      </Button>
+                    </Link>
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-xs text-violet-300">Scaling slider</span>
+                    <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-xs text-violet-300">Block nodes</span>
+                    <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-xs text-violet-300">Code export</span>
+                  </div>
+                </div>
+              </Card>
+              <Card className="group relative overflow-hidden border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 p-6 hover:border-emerald-500/30 transition-colors">
+                <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-emerald-500/10 blur-3xl" />
+                <div className="relative">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600">
+                    <Boxes className="h-5 w-5 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">Contact Form</CardTitle>
+                  <CardDescription className="mt-2 text-sm leading-relaxed">
+                    Collects <strong className="text-white">name</strong>, <strong className="text-white">email</strong>, <strong className="text-white">contact (optional)</strong> — frontend + <code>collect</code>/<code>conditional</code> + <code>db</code> + <code>api_make</code> REST.
+                  </CardDescription>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link href="/docs/examples">
+                      <Button size="sm" variant="outline" className="border-emerald-500/20 hover:bg-emerald-500/10">
+                        View example
+                      </Button>
+                    </Link>
+                    <a href="https://github.com/hnw5667/Crescent-JS/tree/main/examples/contact-form" target="_blank" rel="noopener noreferrer">
+                      <Button size="sm" variant="ghost" className="text-white/60 hover:text-white">
+                        <Github className="mr-1 h-3.5 w-3.5" /> Code
+                      </Button>
+                    </a>
+                  </div>
+                  <div className="mt-4 font-mono text-xs text-white/30">examples/contact-form/app.js • :3000</div>
+                </div>
+              </Card>
+              <Card className="group relative overflow-hidden border-sky-500/20 bg-gradient-to-br from-sky-500/10 to-blue-500/10 p-6 hover:border-sky-500/30 transition-colors">
+                <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-sky-500/10 blur-3xl" />
+                <div className="relative">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-600 to-blue-600">
+                    <Shield className="h-5 w-5 text-white" />
+                  </div>
+                  <CardTitle className="text-lg">Auth System</CardTitle>
+                  <CardDescription className="mt-2 text-sm leading-relaxed">
+                    Signup / login / session + protected dashboard — <code>auth.signup</code>/<code>login</code>/<code>cookie</code>, PBKDF2, lockout, 3 pages + API.
+                  </CardDescription>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link href="/docs/examples">
+                      <Button size="sm" variant="outline" className="border-sky-500/20 hover:bg-sky-500/10">
+                        View example
+                      </Button>
+                    </Link>
+                    <a href="https://github.com/hnw5667/Crescent-JS/tree/main/examples/auth-system" target="_blank" rel="noopener noreferrer">
+                      <Button size="sm" variant="ghost" className="text-white/60 hover:text-white">
+                        <Github className="mr-1 h-3.5 w-3.5" /> Code
+                      </Button>
+                    </a>
+                  </div>
+                  <div className="mt-4 font-mono text-xs text-white/30">examples/auth-system/app.js • :3001</div>
+                </div>
+              </Card>
             </div>
           </div>
         </section>

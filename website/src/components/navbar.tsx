@@ -11,6 +11,8 @@ import { GITHUB_URL, DISCORD_URL, NPM_URL } from '@/lib/links';
 
 const navItems = [
   { label: 'Docs', href: '/docs/getting-started' },
+  { label: 'Playground', href: '/playground' },
+  { label: 'Examples', href: '/examples' },
   { label: 'API Reference', href: '/docs/api-reference' },
   { label: 'Contact', href: '/contact' },
 ];

@@ -17,6 +17,8 @@ const sectionIcons: Record<string, React.ReactNode> = {
 
 const itemIcons: Record<string, React.ReactNode> = {
   Introduction: <Sparkles className="h-3.5 w-3.5" />,
+  Playground: <Layers className="h-3.5 w-3.5" />,
+  Examples: <Boxes className="h-3.5 w-3.5" />,
   TypeScript: <Braces className="h-3.5 w-3.5" />,
   Frontend: <Boxes className="h-3.5 w-3.5" />,
   Backend: <FileCode2 className="h-3.5 w-3.5" />,

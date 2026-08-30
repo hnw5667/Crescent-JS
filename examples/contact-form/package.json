@@ -1,0 +1,14 @@
+{
+  "name": "crescent-contact-form",
+  "version": "1.0.0",
+  "description": "Crescent.js example — contact form (name, email, contact optional) with frontend + backend + db",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js"
+  },
+  "dependencies": {
+    "crescent-js": "^2.5.1"
+  },
+  "keywords": ["crescent-js", "example", "contact-form", "fullstack"]
+}
