@@ -240,6 +240,24 @@ export default function Playground() {
   const fCode = useMemo(() => genFrontend(page, objs), [page, objs]);
   const bCode = useMemo(() => genBackend(blocks), [blocks]);
   const fullCode = useMemo(() => `${fCode}\n// --- Backend ---\n${bCode}`, [fCode, bCode]);
+  const orderedBlocks = useMemo(() => {
+    if (!blocks.length) return [];
+    const hasLinks = blocks.some(b => b.next);
+    if (!hasLinks) return blocks;
+    const map = new Map(blocks.map(b => [b.id, b]));
+    const visited = new Set<string>();
+    const result: Block[] = [];
+    let start = blocks.find(b => !blocks.some(x => x.next === b.id));
+    if (!start) start = blocks[0];
+    let cur: Block | undefined = start;
+    while (cur && !visited.has(cur.id)) {
+      visited.add(cur.id);
+      result.push(cur);
+      cur = cur.next ? map.get(cur.next) : undefined;
+    }
+    for (const b of blocks) if (!visited.has(b.id)) result.push(b);
+    return result;
+  }, [blocks]);
 
   const updO = (id: string, p: Partial<ObjConfig>) => setObjs(v => v.map(o => (o.id === id ? { ...o, ...p } : o)));
   const updL = (oid: string, lid: string, p: Partial<LayerConfig>) => setObjs(v => v.map(o => (o.id === oid ? { ...o, layers: o.layers.map(l => (l.id === lid ? { ...l, ...p } : l)) } : o)));
@@ -797,21 +815,43 @@ export default function Playground() {
                     </div>
                   </div>
                 ) : (
-                  <div className="relative space-y-3">
-                    <div className="pointer-events-none absolute bottom-8 left-[22px] top-8 w-0.5 bg-gradient-to-b from-violet-500/50 via-indigo-500/30 to-emerald-500/50" />
-                    {blocks.map((b, i) => {
+                  <div className="relative">
+                    {/* Backbone */}
+                    <div className="pointer-events-none absolute bottom-4 left-6 top-4 w-px bg-gradient-to-b from-violet-500/25 via-white/5 to-emerald-500/20" />
+                    <div className="space-y-0">
+                    {orderedBlocks.map((b, i) => {
                       const d = BLOCK_DEFS[b.type];
                       const isSelected = selB === b.id;
                       const isConnectSource = connectFrom === b.id;
+                      const isLast = i === orderedBlocks.length - 1;
+                      const hasNext = !!b.next;
                       const target = b.next ? blocks.find(x => x.id === b.next) : null;
-                      const hasNext = i < blocks.length - 1 || !!b.next;
                       return (
-                        <div key={b.id} className="relative">
+                        <div key={b.id} className="relative flex gap-4">
+                          {/* Timeline */}
+                          <div className="relative flex w-12 shrink-0 flex-col items-center">
+                            <div className={`flex h-9 w-9 items-center justify-center rounded-xl border-2 bg-[#0f0f14] text-[11px] font-bold text-white shadow-md transition-all ${isSelected ? 'border-violet-500 ring-4 ring-violet-500/20 scale-105' : 'border-white/10'} ${isConnectSource ? 'border-amber-400 ring-4 ring-amber-400/30 animate-pulse' : ''}`} style={{ background: d.color, borderColor: isSelected ? '#8b5cf6' : isConnectSource ? '#fbbf24' : d.color }}>
+                              {i + 1}
+                            </div>
+                            {!isLast && (
+                              <div className="relative mt-1 flex flex-1 flex-col items-center">
+                                <div className={`w-0.5 flex-1 ${hasNext ? '' : 'border-l border-dashed border-white/10 bg-transparent'}`} style={{ background: hasNext ? `linear-gradient(to bottom, ${d.color}, rgba(255,255,255,0.08))` : undefined, minHeight: 16 }} />
+                                {hasNext && (
+                                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rounded-full bg-[#0f0f14] p-1 ring-1 ring-white/10">
+                                    <ArrowRight className="h-2.5 w-2.5 rotate-90 text-violet-400" />
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                          {/* Card */}
+                          <div className="min-w-0 flex-1 pb-4">
                           <div
                             onClick={() => setSelB(b.id)}
                             className={`group relative flex gap-3 rounded-2xl border p-4 cursor-pointer backdrop-blur-sm transition-all hover:-translate-y-[1px] ${isSelected ? 'border-violet-500 bg-gradient-to-br from-violet-500/15 to-indigo-500/10 shadow-xl shadow-violet-500/15 ring-1 ring-violet-500/20' : 'border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02] hover:border-white/20 hover:from-white/[0.06] hover:to-white/[0.03] hover:shadow-lg'} ${isConnectSource ? 'ring-2 ring-amber-400/50' : ''}`}
                           >
-                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-lg ring-1 ring-white/10" style={{ background: d.color }}>
+                            <div className="absolute left-0 top-3 bottom-3 w-1 rounded-full opacity-60 group-hover:opacity-100 transition-opacity" style={{ background: d.color }} />
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-lg ring-1 ring-white/10 ml-2" style={{ background: d.color }}>
                               {d.icon}
                             </div>
                             <div className="min-w-0 flex-1">
@@ -883,17 +923,14 @@ export default function Playground() {
                               </button>
                             </div>
                           </div>
-                          {hasNext && (
-                            <div className="ml-[22px] flex h-3 items-center">
-                              <div className="h-3 w-0.5 bg-white/10" />
-                            </div>
-                          )}
+                          </div>
                         </div>
                       );
                     })}
+                    </div>
                   </div>
                 )}
-                {connectFrom && <div className="mt-4 flex items-center gap-2 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-200"><Link2 className="h-4 w-4" /> Select target block’s <span className="font-mono">🔗</span> to connect from <span className="font-semibold">{BLOCK_DEFS[blocks.find(b => b.id === connectFrom)?.type!]?.label}</span> →</div>}
+                {connectFrom && <div className="mt-4 flex items-center gap-2 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-200"><Link2 className="h-4 w-4" /> Now tap another block’s <span className="font-mono">🔗</span> to connect from <span className="font-semibold">{BLOCK_DEFS[blocks.find(b => b.id === connectFrom)?.type!]?.label}</span> →</div>}
                 {out && (
                   <div className="mt-4 overflow-hidden rounded-xl border border-emerald-500/20 bg-emerald-500/5">
                     <div className="flex items-center gap-2 border-b border-emerald-500/10 bg-emerald-500/10 px-4 py-2">
@@ -1063,8 +1100,8 @@ export default function Playground() {
                   {copied ? <Check className="mr-1.5 h-3.5 w-3.5 text-emerald-600" /> : <Copy className="mr-1.5 h-3.5 w-3.5" />} {copied ? 'Copied!' : 'Copy full app'}
                 </Button>
               </div>
-              <div className="overflow-auto bg-[#0f0f14] p-6">
-                <div className="flex min-w-max items-center gap-3">
+              <div className="overflow-auto bg-[#0a0a0f] p-8 bg-[radial-gradient(ellipse_at_top,rgba(139,92,246,0.06),transparent_50%)]">
+                <div className="flex min-w-max items-center gap-4">
                   <div className="group flex min-w-[124px] flex-col items-center justify-center rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-600/15 via-indigo-600/10 to-violet-900/10 px-6 py-6 text-center shadow-lg backdrop-blur-sm transition-all hover:border-violet-500/30 hover:shadow-violet-500/10 hover:-translate-y-0.5">
                     <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 shadow-md ring-1 ring-white/10">
                       <Layers className="h-4 w-4 text-white" />
@@ -1073,19 +1110,30 @@ export default function Playground() {
                     <div className="font-mono text-[11px] text-violet-300/60">form inputs</div>
                     <span className="mt-2 rounded-full bg-violet-500/15 px-2.5 py-1 font-mono text-[10px] font-medium text-violet-200 ring-1 ring-violet-500/20">{objs.length} objects</span>
                   </div>
-                  <div className="flex h-px w-6 shrink-0 items-center justify-center">
-                    <ArrowRight className="h-4 w-4 text-white/20" />
-                  </div>
-                  {blocks.map(b => (
-                    <div key={b.id} className="flex items-center gap-3">
-                      <div className="group flex min-w-[128px] flex-col items-center justify-center rounded-2xl px-5 py-5 text-center text-white shadow-xl ring-1 ring-white/10 transition-all hover:shadow-lg hover:-translate-y-0.5" style={{ background: BLOCK_DEFS[b.type].color }}>
-                        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 text-sm font-bold shadow-sm ring-1 ring-white/15">{BLOCK_DEFS[b.type].icon}</div>
-                        <div className="mt-2 text-xs font-semibold leading-tight tracking-wide">{BLOCK_DEFS[b.type].label}</div>
-                        <div className="rounded-full bg-black/15 px-2 py-0.5 font-mono text-[10px] font-medium opacity-90">{b.type}</div>
-                      </div>
-                      <ArrowRight className="h-4 w-4 shrink-0 text-white/20" />
+                  <div className="flex w-8 shrink-0 items-center justify-center">
+                    <div className="h-0.5 w-6 rounded-full bg-gradient-to-r from-violet-500/60 via-violet-500/30 to-violet-500/10" />
+                    <div className="flex h-5 w-5 -ml-1 items-center justify-center rounded-full bg-[#0f0f14] ring-1 ring-violet-500/20">
+                      <ArrowRight className="h-3 w-3 text-violet-400" />
                     </div>
-                  ))}
+                  </div>
+                  {blocks.map((b, idx) => {
+                    const isLast = idx === blocks.length - 1;
+                    return (
+                      <div key={b.id} className="flex items-center gap-2">
+                        <div className="group flex min-w-[132px] flex-col items-center justify-center rounded-2xl px-5 py-5 text-center text-white shadow-xl ring-1 ring-white/10 transition-all hover:-translate-y-1 hover:shadow-2xl" style={{ background: BLOCK_DEFS[b.type].color }}>
+                          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 text-sm font-bold shadow-sm ring-1 ring-white/15">{BLOCK_DEFS[b.type].icon}</div>
+                          <div className="mt-2 text-xs font-semibold leading-tight tracking-wide">{BLOCK_DEFS[b.type].label}</div>
+                          <div className="rounded-full bg-black/20 px-2 py-0.5 font-mono text-[10px] font-medium opacity-90 ring-1 ring-white/10">{b.type}</div>
+                        </div>
+                        <div className="flex w-8 shrink-0 items-center justify-center">
+                          <div className="h-0.5 w-6 rounded-full" style={{ background: isLast ? 'linear-gradient(to right, rgba(16,185,129,0.6), rgba(16,185,129,0.15))' : `linear-gradient(to right, ${BLOCK_DEFS[b.type].color}, rgba(255,255,255,0.15))` }} />
+                          <div className="flex h-5 w-5 -ml-1 items-center justify-center rounded-full bg-[#0f0f14] ring-1 ring-white/10">
+                            <ArrowRight className="h-3 w-3 text-white/60" />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                   <div className="group flex min-w-[124px] flex-col items-center justify-center rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-600/15 via-teal-600/10 to-emerald-900/10 px-6 py-6 text-center shadow-lg backdrop-blur-sm transition-all hover:border-emerald-500/30 hover:shadow-emerald-500/10 hover:-translate-y-0.5">
                     <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 shadow-md ring-1 ring-white/10">
                       <Database className="h-4 w-4 text-white" />
