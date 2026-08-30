@@ -726,16 +726,16 @@ export default function Playground() {
                             <button
                               key={k}
                               onClick={() => addB(k)}
-                              className="group flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.02] px-3 py-2.5 text-left transition-all hover:border-white/10 hover:bg-white/5"
+                              className="group flex items-center gap-3 rounded-xl border border-white/5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] px-3 py-2.5 text-left backdrop-blur-sm transition-all hover:border-violet-500/30 hover:from-violet-500/10 hover:to-indigo-500/5 hover:shadow-md hover:shadow-violet-500/10 hover:-translate-y-[1px]"
                             >
-                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white shadow-lg" style={{ background: d.color }}>
+                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-md ring-1 ring-white/10" style={{ background: d.color }}>
                                 {d.icon}
                               </span>
                               <span className="min-w-0 flex-1">
-                                <span className="block text-sm font-medium leading-none text-white group-hover:text-violet-200">{d.label}</span>
-                                <span className="font-mono text-[11px] text-zinc-500">{d.desc}</span>
+                                <span className="block text-sm font-medium leading-none text-white group-hover:text-violet-100">{d.label}</span>
+                                <span className="font-mono text-[11px] text-zinc-500 group-hover:text-zinc-400">{d.desc}</span>
                               </span>
-                              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/5 text-zinc-400 group-hover:bg-violet-500 group-hover:text-white transition-colors">
+                              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/5 text-zinc-400 ring-1 ring-white/5 group-hover:bg-violet-500 group-hover:text-white group-hover:ring-violet-400/50 transition-all">
                                 <Plus className="h-3 w-3" />
                               </span>
                             </button>
@@ -809,9 +809,9 @@ export default function Playground() {
                         <div key={b.id} className="relative">
                           <div
                             onClick={() => setSelB(b.id)}
-                            className={`group relative flex gap-3 rounded-xl border p-4 cursor-pointer transition-all ${isSelected ? 'border-violet-500 bg-violet-500/10 shadow-lg shadow-violet-500/10' : 'border-white/10 bg-white/[0.03] hover:border-white/15 hover:bg-white/[0.05]'} ${isConnectSource ? 'ring-2 ring-amber-400/50' : ''}`}
+                            className={`group relative flex gap-3 rounded-2xl border p-4 cursor-pointer backdrop-blur-sm transition-all hover:-translate-y-[1px] ${isSelected ? 'border-violet-500 bg-gradient-to-br from-violet-500/15 to-indigo-500/10 shadow-xl shadow-violet-500/15 ring-1 ring-violet-500/20' : 'border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02] hover:border-white/20 hover:from-white/[0.06] hover:to-white/[0.03] hover:shadow-lg'} ${isConnectSource ? 'ring-2 ring-amber-400/50' : ''}`}
                           >
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-md" style={{ background: d.color }}>
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-lg ring-1 ring-white/10" style={{ background: d.color }}>
                               {d.icon}
                             </div>
                             <div className="min-w-0 flex-1">
@@ -1065,34 +1065,34 @@ export default function Playground() {
               </div>
               <div className="overflow-auto bg-[#0f0f14] p-6">
                 <div className="flex min-w-max items-center gap-3">
-                  <div className="flex min-w-[110px] flex-col items-center justify-center rounded-xl border border-violet-500/20 bg-gradient-to-br from-violet-500/15 to-indigo-500/15 px-6 py-5 text-center shadow-sm">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/20">
-                      <Layers className="h-4 w-4 text-violet-400" />
+                  <div className="group flex min-w-[124px] flex-col items-center justify-center rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-600/15 via-indigo-600/10 to-violet-900/10 px-6 py-6 text-center shadow-lg backdrop-blur-sm transition-all hover:border-violet-500/30 hover:shadow-violet-500/10 hover:-translate-y-0.5">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 shadow-md ring-1 ring-white/10">
+                      <Layers className="h-4 w-4 text-white" />
                     </div>
-                    <div className="mt-2 text-xs font-semibold text-white">Frontend</div>
+                    <div className="mt-2 text-xs font-semibold tracking-wide text-white">Frontend</div>
                     <div className="font-mono text-[11px] text-violet-300/60">form inputs</div>
-                    <span className="mt-2 rounded-full bg-violet-500/15 px-2 py-0.5 text-[10px] font-medium text-violet-300">{objs.length} objs</span>
+                    <span className="mt-2 rounded-full bg-violet-500/15 px-2.5 py-1 font-mono text-[10px] font-medium text-violet-200 ring-1 ring-violet-500/20">{objs.length} objects</span>
                   </div>
                   <div className="flex h-px w-6 shrink-0 items-center justify-center">
                     <ArrowRight className="h-4 w-4 text-white/20" />
                   </div>
                   {blocks.map(b => (
                     <div key={b.id} className="flex items-center gap-3">
-                      <div className="flex min-w-[110px] flex-col items-center justify-center rounded-xl px-5 py-4 text-center text-white shadow-md" style={{ background: BLOCK_DEFS[b.type].color }}>
-                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/15 text-sm font-bold">{BLOCK_DEFS[b.type].icon}</div>
-                        <div className="mt-1 text-xs font-semibold leading-tight">{BLOCK_DEFS[b.type].label}</div>
-                        <div className="font-mono text-[10px] opacity-70">{b.type}</div>
+                      <div className="group flex min-w-[128px] flex-col items-center justify-center rounded-2xl px-5 py-5 text-center text-white shadow-xl ring-1 ring-white/10 transition-all hover:shadow-lg hover:-translate-y-0.5" style={{ background: BLOCK_DEFS[b.type].color }}>
+                        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 text-sm font-bold shadow-sm ring-1 ring-white/15">{BLOCK_DEFS[b.type].icon}</div>
+                        <div className="mt-2 text-xs font-semibold leading-tight tracking-wide">{BLOCK_DEFS[b.type].label}</div>
+                        <div className="rounded-full bg-black/15 px-2 py-0.5 font-mono text-[10px] font-medium opacity-90">{b.type}</div>
                       </div>
                       <ArrowRight className="h-4 w-4 shrink-0 text-white/20" />
                     </div>
                   ))}
-                  <div className="flex min-w-[110px] flex-col items-center justify-center rounded-xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/15 to-teal-500/15 px-6 py-5 text-center shadow-sm">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/20">
-                      <Database className="h-4 w-4 text-emerald-400" />
+                  <div className="group flex min-w-[124px] flex-col items-center justify-center rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-600/15 via-teal-600/10 to-emerald-900/10 px-6 py-6 text-center shadow-lg backdrop-blur-sm transition-all hover:border-emerald-500/30 hover:shadow-emerald-500/10 hover:-translate-y-0.5">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 shadow-md ring-1 ring-white/10">
+                      <Database className="h-4 w-4 text-white" />
                     </div>
-                    <div className="mt-2 text-xs font-semibold text-white">DB Response</div>
-                    <div className="font-mono text-[11px] text-emerald-300/60">201 / JSON</div>
-                    <span className="mt-2 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300">crescent.db</span>
+                    <div className="mt-2 text-xs font-semibold tracking-wide text-white">DB Response</div>
+                    <div className="font-mono text-[11px] text-emerald-300/60">201 Created</div>
+                    <span className="mt-2 rounded-full bg-emerald-500/15 px-2.5 py-1 font-mono text-[10px] font-medium text-emerald-200 ring-1 ring-emerald-500/20">JSON • crescent.db</span>
                   </div>
                 </div>
               </div>
