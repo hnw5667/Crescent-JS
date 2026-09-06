@@ -9,7 +9,7 @@ const os = require('os');
 
 const ComponentCache = require('../../../src/phase1/frontend/component_cache');
 
-const CACHE_FILE_NAME = 'components-chacke.json';
+const CACHE_FILE_NAME = 'components-cache.json';
 
 let passed = 0;
 let failed = 0;
