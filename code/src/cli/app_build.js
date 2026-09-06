@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Crescent.js CLI — app-build (v2.5.1 — Tauri-only)
+ * Crescent.js CLI — app-build (v2.6.0 — Tauri-only)
  * Turn any folder into a Tauri desktop app via one zip per platform.
  * Only Tauri (Rust + WebView) is supported — no Electron/Neutralino.
  *
@@ -370,7 +370,7 @@ async function buildApp(options) {
     const manifest = {
       appName,
       appNameSafe: safeName,
-      version: '2.5.1',
+      version: '2.6.0',
       builder: 'tauri',
       platform: target.id,
       hostPlatform: host.platform,
@@ -406,7 +406,7 @@ async function buildApp(options) {
   const topManifest = {
     appName,
     appNameSafe: safeName,
-    version: '2.5.1',
+    version: '2.6.0',
     builder: 'tauri',
     main: mainEntry,
     logo: logoAbs ? path.basename(logoAbs) : null,

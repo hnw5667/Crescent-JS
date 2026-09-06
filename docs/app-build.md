@@ -1,8 +1,8 @@
-# App-Build Guide (v2.5.1 — Tauri-only)
+# App-Build Guide (v2.6.0 — Tauri-only)
 
 Turn any folder on disk into a distributable **Tauri** desktop app. One CLI command collects your app, asks for a few details, detects your OS, scaffolds a Tauri project and produces a single `.zip` that holds one Tauri standalone per target OS.
 
-> **New in v2.5.1 — Tauri-only** — `crescent app-build` + `src/cli/app_build.js` builds exclusively with [Tauri](https://tauri.app) (Rust + WebView). No Electron/Neutralino/other wrappers. Past releases: JS-First (v1.0.6), About Webpage TXT (v1.0.7 → v1.0.8), Tabel (v1.0.9), Major tested release (v2.0.0). Current stable is **v2.5.1**.
+> **New in v2.6.0 — Tauri-only** — `crescent app-build` + `src/cli/app_build.js` builds exclusively with [Tauri](https://tauri.app) (Rust + WebView). No Electron/Neutralino/other wrappers. Past releases: JS-First (v1.0.6), About Webpage TXT (v1.0.7 → v1.0.8), Tabel (v1.0.9), Major tested release (v2.0.0). Current stable is **v2.6.0**.
 
 ---
 
@@ -26,7 +26,7 @@ Result (Tauri scaffold per OS):
 
 ```
 <folder>/<SafeName>-standalone.zip
-  ├─ manifest.json               # top-level { appName, safeName, version:"2.5.1", builder:"tauri", main, targets, host, buildAt }
+  ├─ manifest.json               # top-level { appName, safeName, version:"2.6.0", builder:"tauri", main, targets, host, buildAt }
   ├─ README.md
   ├─ <SafeName>-windows/         # Tauri project + bundle for Windows
   │   ├─ <your files… copied>
@@ -34,7 +34,7 @@ Result (Tauri scaffold per OS):
   │   │   ├─ tauri.conf.json     # productName, identifier, build.distDir, bundle.icon, windows
   │   │   ├─ Cargo.toml
   │   │   └─ icons/icon.png      # from logo (or default)
-  │   ├─ app.manifest.json       # { appName, appNameSafe, version:"2.5.1", builder:"tauri", platform:"windows", main, logo, host }
+  │   ├─ app.manifest.json       # { appName, appNameSafe, version:"2.6.0", builder:"tauri", platform:"windows", main, logo, host }
   │   ├─ launch.bat / launch.ps1 # Tauri bundle launchers (or node fallback for dev)
   │   └─ README.md
   ├─ <SafeName>-macos/           # src-tauri + .app/.dmg bundle
@@ -74,7 +74,7 @@ crescent app-build --help   # usage
 {
   "appName": "My App",
   "appNameSafe": "My-App",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "builder": "tauri",
   "platform": "windows",
   "hostPlatform": "win32",
@@ -183,12 +183,12 @@ ls  My-App-windows/src-tauri/tauri.conf.json
 | Command | Purpose |
 |---|---|
 | `crescent run <app.js> [port]` | Dev/run a Crescent app |
-| `crescent build <app.js> [outDir]` | JS-First build-time HTML + unified bundle (v1.0.6 → v2.5.1) |
-| `crescent app-build` | **v2.5.1 Tauri-only** — folder → Tauri standalone zip (this guide) |
+| `crescent build <app.js> [outDir]` | JS-First build-time HTML + unified bundle (v1.0.6 → v2.6.0) |
+| `crescent app-build` | **v2.6.0 Tauri-only** — folder → Tauri standalone zip (this guide) |
 | `crescent tabels --show/--hide/--list` | Show/hide tabel hidden folders |
 
 ---
 
 ## Version
 
-Current framework version is **v2.5.1 Tauri-only** (`code/package.json`, `src/phase1/frontend/bundler.js:version`, `website/src/components/navbar.tsx`, `tasks/version.yaml`). The zip embeds `version:"2.5.1"` + `builder:"tauri"` in every manifest and the Bundler sets `payload.version:"2.5.1"`.
+Current framework version is **v2.6.0 Tauri-only** (`code/package.json`, `src/phase1/frontend/bundler.js:version`, `website/src/components/navbar.tsx`, `tasks/version.yaml`). The zip embeds `version:"2.6.0"` + `builder:"tauri"` in every manifest and the Bundler sets `payload.version:"2.6.0"`.

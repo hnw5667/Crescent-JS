@@ -1,6 +1,6 @@
-# JS-First Component System (v1.0.6 → v2.5.1)
+# JS-First Component System (v1.0.6 → v2.6.0)
 
-Crescent-js v1.0.6 introduced **JS-first**; current stable is **v2.5.1** (adds App-Build alongside JS-First, no breaking changes). You write components entirely in JavaScript, and the framework generates the corresponding HTML, handles JS binding, and injects the result into component caching. No manual HTML wiring.
+Crescent-js v1.0.6 introduced **JS-first**; current stable is **v2.6.0** (adds App-Build alongside JS-First, no breaking changes). You write components entirely in JavaScript, and the framework generates the corresponding HTML, handles JS binding, and injects the result into component caching. No manual HTML wiring.
 
 ---
 
@@ -26,7 +26,7 @@ const hero = crescent.component({
   size: { height: 300, width: 800 },
   style: { colour: '240,240,255' },           // component-level defaults
   sections: [
-    { section_id: 'title', type: 'text', text: 'Welcome to Crescent v2.5.1', size: 32, colour: '255,255,255', bold: true },
+    { section_id: 'title', type: 'text', text: 'Welcome to Crescent v2.6.0', size: 32, colour: '255,255,255', bold: true },
     { section_id: 'subtitle', text: 'JS-First — write JS, get HTML + bindings', size: 18, colour: '230,230,230' },
     { section_id: 'cta_bg', type: 'shape', layer_vertices: 4, colour: '52,152,219', size: { height: 50, width: 200 }, rounded_corners: '8px' },
     { section_id: 'cta_text', type: 'text', text: 'Get Started', size: 16, colour: '255,255,255', bold: true },
@@ -218,7 +218,7 @@ crescent.build_page_bundle(page);
 // Low-level Bundler API
 const { path, payload } = bundler.build([hero, page], { fileName: 'bundle.json' });
 // writes: dist/bundle.json, dist/html/{id}.html, dist/js/{id}.json
-// payload.version === '2.5.1', payload.bundles === [...]
+// payload.version === '2.6.0', payload.bundles === [...]
 bundler.build_unified([hero, page], './dist/bundle.json');
 ```
 

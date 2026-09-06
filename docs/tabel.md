@@ -1,6 +1,6 @@
-# Tabel Guide (v1.0.9 → v2.5.1)
+# Tabel Guide (v1.0.9 → v2.6.0)
 
-> Current framework version is **v2.5.1** (adds App-Build). Tabel system is unchanged since v1.0.9, tested through v2.0.0 and still current.
+> Current framework version is **v2.6.0** (adds App-Build). Tabel system is unchanged since v1.0.9, tested through v2.0.0 and still current.
 
 User-configurable tables for the Crescent.js NoSQL database. Each tabel has columns, each row is its own object in a `.json` file, and the system handles hashing, sharding, copies, and hidden folders.
 

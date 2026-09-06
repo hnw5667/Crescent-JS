@@ -554,9 +554,9 @@ responsive.destroy();
 
 ---
 
-## JS-First Components (v1.0.6 → v2.5.1)
+## JS-First Components (v1.0.6 → v2.6.0)
 
-> **JS-First** removes manual HTML. Write a component in JS — the framework generates HTML with `section-{name}` IDs, bundles JS+HTML, caches both, and hydrates via `rocket.js` (introduced v1.0.6, now **v2.5.1**). Full guide: [JS-First](./js-first.md). For packaging a whole folder as an app, see [App-Build](./app-build.md) (new in v2.5.1).
+> **JS-First** removes manual HTML. Write a component in JS — the framework generates HTML with `section-{name}` IDs, bundles JS+HTML, caches both, and hydrates via `rocket.js` (introduced v1.0.6, now **v2.6.0**). Full guide: [JS-First](./js-first.md). For packaging a whole folder as an app, see [App-Build](./app-build.md) (new in v2.6.0).
 
 ```js
 const hero = crescent.component({

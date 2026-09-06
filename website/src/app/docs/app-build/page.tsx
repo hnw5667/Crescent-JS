@@ -9,7 +9,7 @@ export default function AppBuildPage() {
       <DocHeader
         title="App-Build"
         description="Turn any folder into a Tauri standalone app. One zip, one Tauri project per OS - manifests, icons and native bundles."
-        badge="v2.5.1 - Tauri-only"
+        badge="v2.6.0 - Tauri-only"
       />
 
       <h2 id="overview">Overview</h2>
@@ -19,7 +19,7 @@ export default function AppBuildPage() {
         It asks for your folder, main <code>.js</code> entry, app name, logo,
         detects your host OS, lets you pick target OS(s) (<code>windows</code> / <code>macos</code> / <code>linux</code>),
         scaffolds <code>src-tauri/tauri.conf.json</code> + icons, runs <code>tauri build</code> for each target, and writes a single <code>.zip</code> in that same folder holding one Tauri standalone per target.
-        Current framework version is <strong>v2.5.1 - Tauri-only</strong>. No Electron.
+        Current framework version is <strong>v2.6.0 - Tauri-only</strong>. No Electron.
       </p>
       <Callout type="info" title="Prerequisites - Tauri-only">
         Requires <code>Rust stable</code> + <code>cargo</code> and <code>@tauri/cli</code> (<code>cargo install tauri-cli</code> or <code>npm i -D @tauri/cli</code>). If missing, the builder errors with install instructions - no fallback.
@@ -61,13 +61,13 @@ crescent app-build
       <CodeBlock
         filename="My-App-standalone.zip"
         code={`My-App-standalone.zip
-- manifest.json           # { appName, appNameSafe, version:"2.5.1", builder:"tauri", main, targets, host, buildAt }
+- manifest.json           # { appName, appNameSafe, version:"2.6.0", builder:"tauri", main, targets, host, buildAt }
 - README.md
 - My-App-windows/         # Tauri project + Windows bundle
   - <all folder files>
   - src-tauri/tauri.conf.json  # productName, identifier com.crescent.my-app, distDir, bundle.icon
   - src-tauri/icons/icon.png
-  - app.manifest.json    # { version:"2.5.1", builder:"tauri", platform:"windows", main, logo }
+  - app.manifest.json    # { version:"2.6.0", builder:"tauri", platform:"windows", main, logo }
   - bundle/My-App.exe / .msi   # from tauri build
   - launch.bat / launch.ps1
   - README.md
@@ -85,7 +85,7 @@ crescent app-build
         code={`{
   "appName": "My App",
   "appNameSafe": "My-App",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "builder": "tauri",
   "platform": "windows",
   "main": "main.js",
@@ -135,10 +135,10 @@ await buildApp({
 // -> { ..., builder:"tauri", targets, outZip, size, entries }`}
       />
 
-      <h2 id="version">Version - Tauri-only v2.5.1</h2>
+      <h2 id="version">Version - Tauri-only v2.6.0</h2>
       <p>
-        Framework <strong>v2.5.1 - Tauri-only</strong> (<code>code/package.json</code>, <code>src/phase1/frontend/bundler.js:version</code>,
-        <code>website/src/components/navbar.tsx</code>). Bundler <code>payload.version</code> is <code>"2.5.1"</code> and every manifest embeds <code>version:"2.5.1"</code> + <code>builder:"tauri"</code>.
+        Framework <strong>v2.6.0 - Tauri-only</strong> (<code>code/package.json</code>, <code>src/phase1/frontend/bundler.js:version</code>,
+        <code>website/src/components/navbar.tsx</code>). Bundler <code>payload.version</code> is <code>"2.6.0"</code> and every manifest embeds <code>version:"2.6.0"</code> + <code>builder:"tauri"</code>.
       </p>
 
       <DocPagination />

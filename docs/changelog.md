@@ -4,6 +4,35 @@ Release history and updates for Crescent.js.
 
 ---
 
+## v2.6.0
+
+### Minor — Framework bug fixes + Playground + Examples (v2.5.1 → v2.6.0)
+
+- **Framework audit (32 bugs) — 18 fixed:**
+  - `object.js:32` `N/M` ReferenceError → default `400x300`
+  - `login.js:29` lock never expires → check `locked_until` and auto-unlock
+  - `cookie.js:9` secret unify `crescent-default-secret-change-me`→`crescent-default-secret`, `verify_token` `timingSafeEqual`
+  - `password.js:27` `verify` `timingSafeEqual`
+  - `signup.js:21` trim/normalize + case-insensitive duplicate
+  - `file_manager.js:28` sanitize path traversal, `list_collections` `.json.enc` fix, decrypt warn
+  - `query_engine.js:115` `$contains` array, `$exists` false, `$regex` ReDoS + length limit
+  - `tabel.js:189` sharding `cells+newCells>max`, `_match` same fixes
+  - `live_search.js:12` `invalidate` + staleness rebuild
+  - `responsive.js:85` Y swap `top=Height/2 - y`, `scale_object` `_originalSize`
+  - `transition.js:60` `ms` before `s`/`sec`
+  - `loops.js:12` throw on `step 0`
+  - `collect.js:86` `typeof pako` check
+  - `api_make.js:34` CORS echo origin, `Buffer.concat` body, trailing slash + `decodeURIComponent`
+  - `component_cache.js:20` typo `chacke`→`cache` + legacy migrate, `has_tracker` marker file
+  - `cipher.js:8` PBKDF2 `100k` + legacy fallback, decrypt tries both keys
+  - `rocket.js:281` Node `connect_and_pull` unwrap
+  - `page.js:232` `Math.min(scaleX,scaleY)` for both dimensions
+- **Playground (Next.js shell + Crescent runtime):** `website/src/app/playground` + `website/src/components/playground/Playground.tsx` — 4 tabs (Frontend Builder, Scaling Lab, Backend Blocks, Pipeline), cartesian preview, scaling slider, block palette → chain, pipeline simulation, full `crescent-js` code export. Top nav `Playground` + `Examples`, home banners, docs at `docs/playground.md` + `website/src/app/docs/playground`.
+- **Examples (pure Crescent.js):** `examples/contact-form` (name/email/contact + `collect`/`conditional`/`db`/`api_make` 3000) and `examples/auth-system` (signup/login/session/protected 3001, 3 pages), each `app.js` + `README`.
+- **Version bump:** `code/package.json` `2.5.1`→`2.6.0`, `bundler.js` `2.5.1`→`2.6.0`, `app_build.js` `2.5.1`→`2.6.0`, `about-webpage.txt` `2.5.1`→`2.6.0`, `navbar.tsx` `v2.5.1`→`v2.6.0`, docs `2.5.1`→`2.6.0`, `tasks/version.yaml` new `2.6.0`.
+
+---
+
 ## v2.5.1
 
 ### Patch — Random Standalone Verification (Tauri-only)

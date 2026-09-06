@@ -9,7 +9,7 @@ export default function BundlingPage() {
       <DocHeader
         title="Bundling"
         description="Send the browser a single small file that renders your app. Crescent.js is fully bundler-compatible via a tiny Node entry point."
-        badge="v2.5.1"
+        badge="v2.6.0"
       />
 
       <h2 id="overview">Overview</h2>

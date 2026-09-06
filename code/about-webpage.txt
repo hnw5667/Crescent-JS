@@ -5,7 +5,7 @@ This file was generated at build time alongside the HTML, using the real fronten
 Build date: 2026-08-26T11:01:27.285Z
 Frontend source directory: src/phase1/frontend/
 Modules found: about_generator.js, base_layer.js, bundler.js, component_cache.js, html_generator.js, image_layer.js, input_layer.js, js_component.js, object.js, page.js, renderer.js, responsive.js, shape_layer.js, text_layer.js, transition.js, trigger.js
-Framework version: 2.5.1
+Framework version: 2.6.0
 
 ================================================================
 1. BIG PICTURE — PAGES, OBJECTS, AND LAYERS

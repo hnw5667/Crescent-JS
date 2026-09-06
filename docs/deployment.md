@@ -6,7 +6,7 @@ Deploy your Crescent.js applications to production.
 
 ## Production Build
 
-Crescent.js applications can be deployed on any Node.js hosting platform. The framework bundles everything needed to run in a production environment. Current version: **v2.5.1**.
+Crescent.js applications can be deployed on any Node.js hosting platform. The framework bundles everything needed to run in a production environment. Current version: **v2.6.0**.
 
 ### Basic Deployment
 
@@ -17,7 +17,7 @@ crescent run src/app.js 8080
 # Or let it default to port 3000
 crescent run src/app.js
 
-# v2.5.1 Tauri-only — Ship a folder as Tauri standalones (one .zip with per-OS Tauri bundles)
+# v2.6.0 Tauri-only — Ship a folder as Tauri standalones (one .zip with per-OS Tauri bundles)
 crescent app-build   # → <App>-standalone.zip (Tauri My-App-windows/ + src-tauri/, My-App-macos/, My-App-linux/)
 ```
 
@@ -75,7 +75,7 @@ Build and run:
 docker build -t crescent-app .
 docker run -p 3000:3000 crescent-app
 
-# Or distribute the v2.5.1 standalone zip built with `crescent app-build`
+# Or distribute the v2.6.0 standalone zip built with `crescent app-build`
 # Users just unzip and run: node My-App-windows/main.js  or  ./My-App-linux/launch.sh
 ```
 

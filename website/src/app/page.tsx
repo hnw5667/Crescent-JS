@@ -42,7 +42,7 @@ const features = [
   },
   {
     icon: Package,
-    title: 'App-Build (v2.5.1 — Tauri-only)',
+    title: 'App-Build (v2.6.0 — Tauri-only)',
     description:
       'Turn any folder into a Tauri app. crescent app-build → one zip with Tauri bundles (src-tauri + native binaries) per OS.',
   },

@@ -8,7 +8,7 @@
     "dev": "node app.js"
   },
   "dependencies": {
-    "crescent-js": "^2.5.1"
+    "crescent-js": "^2.6.0"
   },
   "keywords": ["crescent-js", "example", "auth", "fullstack"]
 }

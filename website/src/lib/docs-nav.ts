@@ -60,7 +60,7 @@ export const docsNav: DocSection[] = [
       },
       {
         title: 'App-Build',
-        description: 'Turn any folder into a Tauri app — crescent app-build (v2.5.1 — Tauri-only).',
+        description: 'Turn any folder into a Tauri app — crescent app-build (v2.6.0 — Tauri-only).',
         href: '/docs/app-build',
       },
       {

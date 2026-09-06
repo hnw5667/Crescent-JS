@@ -9,7 +9,7 @@ export default function JsFirstPage() {
       <DocHeader
         title="JS-First Component System"
         description="Write components entirely in JavaScript. The framework generates HTML at build time with deterministic section IDs, bundles JS + HTML, and hydrates via rocket.js — plus a custom plain-English about-webpage.txt per page."
-        badge="v2.5.1"
+        badge="v2.6.0"
       />
 
       <h2 id="overview">Overview</h2>
@@ -74,7 +74,7 @@ const pageHtml = crescent.generate_page_html(page);`}
 const bundle = bundler.bundleComponent(hero);
 // { component_id, js, html, sections: [{ name, id }], timestamp }
 const result = bundler.build([hero, card], { outputDir: './out' });
- // result.path -> bundle.json, result.payload.version === '2.5.1'
+ // result.path -> bundle.json, result.payload.version === '2.6.0'
  // also writes ./out/about-webpage.txt and code/about-webpage.txt (custom per-page)`}
       />
 
@@ -150,10 +150,10 @@ crescent.build_page_bundle(page);
 const bundler = crescent.bundler();
 bundler.bundlePage(page);
 bundler.build([hero, card], { outputDir: './out' });
- // ./crescent_build/bundle.json -> { version:'2.5.1', generated_at, bundles:[{ component_id, js, html }] }`}
+ // ./crescent_build/bundle.json -> { version:'2.6.0', generated_at, bundles:[{ component_id, js, html }] }`}
       />
 
-      <h2 id="about">About Webpage TXT (v1.0.7 → v1.0.8 custom, now v2.5.1)</h2>
+      <h2 id="about">About Webpage TXT (v1.0.7 → v1.0.8 custom, now v2.6.0)</h2>
       <p>
         With the HTML, the build also generates <code>about-webpage.txt</code> — a plain-English file that explains how the frontend is made, <strong>using the actual frontend code</strong> (<code>src/phase1/frontend/*.js</code>) as its source. It introspects the 16 frontend modules and describes Pages → Objects → Layers, cartesian coordinates, ratio-based scaling, Transitions/Triggers, Renderer, JS-First, and optimisations. Since <strong>v1.0.8</strong> it is <em>custom per page</em>: pass your components/page and each layer is described — e.g. a black square with white bold <code>Get Started</code> becomes <code>a square of colour 0,0,0 with bold text of 255,255,255 which goes like Get Started all in one layer</code>.
       </p>
@@ -161,8 +161,8 @@ bundler.build([hero, card], { outputDir: './out' });
         filename="about"
         language="javascript"
         code={`// Generate or write the file anywhere:
-crescent.generate_about_webpage({ version: '2.5.1' }); // generic
-crescent.generate_about_webpage({ version: '2.5.1', components: [hero] }); // custom per-page
+crescent.generate_about_webpage({ version: '2.6.0' }); // generic
+crescent.generate_about_webpage({ version: '2.6.0', components: [hero] }); // custom per-page
 crescent.write_about_webpage('./about-webpage.txt', { components: [hero] });
 
 // Via Bundler (automatic alongside HTML, now custom):

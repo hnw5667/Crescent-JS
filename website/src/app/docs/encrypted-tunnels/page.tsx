@@ -9,7 +9,7 @@ export default function EncryptedTunnelsPage() {
       <DocHeader
         title="Encrypted Tunnels"
         description="Encrypted tunnels pipe outbound data through AES-256-GCM automatically."
-        badge="v2.5.1"
+        badge="v2.6.0"
       />
 
       <h2 id="overview">Overview</h2>
