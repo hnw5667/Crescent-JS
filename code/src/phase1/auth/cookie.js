@@ -6,7 +6,7 @@ const crypto = require('crypto');
 
 class Cookie {
   constructor(config = {}) {
-    this.secret = config.secret || 'crescent-default-secret-change-me';
+    this.secret = config.secret || 'crescent-default-secret';
     this.cookie_name = config.cookie_name || 'crescent_session';
     this.max_age = config.max_age || 86400000; // 24 hours
     this.http_only = config.http_only !== undefined ? config.http_only : true;
@@ -40,7 +40,10 @@ class Cookie {
       if (!encoded || !signature) return null;
 
       const expected_sig = this._sign(encoded);
-      if (signature !== expected_sig) return null;
+      // Use timingSafeEqual to prevent timing attacks
+      const sigBuf = Buffer.from(signature, 'base64url');
+      const expBuf = Buffer.from(expected_sig, 'base64url');
+      if (sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) return null;
 
       const payload = JSON.parse(Buffer.from(encoded, 'base64url').toString());
 

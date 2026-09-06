@@ -278,7 +278,10 @@ class Rocket {
         catch { try { return JSON.parse(raw); } catch { return raw; } }
       });
     }
-    return fetch(url, options).then(r => r.json());
+    return fetch(url, options).then(r => r.text()).then(raw => {
+      try { return Cipher.unwrap(raw, options.secret || 'crescent-default-secret'); }
+      catch { try { return JSON.parse(raw); } catch { return raw; } }
+    });
   }
 
   // ===== COMPRESSION & CIPHER =====

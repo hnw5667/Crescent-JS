@@ -19,6 +19,9 @@ class Signup {
    * Register a new user
    */
   async register(username, email, password) {
+    // Normalize inputs
+    username = String(username).trim();
+    email = String(email).trim().toLowerCase();
     // Validate inputs
     if (!username || !email || !password) {
       return { success: false, error: 'Username, email, and password are required' };
@@ -30,13 +33,14 @@ class Signup {
       return { success: false, error: 'Password is too weak', strength };
     }
 
-    // Check if username exists
-    const existing_user = this._qe.findOne(this.collection, { username });
+    // Check if username exists (case-insensitive)
+    const allUsers = this._qe.find(this.collection);
+    const existing_user = allUsers.find(u => String(u.username).toLowerCase() === username.toLowerCase());
     if (existing_user) {
       return { success: false, error: 'Username already exists' };
     }
 
-    // Check if email exists
+    // Check if email exists (normalized)
     const existing_email = this._qe.findOne(this.collection, { email });
     if (existing_email) {
       return { success: false, error: 'Email already registered' };

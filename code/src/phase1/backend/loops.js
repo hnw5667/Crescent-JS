@@ -9,6 +9,7 @@ class Loop {
     this.loop_type = config.loop_type || 'for'; // for | while | for_in
     this.start = config.start || 0;
     this.end = config.end || 0;
+    if (config.step === 0) throw new Error('Loop step cannot be 0 (would cause infinite loop)');
     this.step = config.step || 1;
     this.condition = config.condition || null;
     this.iterable = config.iterable || [];

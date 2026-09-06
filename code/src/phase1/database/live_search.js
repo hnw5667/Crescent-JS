@@ -23,12 +23,32 @@ class LiveSearch {
     return this;
   }
 
+  invalidate(collection, field) {
+    if (field) {
+      this._indexes.delete(`${collection}:${field}`);
+    } else {
+      // Invalidate all indexes for this collection
+      for (const key of [...this._indexes.keys()]) {
+        if (key.startsWith(`${collection}:`)) this._indexes.delete(key);
+      }
+    }
+    return this;
+  }
+
   search(collection, field, term) {
     const indexKey = `${collection}:${field}`;
     let index = this._indexes.get(indexKey);
     if (!index) {
       this.build_index(collection, field);
       index = this._indexes.get(indexKey);
+    } else {
+      // Check staleness: if collection size changed, rebuild
+      const dataLen = this._qe._fm.read_collection(collection).length;
+      const idxLen = Object.values(index).reduce((a, arr) => a + arr.length, 0);
+      if (dataLen !== idxLen) {
+        this.build_index(collection, field);
+        index = this._indexes.get(indexKey);
+      }
     }
     const termLower = term.toLowerCase();
     const results = [];
@@ -61,6 +81,8 @@ class LiveSearch {
   }
 
   notify(collection, event, data) {
+    // Invalidate cached indexes for this collection on write
+    this.invalidate(collection);
     const watchers = this._watchers.get(collection) || [];
     for (const cb of watchers) cb({ collection, event, data, timestamp: Date.now() });
     return this;

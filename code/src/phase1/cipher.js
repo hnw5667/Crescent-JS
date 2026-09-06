@@ -5,7 +5,11 @@ const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 16;
 const TAG_LENGTH = 16;
 
-function deriveKey(secret) {
+function deriveKey(secret, salt = 'crescent-js-salt') {
+  // Stronger KDF: PBKDF2 with 100k iterations
+  return crypto.pbkdf2Sync(secret, salt, 100000, 32, 'sha256');
+}
+function deriveKeyLegacy(secret) {
   return crypto.createHash('sha256').update(secret).digest();
 }
 
@@ -20,17 +24,24 @@ function encrypt(data, secret) {
 }
 
 function decrypt(packet, secret) {
-  const key = deriveKey(secret);
   const parts = packet.split(':');
   if (parts.length !== 3) throw new Error('Invalid encrypted packet');
   const iv = Buffer.from(parts[0], 'hex');
   const tag = Buffer.from(parts[1], 'hex');
   const encrypted = parts[2];
-  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-  decipher.setAuthTag(tag);
-  let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
+  // Try new KDF first, fallback to legacy for backwards compat
+  const keys = [deriveKey(secret), deriveKeyLegacy(secret)];
+  let lastErr;
+  for (const key of keys) {
+    try {
+      const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
+      decipher.setAuthTag(tag);
+      let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+      decrypted += decipher.final('utf8');
+      return decrypted;
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error('Decryption failed');
 }
 
 function compress(data) {

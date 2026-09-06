@@ -59,14 +59,14 @@ class Transition {
     
     const trimmed = time.trim().toLowerCase();
     
+    if (trimmed.endsWith('ms')) {
+      return parseFloat(trimmed);
+    }
     if (trimmed.endsWith('sec')) {
       return parseFloat(trimmed) * 1000;
     }
     if (trimmed.endsWith('s')) {
       return parseFloat(trimmed) * 1000;
-    }
-    if (trimmed.endsWith('ms')) {
-      return parseFloat(trimmed);
     }
     return parseFloat(trimmed) || 300;
   }

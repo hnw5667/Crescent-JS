@@ -186,14 +186,20 @@ class Tabel {
     return cells;
   }
 
-  _targetPartForInsert() {
+  _targetPartForInsert(newRow = null) {
     const files = this._partFiles();
     if (files.length === 0) {
       return path.join(this._folderPath, 'part_0.json');
     }
     const last = files[files.length - 1];
     const cells = this._cellsInPart(last);
-    // If last part exceeds max_cells, create new part
+    const newCells = newRow ? (this.columns.length ? this.columns.length : Object.keys(newRow).filter(k => !k.startsWith('_')).length || 1) : (this.columns.length || 1);
+    // If adding this row would exceed max_cells, create new part
+    if (cells + newCells > this.max_cells) {
+      const idx = this._nextPartIndex();
+      return path.join(this._folderPath, `part_${idx}.json`);
+    }
+    // Also if already at or over, create new
     if (cells >= this.max_cells) {
       const idx = this._nextPartIndex();
       return path.join(this._folderPath, `part_${idx}.json`);
@@ -282,8 +288,8 @@ class Tabel {
       ...row
     };
 
-    // Determine target part file (sharding)
-    const target = this._targetPartForInsert();
+    // Determine target part file (sharding) - pass row to check cells
+    const target = this._targetPartForInsert(row);
     const existing = this._readPart(target);
     existing.push(enriched);
     this._writePart(target, existing);
@@ -381,11 +387,28 @@ class Tabel {
             case '$gte': if (!(value >= operand)) return false; break;
             case '$lt': if (!(value < operand)) return false; break;
             case '$lte': if (!(value <= operand)) return false; break;
-            case '$in': if (!operand.includes(value)) return false; break;
-            case '$nin': if (operand.includes(value)) return false; break;
-            case '$contains': if (!(typeof value === 'string' && value.includes(operand))) return false; break;
-            case '$regex': if (!(new RegExp(operand).test(value))) return false; break;
-            case '$exists': if (operand && value === undefined) return false; if (!operand && value !== undefined) return false; break;
+            case '$in': if (!Array.isArray(operand) || !operand.includes(value)) return false; break;
+            case '$nin': if (Array.isArray(operand) && operand.includes(value)) return false; break;
+            case '$contains': {
+              if (Array.isArray(value)) { if (!value.includes(operand)) return false; }
+              else if (typeof value === 'string') { if (!value.includes(operand)) return false; }
+              else return false;
+              break;
+            }
+            case '$regex': {
+              try {
+                if (typeof value !== 'string') return false;
+                if (String(operand).length > 100) return false;
+                if (!(new RegExp(operand).test(value))) return false;
+              } catch { return false; }
+              break;
+            }
+            case '$exists': {
+              const exists = value !== undefined;
+              if (operand && !exists) return false;
+              if (!operand && exists) return false;
+              break;
+            }
             default: if (value !== condition) return false;
           }
         }

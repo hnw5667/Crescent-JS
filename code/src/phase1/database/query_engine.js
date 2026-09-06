@@ -110,11 +110,29 @@ class QueryEngine {
             case '$gte': if (!(value >= operand)) return false; break;
             case '$lt': if (!(value < operand)) return false; break;
             case '$lte': if (!(value <= operand)) return false; break;
-            case '$in': if (!operand.includes(value)) return false; break;
-            case '$nin': if (operand.includes(value)) return false; break;
-            case '$contains': if (!(typeof value === 'string' && value.includes(operand))) return false; break;
-            case '$regex': if (!(new RegExp(operand).test(value))) return false; break;
-            case '$exists': if (operand && value === undefined) return false; break;
+            case '$in': if (!Array.isArray(operand) || !operand.includes(value)) return false; break;
+            case '$nin': if (Array.isArray(operand) && operand.includes(value)) return false; break;
+            case '$contains': {
+              if (Array.isArray(value)) { if (!value.includes(operand)) return false; }
+              else if (typeof value === 'string') { if (!value.includes(operand)) return false; }
+              else return false;
+              break;
+            }
+            case '$regex': {
+              try {
+                if (typeof value !== 'string') return false;
+                // Limit regex length to prevent ReDoS
+                if (String(operand).length > 100) return false;
+                if (!(new RegExp(operand).test(value))) return false;
+              } catch { return false; }
+              break;
+            }
+            case '$exists': {
+              const exists = value !== undefined;
+              if (operand && !exists) return false;
+              if (!operand && exists) return false;
+              break;
+            }
           }
         }
       } else {

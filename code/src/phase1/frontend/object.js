@@ -29,7 +29,7 @@ class RocketObject {
     // Object dimensions - defines the cartesian plane
     // e.g., height: 400 → y ranges from -200 to 200
     // e.g., width: 300 → x ranges from -150 to 150
-    this.size = config.size || { height: N, width: M };
+    this.size = config.size || { height: 400, width: 300 };
     
     // Layer storage: map of layer_id → layer instance
     this.layers = new Map();

@@ -30,11 +30,15 @@ class ApiMake {
   start() {
     return new Promise((resolve, reject) => {
       this._server = http.createServer((req, res) => {
-        // CORS
+        // CORS - configurable, avoid wildcard with credentials
         if (this.cors) {
-          res.setHeader('Access-Control-Allow-Origin', '*');
+          const origin = req.headers.origin;
+          const allowOrigin = (typeof this.cors === 'object' && this.cors.origin) ? this.cors.origin : (origin || '*');
+          res.setHeader('Access-Control-Allow-Origin', allowOrigin);
+          res.setHeader('Vary', 'Origin');
           res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
           res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+          if (typeof this.cors === 'object' && this.cors.credentials) res.setHeader('Access-Control-Allow-Credentials', 'true');
           if (req.method === 'OPTIONS') {
             res.writeHead(204);
             res.end();
@@ -42,10 +46,11 @@ class ApiMake {
           }
         }
 
-        let body = '';
-        req.on('data', chunk => body += chunk);
+        const chunks = [];
+        req.on('data', chunk => chunks.push(chunk));
         req.on('end', () => {
-          if (!body) {
+          const body = Buffer.concat(chunks).toString('utf8');
+          if (!body || body.length === 0) {
             req.body = {};
           } else {
             try {
@@ -109,6 +114,9 @@ class ApiMake {
   }
 
   _matchPath(routePath, actualPath) {
+    const norm = (p) => p.replace(/\/+$/, '') || '/';
+    routePath = norm(routePath);
+    actualPath = norm(actualPath);
     const routeParts = routePath.split('/');
     const actualParts = actualPath.split('/');
     if (routeParts.length !== actualParts.length) return false;
@@ -120,12 +128,19 @@ class ApiMake {
   }
 
   _extractParams(routePath, actualPath) {
+    const norm = (p) => p.replace(/\/+$/, '') || '/';
+    routePath = norm(routePath);
+    actualPath = norm(actualPath);
     const params = {};
     const routeParts = routePath.split('/');
     const actualParts = actualPath.split('/');
     for (let i = 0; i < routeParts.length; i++) {
       if (routeParts[i].startsWith(':')) {
-        params[routeParts[i].slice(1)] = actualParts[i];
+        try {
+          params[routeParts[i].slice(1)] = decodeURIComponent(actualParts[i]);
+        } catch {
+          params[routeParts[i].slice(1)] = actualParts[i];
+        }
       }
     }
     return params;

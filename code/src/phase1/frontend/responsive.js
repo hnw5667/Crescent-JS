@@ -81,9 +81,9 @@ class Responsive {
     const rightSpace = (pageWidth / 2) - pos.x;
     const widthRatio = [leftSpace, rightSpace];
 
-    // Height ratio: top space : bottom space
-    const topSpace = (pageHeight / 2) + pos.y;
-    const bottomSpace = (pageHeight / 2) - pos.y;
+    // Height ratio: top space : bottom space (Y+ is UP, so top = Height/2 - y)
+    const topSpace = (pageHeight / 2) - pos.y;
+    const bottomSpace = (pageHeight / 2) + pos.y;
     const heightRatio = [topSpace, bottomSpace];
 
     return { height_ratio: heightRatio, width_ratio: widthRatio };
@@ -95,6 +95,10 @@ class Responsive {
   scale_object(object, originalWidth, originalHeight, newWidth, newHeight) {
     if (!object || !object._element) return;
 
+    // Store original size to prevent compound scaling
+    if (!object._originalSize) object._originalSize = { width: object.size.width, height: object.size.height };
+    const baseW = object._originalSize.width;
+    const baseH = object._originalSize.height;
     const scaleX = newWidth / originalWidth;
     const scaleY = newHeight / originalHeight;
 
@@ -105,16 +109,16 @@ class Responsive {
       const wRatio = ratios.width_ratio;
 
       if (hRatio[0] === 0 && hRatio[1] === 0) {
-        object._element.style.height = `${object.size.height * scaleY}px`;
+        object._element.style.height = `${baseH * scaleY}px`;
       }
 
       if (wRatio[0] === 0 && wRatio[1] === 0) {
-        object._element.style.width = `${object.size.width * scaleX}px`;
+        object._element.style.width = `${baseW * scaleX}px`;
       }
     } else {
       // Default: scale proportionally
-      object._element.style.width = `${object.size.width * scaleX}px`;
-      object._element.style.height = `${object.size.height * scaleY}px`;
+      object._element.style.width = `${baseW * scaleX}px`;
+      object._element.style.height = `${baseH * scaleY}px`;
     }
   }
 

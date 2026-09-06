@@ -23,10 +23,24 @@ class FileManager {
   }
 
   /**
+   * Sanitize collection name to prevent path traversal
+   */
+  _sanitize(collection) {
+    // Only allow alphanumeric, underscore, hyphen
+    const sanitized = String(collection).replace(/[^a-zA-Z0-9_-]/g, '_');
+    // Ensure resolved path stays within base_dir
+    const resolved = path.resolve(this.base_dir, `${sanitized}.json`);
+    const baseResolved = path.resolve(this.base_dir);
+    if (!resolved.startsWith(baseResolved)) throw new Error('Invalid collection name: path traversal detected');
+    return sanitized;
+  }
+
+  /**
    * Get the file path for a collection
    */
   _filePath(collection) {
-    return path.join(this.base_dir, `${collection}.json`);
+    const safe = this._sanitize(collection);
+    return path.join(this.base_dir, `${safe}.json`);
   }
 
   /**
@@ -40,7 +54,10 @@ class FileManager {
       const data = fs.readFileSync(filePath, 'utf8');
       const decrypted = decrypt(data, this.secret);
       return JSON.parse(decrypted);
-    } catch {
+    } catch (err) {
+      // Only return empty for missing file, log corruption
+      if (err.code === 'ENOENT') return [];
+      console.warn(`[FileManager] Failed to read collection "${collection}": ${err.message}`);
       return [];
     }
   }
@@ -75,7 +92,7 @@ class FileManager {
     this._ensureDir();
     return fs.readdirSync(this.base_dir)
       .filter(f => f.endsWith('.enc'))
-      .map(f => f.replace('.enc', ''));
+      .map(f => f.replace(/\.json\.enc$/, '').replace(/\.enc$/, ''));
   }
 
   /**

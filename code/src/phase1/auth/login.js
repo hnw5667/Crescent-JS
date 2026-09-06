@@ -25,9 +25,17 @@ class Login {
       return { success: false, error: 'Invalid credentials' };
     }
 
-    // Check if locked
+    // Check if locked - handle expiry
     if (user.locked) {
-      return { success: false, error: 'Account locked. Try again later.' };
+      if (user.locked_until && Date.now() > user.locked_until) {
+        // Unlock expired lock
+        this._qe.update(this.collection, { _id: user._id }, { locked: false, locked_until: null, login_attempts: 0 });
+        user.locked = false;
+        user.locked_until = null;
+        user.login_attempts = 0;
+      } else {
+        return { success: false, error: 'Account locked. Try again later.' };
+      }
     }
 
     // Verify password

@@ -26,7 +26,15 @@ class Password {
    */
   verify(password, hash, salt) {
     const computed = crypto.pbkdf2Sync(password, salt, this.iterations, this.key_length, this.digest).toString('hex');
-    return computed === hash;
+    // Use timingSafeEqual to prevent timing attacks
+    try {
+      const a = Buffer.from(computed, 'hex');
+      const b = Buffer.from(hash, 'hex');
+      if (a.length !== b.length) return false;
+      return crypto.timingSafeEqual(a, b);
+    } catch {
+      return false;
+    }
   }
 
   /**

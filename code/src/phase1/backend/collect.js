@@ -83,7 +83,8 @@ class Collect {
       decryptFn = (raw) => unwrap(raw, secret);
     } else {
       const payload = typeof data === 'string' ? data : JSON.stringify(data);
-      const compressed = btoa(pako ? pako.gzip(payload) : payload);
+      const hasPako = typeof pako !== 'undefined' && pako && typeof pako.gzip === 'function';
+      const compressed = hasPako ? btoa(pako.gzip(payload)) : btoa(payload);
       const meta = JSON.stringify({ type: 'json' });
       encrypted = btoa(meta + '|' + compressed);
       decryptFn = (raw) => { try { return JSON.parse(raw); } catch { return raw; } };

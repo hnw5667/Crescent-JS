@@ -236,13 +236,16 @@ class RocketPage {
     if (!container) return;
 
     const viewportWidth = container.clientWidth;
+    const viewportHeight = container.clientHeight || (typeof window !== 'undefined' ? window.innerHeight : this._originalSize.height);
     const designWidth = this._originalSize.width;
     const designHeight = this._originalSize.height;
 
-    if (designWidth === 0) return;
+    if (designWidth === 0 || designHeight === 0) return;
 
-    // Scale factor: fit the design width into the viewport
-    const scale = viewportWidth / designWidth;
+    // Scale factor: fit both dimensions, use min to prevent overflow
+    const scaleX = viewportWidth / designWidth;
+    const scaleY = viewportHeight / designHeight;
+    const scale = Math.min(scaleX, scaleY);
 
     // Apply uniform scale transform from top-left
     this._element.style.transform = `scale(${scale})`;
@@ -251,7 +254,10 @@ class RocketPage {
     // Adjust the container height to match the scaled height
     // so there's no extra space or cut-off
     const scaledHeight = designHeight * scale;
+    const scaledWidth = designWidth * scale;
     container.style.height = `${scaledHeight}px`;
+    container.style.width = `${scaledWidth}px`;
+    container.style.margin = '0 auto';
   }
 
   /**

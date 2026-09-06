@@ -17,7 +17,8 @@ const fs = require('fs');
 const path = require('path');
 
 const DEFAULT_CACHE_DIR = path.join(process.cwd(), 'crescent_cache');
-const DEFAULT_CACHE_FILE = 'components-chacke.json';
+const DEFAULT_CACHE_FILE = 'components-cache.json';
+const LEGACY_CACHE_FILE = 'components-chacke.json';
 const TRACKER_MARKER = '.tracker';
 
 const LAYER_FIELDS = [
@@ -33,6 +34,11 @@ class ComponentCache {
     this.cache_dir = config.cache_dir || DEFAULT_CACHE_DIR;
     this.cache_file = config.cache_file || DEFAULT_CACHE_FILE;
     this.cache_path = path.join(this.cache_dir, this.cache_file);
+    // Backwards compat: if legacy file exists and new doesn't, migrate
+    const legacyPath = path.join(this.cache_dir, LEGACY_CACHE_FILE);
+    if (fs.existsSync(legacyPath) && !fs.existsSync(this.cache_path)) {
+      try { fs.copyFileSync(legacyPath, this.cache_path); } catch (e) {}
+    }
     this.tracker_dir = config.tracker_dir || path.join(this.cache_dir, '.crescent-tracker');
     this.secret = config.secret;
     this._enabled = this.has_tracker();
@@ -43,9 +49,9 @@ class ComponentCache {
     return this._enabled;
   }
 
-  /** Alias - does the tracker folder exist? */
+  /** Alias - does the tracker marker file exist? */
   has_tracker() {
-    return fs.existsSync(this.tracker_dir);
+    return fs.existsSync(path.join(this.tracker_dir, TRACKER_MARKER));
   }
 
   /** Create the secret/tracker folder so the optimisation turns ON. */
