@@ -4,6 +4,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
 
 @layer base {
   :root {
@@ -263,4 +264,88 @@ code {
   border-radius: 0 0.75rem 0.75rem 0;
   color: #94a3b8;
   font-size: 0.95rem;
+}
+
+/* ===== "You are being redirected" interstitial (→ crescent-js.vercel.app) ===== */
+
+/* Moonlit aurora backdrop — gold / violet / teal, same palette as the new site. */
+.redirect-aurora {
+  background:
+    radial-gradient(
+      55% 40% at 50% 8%,
+      rgba(124, 108, 255, 0.2),
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 38% at 15% 88%,
+      rgba(79, 214, 192, 0.12),
+      transparent 70%
+    ),
+    radial-gradient(
+      50% 42% at 88% 78%,
+      rgba(232, 214, 163, 0.14),
+      transparent 70%
+    );
+  animation: redirect-aurora-drift 14s ease-in-out infinite alternate;
+}
+
+@keyframes redirect-aurora-drift {
+  from {
+    transform: translate3d(-1.5%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(1.5%, 1.5%, 0) scale(1.06);
+  }
+}
+
+/* Crescent mark sits inside a spinning gold ring. */
+.redirect-ring {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(232, 214, 163, 0.95) 80deg,
+    transparent 210deg
+  );
+  animation: redirect-spin 2.2s linear infinite;
+}
+
+@keyframes redirect-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Determinate bar that fills as the redirect is prepared, then breathes. */
+.redirect-progress {
+  width: 4%;
+  animation:
+    redirect-progress 1s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    redirect-breathe 1.4s ease-in-out 1s infinite;
+}
+
+@keyframes redirect-progress {
+  to {
+    width: 92%;
+  }
+}
+
+@keyframes redirect-breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .redirect-aurora,
+  .redirect-ring,
+  .redirect-progress {
+    animation: none;
+  }
+  .redirect-progress {
+    width: 92%;
+  }
 }

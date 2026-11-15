@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Navbar } from '@/components/navbar';
+import { RedirectToVercel } from '@/components/redirect-to-vercel';
 
 export const metadata: Metadata = {
   title: 'Crescent.js - Full-Stack JavaScript Framework',
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-[#0a0a0f] antialiased">
         <Navbar />
         {children}
+        <RedirectToVercel />
       </body>
     </html>
   );

@@ -50,6 +50,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       animation: {
