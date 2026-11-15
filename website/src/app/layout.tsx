@@ -7,6 +7,17 @@ export const metadata: Metadata = {
   title: 'Crescent.js - Full-Stack JavaScript Framework',
   description:
     'A full-stack JavaScript framework with integrated frontend rendering, backend logic, database, and authentication.',
+  icons: {
+    icon: [
+      {
+        url: `${
+          process.env.NODE_ENV === 'production' ? '/Crescent-JS' : ''
+        }/crescent-js-favicon.svg`,
+        type: 'image/svg+xml',
+        sizes: 'any',
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
