@@ -266,7 +266,7 @@ code {
   font-size: 0.95rem;
 }
 
-/* ===== "You are being redirected" interstitial (→ crescent-js.vercel.app) ===== */
+/* ===== Redirect screen (shown only if the redirect hangs >10s) ===== */
 
 /* Moonlit aurora backdrop — gold / violet / teal, same palette as the new site. */
 .redirect-aurora {
@@ -298,7 +298,7 @@ code {
   }
 }
 
-/* Crescent mark sits inside a spinning gold ring. */
+/* Crescent mark sits inside a gold ring. */
 .redirect-ring {
   background: conic-gradient(
     from 0deg,
@@ -315,37 +315,9 @@ code {
   }
 }
 
-/* Determinate bar that fills as the redirect is prepared, then breathes. */
-.redirect-progress {
-  width: 4%;
-  animation:
-    redirect-progress 1s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    redirect-breathe 1.4s ease-in-out 1s infinite;
-}
-
-@keyframes redirect-progress {
-  to {
-    width: 92%;
-  }
-}
-
-@keyframes redirect-breathe {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.55;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .redirect-aurora,
-  .redirect-ring,
-  .redirect-progress {
+  .redirect-ring {
     animation: none;
-  }
-  .redirect-progress {
-    width: 92%;
   }
 }
