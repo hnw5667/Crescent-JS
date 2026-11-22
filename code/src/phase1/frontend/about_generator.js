@@ -181,7 +181,7 @@ function generateAboutWebpageText(options = {}) {
   lines.push(`Build date: ${new Date().toISOString()}`);
   lines.push(`Frontend source directory: src/phase1/frontend/`);
   lines.push(`Modules found: ${modules.map(m => m.file).join(', ')}`);
-  lines.push(`Framework version: ${options.version || '1.0.7'}`);
+  lines.push(`Framework version: ${options.version || '3.0.0'}`);
   lines.push('');
   lines.push('================================================================');
   lines.push('1. BIG PICTURE — PAGES, OBJECTS, AND LAYERS');
