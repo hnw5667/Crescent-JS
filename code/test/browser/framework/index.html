@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Crescent Framework Layers In-Browser Test</title>
+  </head>
+  <body>
+    <div id="crescent-root"></div>
+    <div id="crescent-overflow-root"></div>
+
+    <script>
+      window.__errors__ = [];
+      window.addEventListener('error', function (e) {
+        window.__errors__.push(String(e.message));
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        window.__errors__.push('unhandled: ' + e.reason);
+      });
+    </script>
+
+    <!-- Real React 18 (devDependency), served locally from /vendor -->
+    <script src="/vendor/react.production.min.js"></script>
+    <script src="/vendor/react-dom.production.min.js"></script>
+    <!-- Real Crescent.js frontend modules + demo app -->
+    <script src="bundle_fw.js"></script>
+
+    <script>
+      // Collect DOM facts + app results for the headless runner.
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          var fw = window.__FW_RESULT__ || {};
+          var reactBox = document.querySelector('[data-layer-id="react"]');
+          var heroBox = document.querySelector('[data-layer-id="react:hero"]');
+          var angularBox = document.querySelector('[data-layer-id="angular"]');
+          var overflowBox = document.querySelector('[data-layer-id="react:overflow"]');
+          var reactMount = document.getElementById('react-mount');
+          var heroMount = document.getElementById('react-hero-mount');
+          var result = {
+            // from the app
+            reactRendered: !!fw.reactRendered,
+            reactText: fw.reactText || null,
+            angularCodeKept: !!fw.angularCodeKept,
+            angularInert: !!fw.angularInert,
+            overflowDetected: !!fw.overflowDetected,
+            overflowMessage: fw.overflowMessage || null,
+            assertFitsThrew: !!fw.assertFitsThrew,
+            assertFitsMessage: fw.assertFitsMessage || null,
+            validation: fw.validation || {},
+            appResults: fw.mountResults || {},
+            appPageErrors: fw.pageErrors || [],
+            // direct DOM facts
+            reactBoxPresent: !!reactBox,
+            reactBoxHasMount: !!(reactBox && reactBox.querySelector('[data-framework-content]')),
+            reactBoxHasCode: !!(reactBox && reactBox.querySelector('[data-framework-code]')),
+            reactDomText: reactBox ? reactBox.textContent : null,
+            reactFitHasError: !!(reactBox && reactBox.querySelector('[data-framework-error]')),
+            reactFitOverflowFlag: !!(reactBox && reactBox.dataset && reactBox.dataset.frameworkOverflow),
+            heroBoxPresent: !!heroBox,
+            heroMountedText: heroMount ? heroMount.textContent : null,
+            heroHadError: !!(heroBox && heroBox.querySelector('[data-framework-error]')),
+            stringPreviewPresent: !!document.querySelector('[data-layer-id="react"] [data-framework-preview="source"]'),
+            angularBoxPresent: !!angularBox,
+            angularBoxSize: angularBox ? { w: angularBox.offsetWidth, h: angularBox.offsetHeight } : null,
+            angularFitHasError: !!(angularBox && angularBox.querySelector('[data-framework-error]')),
+            angularDomHasSnippet: !!(angularBox && /app-welcome/.test(angularBox.textContent)),
+            overflowBoxHasMount: !!overflowBox,
+            overflowBadgeCount: document.querySelectorAll('[data-framework-error="overflow"]').length,
+            windowErrors: window.__errors__
+          };
+          document.getElementById('crescent-result').textContent = JSON.stringify(result);
+          // Beacon the result back to the test server (headless --dump-dom
+          // does not terminate in some environments, so the runner reads
+          // the result over HTTP instead).
+          try {
+            new Image().src = '/__result__?d=' + encodeURIComponent(JSON.stringify(result));
+          } catch (e) { /* runner falls back to dumped DOM */ }
+        }, 2500);
+      });
+    </script>
+    <script type="text/plain" id="crescent-result"></script>
+  </body>
+</html>

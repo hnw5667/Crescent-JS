@@ -172,7 +172,7 @@ Page_ID/name = {
 
 ---
 
-## JS-First Component Configuration (v1.0.6 → v2.6.0)
+## JS-First Component Configuration (v1.0.6 → v3.0.0)
 
 ```js
 {

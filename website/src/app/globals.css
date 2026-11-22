@@ -266,10 +266,10 @@ code {
   font-size: 0.95rem;
 }
 
-/* ===== Redirect screen (shown only if the redirect hangs >10s) ===== */
+/* ===== "Crescent.js has moved" screen ===== */
 
 /* Moonlit aurora backdrop — gold / violet / teal, same palette as the new site. */
-.redirect-aurora {
+.moved-aurora {
   background:
     radial-gradient(
       55% 40% at 50% 8%,
@@ -286,10 +286,10 @@ code {
       rgba(232, 214, 163, 0.14),
       transparent 70%
     );
-  animation: redirect-aurora-drift 14s ease-in-out infinite alternate;
+  animation: moved-aurora-drift 14s ease-in-out infinite alternate;
 }
 
-@keyframes redirect-aurora-drift {
+@keyframes moved-aurora-drift {
   from {
     transform: translate3d(-1.5%, -1%, 0) scale(1);
   }
@@ -298,26 +298,8 @@ code {
   }
 }
 
-/* Crescent mark sits inside a gold ring. */
-.redirect-ring {
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(232, 214, 163, 0.95) 80deg,
-    transparent 210deg
-  );
-  animation: redirect-spin 2.2s linear infinite;
-}
-
-@keyframes redirect-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .redirect-aurora,
-  .redirect-ring {
+  .moved-aurora {
     animation: none;
   }
 }

@@ -4,6 +4,27 @@ Release history and updates for Crescent.js.
 
 ---
 
+## v3.0.0
+
+### Major — GitHub Pages retired, documentation moves to Vercel, README refresh
+
+- **GitHub Pages is now a "moved" page:** `https://hnw5667.github.io/Crescent-JS` no longer auto-redirects. Every route renders a static **"Crescent.js has moved"** screen with a button that takes visitors to `https://crescent-js.vercel.app` when they choose. The old interstitial, pre-paint redirect script, `/redirect-failure` route and redirect component were removed.
+- **Documentation lives on Vercel:** every link that pointed at `hnw5667.github.io/Crescent-JS` — root README, npm README, `code/package.json` `homepage`, and the docs — now points at `https://crescent-js.vercel.app` (guides at `/docs`).
+- **README refresh:** the GitHub README leads with the Crescent.js wordmark and a clean install / quick start / what's-included layout; the npm README drops the changelog block and focuses on install, usage, CLI, TypeScript and documentation.
+- **Version bump:** `code/package.json` `2.7.0`→`3.0.0`, `bundler.js` payload `2.7.0`→`3.0.0`, `app_build.js` manifests `2.7.0`→`3.0.0`, `about-webpage.txt` `2.7.0`→`3.0.0`, `navbar.tsx` `v2.7.0`→`v3.0.0`, docs currency pointers →`3.0.0`, `tasks/version.yaml` new `3.0.0`.
+
+---
+
+## v2.7.0
+
+### Minor — Framework layers (React/Angular) + website webhook env fix
+
+- **Framework layers (`react` / `angular`):** new `code/src/phase1/frontend/framework_layer.js` (`FrameworkLayer`, `ReactLayer`, `AngularLayer`). Developer keeps `layer_id` as the framework name (`'react'` or `'angular'`) and writes `code = { ... }`. `crescent.layer()` auto-detects the framework from `layer_id`/`layer_type`, validates (`layer_id` must match, `code` non-empty), and renders a constrained layer box (`overflow: hidden`, `contain: content`). Optimised to fit like a layer: inner mount is capped at `100%` width/height, overflow is measured (`measure_fit` / `assert_fits` / `check_overflow`) and shows an error (console + in-layer red badge / thrown `overflow` error) when content escapes the bounds. Build-time HTML (`html_generator.js`) emits an inert escaped `data-framework-code` snippet + `data-framework-content` mount. `react`, `react-dom`, `@angular/core` added as `devDependencies` (optional at runtime — probed best-effort, never required). Types added in `index.d.ts` (`FrameworkLayerConfig`, `FrameworkName`, `FrameworkLayer`, `ReactLayer`, `AngularLayer`, `layer()` overloads). Tested in `code/test/phase1/frontend/test_framework_layers.js` (12 tests).
+- **Website webhook removed:** the Discord-webhook contact form is gone — no webhook URL anywhere in the website code. The `/contact` route, its navbar entry, and `website/.env.example` were deleted; the home page now points to the Discord server instead. The docs site now lives on Vercel at `https://crescent-js.vercel.app`.
+- **Version bump:** `code/package.json` `2.6.0`→`2.7.0`, `bundler.js` payload `2.6.0`→`2.7.0`, `app_build.js` manifests `2.6.0`→`2.7.0`, `navbar.tsx` `v2.6.0`→`v2.7.0`, docs currency pointers →`2.7.0`, `tasks/version.yaml` new `2.7.0`.
+
+---
+
 ## v2.6.0
 
 ### Minor — Framework bug fixes + Playground + Examples (v2.5.1 → v2.6.0)

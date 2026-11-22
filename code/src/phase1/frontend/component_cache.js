@@ -24,7 +24,8 @@ const TRACKER_MARKER = '.tracker';
 const LAYER_FIELDS = [
   'layer_id', 'layer_type', 'position', 'index', 'colour', 'opacity',
   'size', 'text', 'image_location', 'layer_vertices', 'input_method',
-  'rotate', 'bg_layer', 'object_id', 'page_position', 'page_index'
+  'rotate', 'bg_layer', 'object_id', 'page_position', 'page_index',
+  'code', 'framework'
 ];
 
 class ComponentCache {

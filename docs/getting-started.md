@@ -82,9 +82,9 @@ my-app/
 
 ---
 
-## JS-First in One Minute (v1.0.6 → v2.6.0)
+## JS-First in One Minute (v1.0.6 → v3.0.0)
 
-Prefer defining components entirely in JavaScript — no manual HTML. The framework generates HTML at build time with `id="section-{name}"`, bundles it with JS, and hydrates it via `rocket.js`. Current framework version is **v2.6.0**.
+Prefer defining components entirely in JavaScript — no manual HTML. The framework generates HTML at build time with `id="section-{name}"`, bundles it with JS, and hydrates it via `rocket.js`. Current framework version is **v3.0.0**.
 
 ```js
 const crescent = require('crescent-js');

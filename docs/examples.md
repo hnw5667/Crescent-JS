@@ -7,7 +7,7 @@ Two fully working example apps built **entirely with Crescent.js** — every fil
 | **Contact Form** | [`examples/contact-form/`](../examples/contact-form/) | Frontend (page/object/layer) + Backend (function/conditional/collect/api_make) + Database | `node examples/contact-form/app.js` → http://localhost:3000 |
 | **Auth System** | [`examples/auth-system/`](../examples/auth-system/) | Frontend (3 pages, trigger, collect) + Auth (signup/login/cookie/PBKDF2) + Database | `node examples/auth-system/app.js` → http://localhost:3001 |
 
-> All example code lives under [`examples/`](../examples/) — one folder per app, as requested. The playground at [/playground](https://hnw5667.github.io/Crescent-JS/playground) can export equivalent code.
+> All example code lives under [`examples/`](../examples/) - one folder per app, as requested. The playground at [/playground](https://crescent-js.vercel.app/playground) runs the same framework live in your tab.
 
 ---
 
@@ -157,6 +157,6 @@ crescent build examples/contact-form/app.js ./build  # unified JS+HTML bundle (s
 
 ## Playground
 
-Open [/playground](https://hnw5667.github.io/Crescent-JS/playground) to assemble the same pieces visually — drag layers, tune ratios with the viewport slider, connect backend blocks (Validate → Save → API), and export the matching Crescent code. The playground and these examples use identical APIs.
+Open [/playground](https://crescent-js.vercel.app/playground) to run the same pieces live in your browser — code snippets that drive the real framework, rendered in the preview stage. The playground and these examples use identical APIs.
 
 Next: [Playground](./playground.md) • [Frontend](./frontend.md) • [Backend](./backend.md) • [Database](./database.md) • [Authentication](./authentication.md)

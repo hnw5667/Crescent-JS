@@ -78,9 +78,9 @@ never send both `ts` and `js` versions; you send **the one that is needed**.
 
 ---
 
-## JS-First Unified Bundling (v1.0.6 → v2.6.0)
+## JS-First Unified Bundling (v1.0.6 → v3.0.0)
 
-In addition to the tiny runtime, v1.0.6 introduced **JS-first unified bundling** — the bundle now ships both JS logic and build-time generated HTML together, with `rocket.js` as the bridge. Current bundle `payload.version` is **"2.6.0"**.
+In addition to the tiny runtime, v1.0.6 introduced **JS-first unified bundling** — the bundle now ships both JS logic and build-time generated HTML together, with `rocket.js` as the bridge. Current bundle `payload.version` is **"3.0.0"**.
 
 - **Build-time HTML generation** runs on your machine (`crescent build src/app.js ./crescent_build`), not in the browser. For each `crescent.component({ component_id, sections })` the framework generates HTML with deterministic `id="section-{name}"` and inline built-in CSS.
 - **Unified bundle payload** — `crescent.bundler().bundleComponent(component)` returns `{ component_id, js, html, sections }`. `bundler.build([components])` writes `bundle.json`, `html/*.html`, and `js/*.json`.
@@ -89,7 +89,7 @@ In addition to the tiny runtime, v1.0.6 introduced **JS-first unified bundling**
 
 ```bash
 crescent build src/app.js ./crescent_build
-# crescent_build/bundle.json -> { version:"2.6.0", generated_at, bundles:[{ component_id, js, html }] }
+# crescent_build/bundle.json -> { version:"3.0.0", generated_at, bundles:[{ component_id, js, html }] }
 ```
 
 ```js
@@ -120,9 +120,9 @@ run-time language handling works.
 
 ---
 
-## JS-First Unified Bundling (v1.0.6 → v2.6.0)
+## JS-First Unified Bundling (v1.0.6 → v3.0.0)
 
-Since v1.0.6 the framework ships **both JS logic and pre-generated HTML**; **v2.6.0** adds the `crescent app-build` distribution step (folder → standalone zip) on top, and the bundle version is now `2.6.0`.
+Since v1.0.6 the framework ships **both JS logic and pre-generated HTML**; **v2.6.0** adds the `crescent app-build` distribution step (folder → standalone zip) on top, and the bundle version is now `3.0.0`.
 
 1. **JS-First authoring** — `crescent.component({ component_id, sections: [...] })` defines a component purely in JS (see [JS-First Guide](./js-first.md)).
 2. **Build-time HTML** — `crescent.generate_html(component)` / `HtmlGenerator.generateComponentHTML(component)` runs **on the dev machine**, not in the browser. It emits deterministic `id="section-{name}"` markup with built-in CSS inlined.

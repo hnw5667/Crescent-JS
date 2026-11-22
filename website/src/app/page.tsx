@@ -359,11 +359,11 @@ export default function Home() {
                   npm install crescent-js
                 </Button>
               </a>
-              <Link href="/contact">
+              <a href={DISCORD_URL} target="_blank" rel="noopener noreferrer">
                 <Button size="lg" variant="outline" className="group">
-                  Contact us
+                  Join our Discord
                 </Button>
-              </Link>
+              </a>
             </div>
           </div>
         </section>
@@ -378,9 +378,6 @@ export default function Home() {
             <div className="flex items-center gap-6">
               <Link href="/docs/getting-started" className="text-sm text-white/40 hover:text-white transition-colors">
                 Docs
-              </Link>
-              <Link href="/contact" className="text-sm text-white/40 hover:text-white transition-colors">
-                Contact
               </Link>
               <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-sm text-white/40 hover:text-white transition-colors flex items-center gap-1">
                 <Github className="w-4 h-4" />

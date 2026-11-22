@@ -18,13 +18,15 @@ Layers are the visual building blocks. Every visible element is a layer.
 | `image` | Image display |
 | `shape` | Shapes defined by vertices (3=triangle, 4=rectangle, 0=circle) |
 | `input` | User input (text box or list) |
+| `react` | React snippet as a layer — `layer_id` must be `'react'`, `code` holds the snippet (v2.7.0) |
+| `angular` | Angular snippet as a layer — `layer_id` must be `'angular'`, `code` holds the snippet (v2.7.0) |
 
 ### Common Properties (All Layer Types)
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `layer_id` | string | required | Unique identifier |
-| `layer_type` | string | required | `text`, `image`, `shape`, `input` |
+| `layer_type` | string | required | `text`, `image`, `shape`, `input`, `react`, `angular` (v2.7.0) |
 | `layer_enabled` | boolean | `true` | Whether the layer is visible |
 | `position` | object | `{ x: 0, y: 0 }` | Cartesian position within parent object |
 | `index` | number | `0` | Z-index for stacking (lower = back, higher = front) |
@@ -194,6 +196,54 @@ const colorPicker = crescent.layer({
 | `colour_text_written` | string | `'0,0,0'` | Written text colour |
 | `select` | string/object | `'one'` | `'one'`, `'more_than_one'`, or `{ min: N, max: M }` |
 | `list_elements` | array | `[]` | List items for selection |
+
+### Framework Layers (v2.7.0 — `react` / `angular`)
+
+Embed a React or Angular snippet as a layer. Keep `layer_id` as the
+framework name, then write `code = { ... }`:
+
+```js
+const reactLayer = crescent.layer({
+  layer_type: 'react',
+  layer_id: 'react',                       // MUST be the framework name
+  code: 'function App(){ return "Hello" }', // the snippet goes here
+  size: { height: 200, width: 300 }
+});
+
+const ngLayer = crescent.layer({
+  layer_type: 'angular',
+  layer_id: 'angular',                     // MUST be the framework name
+  code: '<app-hello name="Crescent"></app-hello>',
+  size: { height: 200, width: 300 }
+});
+
+card.add_layer(reactLayer);
+```
+
+Rules and optimisation:
+
+- `layer_id` must be `'react'` or `'angular'` (case-insensitive). A mismatch
+  (`layer_id: 'react'` with `layer_type: 'angular'`) or a missing/empty
+  `code` throws immediately with an actionable message.
+- The snippet is optimised to fit like a layer: the layer box keeps its
+  `size`, the inner mount is capped at `100%` width/height with
+  `overflow: hidden` + `contain: content`, and the parent object still clips
+  (`object.js`).
+- If the content goes out of the layer bounds, an error is shown: a thrown
+  `Framework layer "<fw>" overflow ...` error from `assert_fits()`, plus a
+  console error and a red in-layer badge from `check_overflow()` at runtime.
+- `react`, `react-dom`, `@angular/core` are `devDependencies` (optional at
+  runtime — probed best-effort, never `require`d hard, so the layer works
+  without them installed).
+- Build-time HTML keeps the snippet inert (escaped `data-framework-code`)
+  with a `data-framework-content` mount; `layer.get_framework()`,
+  `layer.get_code()`, `layer.check_overflow()` and `FrameworkLayer.measure_fit()`
+  are available. Full guide: [Framework Layers](./framework-layers.md).
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `code` | string | required | Framework snippet (`code = { ... }`) |
+| `framework` | string | — | Resolved `'react'` / `'angular'` (read-only) |
 
 ### Layer Methods
 
@@ -554,9 +604,9 @@ responsive.destroy();
 
 ---
 
-## JS-First Components (v1.0.6 → v2.6.0)
+## JS-First Components (v1.0.6 → v3.0.0)
 
-> **JS-First** removes manual HTML. Write a component in JS — the framework generates HTML with `section-{name}` IDs, bundles JS+HTML, caches both, and hydrates via `rocket.js` (introduced v1.0.6, now **v2.6.0**). Full guide: [JS-First](./js-first.md). For packaging a whole folder as an app, see [App-Build](./app-build.md) (new in v2.6.0).
+> **JS-First** removes manual HTML. Write a component in JS — the framework generates HTML with `section-{name}` IDs, bundles JS+HTML, caches both, and hydrates via `rocket.js` (introduced v1.0.6, now **v3.0.0**). Full guide: [JS-First](./js-first.md). For packaging a whole folder as an app, see [App-Build](./app-build.md) (new in v2.6.0). For embedding React/Angular snippets, see [Framework Layers](./framework-layers.md) (new in v2.7.0).
 
 ```js
 const hero = crescent.component({

@@ -33,7 +33,7 @@ declare namespace rocket {
 
   interface LayerConfig {
     layer_id: string;
-    layer_type?: 'text' | 'image' | 'shape' | 'input';
+    layer_type?: 'text' | 'image' | 'shape' | 'input' | 'react' | 'angular';
     layer_enabled?: boolean;
     colour?: string;
     opacity?: string | number;
@@ -68,6 +68,61 @@ declare namespace rocket {
   // Text layers treat `size` as a font size (number) or a box Size.
   interface TextLayerConfig extends Omit<LayerConfig, 'size'> {
     size?: number | Size;
+  }
+
+  // Framework layers (v2.7.0) — embed React/Angular snippets as layers.
+  // `layer_id` is the framework name ('react' | 'angular') or a named id
+  // '<framework>:<name>' (e.g. 'react:hero'), so several layers of the same
+  // framework coexist on one page. `code` holds the snippet (string source, a
+  // component function, or { component, props }). Component-form code mounts
+  // live via layer.mount(); string source stays inert unless a `compile` hook
+  // is supplied. Content is optimised to fit the layer box; overflow shows an
+  // error (see FrameworkLayer.check_overflow / assert_fits).
+  type FrameworkName = 'react' | 'angular';
+  type FrameworkLayerId = FrameworkName | `${FrameworkName}:${string}`;
+
+  interface FrameworkLayerConfig extends Omit<LayerConfig, 'layer_id' | 'layer_type' | 'size'> {
+    layer_id: FrameworkLayerId;
+    layer_type?: FrameworkName;
+    code: FrameworkLayerCode;
+    props?: Record<string, any>;
+    compile?: (code: string, ctx: FrameworkCompileContext) => unknown;
+    size?: Size;
+  }
+
+  type FrameworkLayerCode =
+    | string
+    | ((props: any) => any)
+    | { component: (props: any) => any; props?: Record<string, any> };
+
+  interface FrameworkCompileContext {
+    framework: FrameworkName;
+    layer_id: string;
+    mount: HTMLElement;
+    React?: any;
+    ReactDOM?: any;
+  }
+
+  interface FrameworkMountDeps {
+    React?: any;
+    ReactDOM?: any;
+    angularCore?: any;
+    angularPlatformBrowser?: any;
+    document?: any;
+  }
+
+  interface FrameworkMountResult {
+    mounted: boolean;
+    framework: FrameworkName;
+    reason?: string;
+  }
+
+  interface FitMeasurement {
+    fits: boolean;
+    overflowX: boolean;
+    overflowY: boolean;
+    layer: { width: number; height: number };
+    content: { width: number; height: number };
   }
 
   interface ObjectConfig {
@@ -414,6 +469,31 @@ declare namespace rocket {
 
     constructor(config: LayerConfig);
     get_value(): string | string[] | null;
+  }
+
+  class FrameworkLayer extends BaseLayer {
+    framework: FrameworkName;
+    code: FrameworkLayerCode;
+    props: Record<string, any> | null;
+    compile: FrameworkLayerConfig['compile'] | null;
+
+    constructor(config: FrameworkLayerConfig);
+    get_framework(): FrameworkName;
+    get_code(): FrameworkLayerCode;
+    mount(target?: HTMLElement, deps?: FrameworkMountDeps): FrameworkMountResult;
+    assert_fits(contentSize: Size): FitMeasurement;
+    overflow_error_text(details?: string): string;
+    check_overflow(): boolean;
+    serialize(): FrameworkLayerConfig & Record<string, any>;
+    toJSON(): FrameworkLayerConfig & Record<string, any>;
+  }
+
+  class ReactLayer extends FrameworkLayer {
+    constructor(config: Omit<FrameworkLayerConfig, 'layer_id' | 'layer_type'> & { code: string });
+  }
+
+  class AngularLayer extends FrameworkLayer {
+    constructor(config: Omit<FrameworkLayerConfig, 'layer_id' | 'layer_type'> & { code: string });
   }
 
   class RocketObject {
@@ -924,7 +1004,12 @@ declare namespace rocket {
     layer(config: LayerConfig & { layer_type: 'image' }): ImageLayer;
     layer(config: LayerConfig & { layer_type: 'shape' }): ShapeLayer;
     layer(config: LayerConfig & { layer_type: 'input' }): InputLayer;
-    layer(config: LayerConfig): TextLayer | ImageLayer | ShapeLayer | InputLayer;
+    layer(config: FrameworkLayerConfig & { layer_type: 'react' }): FrameworkLayer;
+    layer(config: FrameworkLayerConfig & { layer_type: 'angular' }): FrameworkLayer;
+    layer(config: FrameworkLayerConfig & { layer_id: 'react' }): FrameworkLayer;
+    layer(config: FrameworkLayerConfig & { layer_id: 'angular' }): FrameworkLayer;
+    layer(config: FrameworkLayerConfig & { layer_id: `${FrameworkName}:${string}` }): FrameworkLayer;
+    layer(config: LayerConfig): TextLayer | ImageLayer | ShapeLayer | InputLayer | FrameworkLayer;
     object(config: ObjectConfig): RocketObject;
     page(config: PageConfig): RocketPage;
     transition(config: TransitionConfig): Transition;
@@ -1037,7 +1122,14 @@ declare namespace rocket {
   function layer(config: LayerConfig & { layer_type: 'image' }): ImageLayer;
   function layer(config: LayerConfig & { layer_type: 'shape' }): ShapeLayer;
   function layer(config: LayerConfig & { layer_type: 'input' }): InputLayer;
-  function layer(config: LayerConfig): TextLayer | ImageLayer | ShapeLayer | InputLayer;
+  function layer(config: FrameworkLayerConfig & { layer_type: 'react' }): FrameworkLayer;
+  function layer(config: FrameworkLayerConfig & { layer_type: 'angular' }): FrameworkLayer;
+  function layer(config: FrameworkLayerConfig & { layer_id: 'react' }): FrameworkLayer;
+  function layer(config: FrameworkLayerConfig & { layer_id: 'angular' }): FrameworkLayer;
+  function layer(config: FrameworkLayerConfig & { layer_id: `${FrameworkName}:${string}` }): FrameworkLayer;
+  function layer(config: LayerConfig): TextLayer | ImageLayer | ShapeLayer | InputLayer | FrameworkLayer;
+  /** Parse a framework layer id ('react' | 'angular' | '<framework>:<name>'). */
+  function parseFrameworkId(value: string): { framework: FrameworkName; id: string } | null;
   function object(config: ObjectConfig): RocketObject;
   function page(config: PageConfig): RocketPage;
   function transition(config: TransitionConfig): Transition;
@@ -1144,6 +1236,7 @@ declare namespace rocket {
   export {
     _function as function,
     layer, object, page, transition, trigger, responsive, conditional, loop,
+    parseFrameworkId,
     api_call, api_make, collect, boolean, print, add, subtract, multiply,
     divide, sqrt, sin, cos, tan, get_timestamp, redirect, connect_and_pull,
     compress, decompress, tunnel, component_cache, render_page_payload, render_page_payload_with_html,
@@ -1163,7 +1256,9 @@ declare namespace rocket {
     SectionConfig, JSComponentConfig, ComponentBundle, PageBundle, BundlerConfig, TabelConfig,
     OAuthProviderConfig, PasswordHash, PasswordStrength, SessionPayload,
     ComponentResolution, PagePayload, ConnectOptions, Auth,
-    BaseLayer, TextLayer, ImageLayer, ShapeLayer, InputLayer, RocketObject,
+    FrameworkName, FrameworkLayerId, FrameworkLayerCode, FrameworkCompileContext, FrameworkMountDeps,
+    FrameworkMountResult, FrameworkLayerConfig, FitMeasurement,
+    BaseLayer, TextLayer, ImageLayer, ShapeLayer, InputLayer, FrameworkLayer, ReactLayer, AngularLayer, RocketObject,
     RocketPage, RocketRenderer, Transition, Trigger, Responsive, RocketFunction,
     Conditional, Loop, ApiCall, ApiMake, Collect, RocketBoolean, EncryptedTunnel,
     ComponentCache, JSComponent, HtmlGenerator, Bundler, AboutGenerator, Tabel, TabelManager, DatabaseSyntax, QueryEngine, FileManager, LiveSearch,

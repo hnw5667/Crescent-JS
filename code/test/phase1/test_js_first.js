@@ -216,7 +216,7 @@ test('Bundler.build writes unified payload to disk', () => {
   const data = JSON.parse(fs.readFileSync(outPath, 'utf-8'));
   assert.ok(data.bundles && data.bundles.length === 1);
   assert.ok(data.bundles[0].html.includes('section-x'));
-  assert.strictEqual(data.version, '2.6.0');
+  assert.strictEqual(data.version, '3.0.0');
   fs.rmSync(tmp, { recursive: true, force: true });
 });
 

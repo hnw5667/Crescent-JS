@@ -1,21 +1,23 @@
 # Playground
 
-Try Crescent.js right in your browser — build a frontend visually, test ratio-based scaling, and wire backend blocks together like a node editor. No install needed.
+Run Crescent.js live in your browser — editable snippets drive the real framework classes, rendered on a preview stage with a viewport slider that exercises the framework's own ratio-based scaling. No install needed.
 
-> **Live playground:** [hnw5667.github.io/Crescent-JS/playground](https://hnw5667.github.io/Crescent-JS/playground) (or run the docs locally at `http://localhost:3000/playground`)
+> **Live playground:** [crescent-js.vercel.app/playground](https://crescent-js.vercel.app/playground) — runs the real framework in your tab
+
+The playground is powered by **crescent-js itself**: layers, objects, pages, transitions, triggers, responsive scaling and the backend blocks (function / conditional / loop / boolean / collect) are the package's own classes running in your tab. Node-only pieces (database files, HTTP servers, crypto auth) report themselves instead of half-working.
 
 ---
 
 ## What you can do
 
-| Tab | What it tests |
+| Snippet | What it exercises |
 |-----|---------------|
-| **Frontend** | Create pages, objects, layers (text / shape / image / input). Drag to position with cartesian coordinates, edit props, see live renderer output. |
-| **Responsive Scaling** | Resize the viewport slider and tweak `height_ratio` / `width_ratio` per object. Uses the same `transform: scale(viewportWidth / designWidth)` logic as `page.js` — `[0,0]` means “fill screen”. |
-| **Backend Blocks** | Pre-built processes you connect like blocks: `Validate`, `Conditional`, `Save to DB`, `Query DB`, `API Call`, `API Endpoint`, `Auth Signup/Login`, `Boolean`, `Loop`, `Transform`. Click `→` on a block to connect it to the next one. |
-| **Fullstack Pipeline** | See the whole flow — frontend form → `collect` → validation → backend chain → `crescent.db` — and submit a demo form that simulates the pipeline. Copies the equivalent Crescent.js code. |
+| **Build a landing page** | `crescent.page` / `crescent.object` / `crescent.layer` (text / shape), cartesian positioning, a real `Transition` and a `Trigger` with an alternating condition. |
+| **Login flow** | Two pages, an `input` layer, `crescent.function` + `crescent.conditional`, and a click trigger that navigates the preview via the real `renderer.navigate()`. |
+| **Backend blocks** | `function`, `conditional`, `loop`, `boolean`, `collect` — the exact classes a `crescent run` server executes, printing to the playground console. |
+| **Responsive scaling** | Drag the viewport slider: the `ResizeObserver` the Renderer attached re-runs `page._apply_scaling()`, and the breakpoint chip reads the same list straight from `Responsive._breakpoints`. |
 
-All generated code is **pure Crescent.js** (`require('crescent-js')` only) — paste it into `app.js` and run with `crescent run app.js`.
+All snippet code is **pure Crescent.js** (`crescent.*` calls only) — paste it into `app.js`, add `require('crescent-js')`, and run with `crescent run app.js`.
 
 ---
 

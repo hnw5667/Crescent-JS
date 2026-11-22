@@ -15,6 +15,7 @@ build/
 # Test-generated artifacts (rebuilt at test time)
 code/test/backend/compiled_app.js
 code/test/browser/bundle.js
+code/test/browser/framework/bundle_fw.js
 code/crescent_data/
 code/crescent_cache/
 code/.backend-cache/

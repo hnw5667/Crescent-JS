@@ -64,9 +64,10 @@ page.set_object_position('header', 0, 100);`}
 
       <h2 id="layers">Layers</h2>
       <p>
-        Layers are the visual elements inside objects. Crescent.js supports four layer
-        types: <code>text</code>, <code>image</code>, <code>shape</code>, and{' '}
-        <code>input</code>. Layers are added to an object with{' '}
+        Layers are the visual elements inside objects. Crescent.js supports six layer
+        types: <code>text</code>, <code>image</code>, <code>shape</code>,{' '}
+        <code>input</code>, <code>react</code>, and <code>angular</code> (v2.7.0
+        framework layers). Layers are added to an object with{' '}
         <code>add_layer()</code>.
       </p>
 
@@ -127,6 +128,38 @@ header.add_layer(divider);`}
 
 header.add_layer(username);`}
       />
+
+      <h3 id="framework-layers">Framework Layers (v2.7.0)</h3>
+      <p>
+        Embed a <code>react</code> or <code>angular</code> snippet as a layer. Keep{' '}
+        <code>layer_id</code> as the framework name, then write{' '}
+        <code>code = {'{ ... }'}</code>. The snippet is optimised to fit like a
+        layer — if it goes out of bounds, an error is shown.
+      </p>
+      <CodeBlock
+        filename="framework-layer.js"
+        code={`const reactLayer = crescent.layer({
+  layer_type: 'react',
+  layer_id: 'react', // MUST be the framework name
+  code: 'function App(){ return "Hello" }',
+  size: { height: 200, width: 300 }
+});
+
+const ngLayer = crescent.layer({
+  layer_type: 'angular',
+  layer_id: 'angular', // MUST be the framework name
+  code: '<app-hello name="Crescent"></app-hello>',
+  size: { height: 200, width: 300 }
+});
+
+header.add_layer(reactLayer);`}
+      />
+
+      <Callout type="warning" title="Framework layer bounds">
+        Framework layers are clipped to their <code>size</code>. When content
+        overflows, <code>assert_fits()</code> throws and the rendered layer shows
+        a red error badge — shrink the snippet or enlarge the layer.
+      </Callout>
 
       <h2 id="positioning">Positioning</h2>
       <p>

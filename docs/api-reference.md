@@ -24,8 +24,8 @@ Create a visual layer. Returns a layer instance.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `config.layer_type` | string | required | `text`, `image`, `shape`, `input` |
-| `config.layer_id` | string | required | Unique identifier |
+| `config.layer_type` | string | required | `text`, `image`, `shape`, `input`, `react`, `angular` (v2.7.0) |
+| `config.layer_id` | string | required | Unique identifier — for framework layers MUST be the framework name (`react`/`angular`) |
 | `config.layer_enabled` | boolean | `true` | Whether layer is visible |
 | `config.position` | object | `{ x: 0, y: 0 }` | Cartesian position |
 | `config.index` | number | `0` | Z-index (lower = back, higher = front) |
@@ -77,11 +77,27 @@ Create a visual layer. Returns a layer instance.
 | `select` | string/object | `'one'` | `'one'`, `'more_than_one'`, or `{ min, max }` |
 | `list_elements` | array | `[]` | List items for selection |
 
+**Framework-specific (v2.7.0 — `react` / `angular`):**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `code` | string | required | Framework snippet (`code = { ... }`) |
+| `framework` | string | — | Resolved `'react'` / `'angular'` (read-only) |
+
+```js
+crescent.layer({ layer_type: 'react', layer_id: 'react', code: '...', size: { height: 200, width: 300 } });
+crescent.layer({ layer_type: 'angular', layer_id: 'angular', code: '...', size: { height: 200, width: 300 } });
+```
+
 **Layer Methods:**
 
 | Method | Returns | Description |
 |--------|---------|-------------|
 | `get_value()` | any | Get current value (input layers) |
+| `get_framework()` | string | Framework name (framework layers) |
+| `get_code()` | string | Snippet (framework layers) |
+| `check_overflow()` | boolean | Runtime bounds check, shows error overlay (framework layers) |
+| `assert_fits(contentSize)` | object | Throws `overflow` error when content exceeds layer (framework layers) |
 | `set_property(name, value)` | void | Update a property and re-render |
 | `render()` | HTMLElement | Generate DOM element |
 | `get_element()` | HTMLElement | Get rendered DOM element |
@@ -447,7 +463,7 @@ Create a data collector.
 
 ---
 
-## JS-First API (v1.0.6 → v2.6.0)
+## JS-First API (v1.0.6 → v3.0.0)
 
 ### `crescent.component(config)`
 

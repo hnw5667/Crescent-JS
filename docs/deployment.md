@@ -6,7 +6,7 @@ Deploy your Crescent.js applications to production.
 
 ## Production Build
 
-Crescent.js applications can be deployed on any Node.js hosting platform. The framework bundles everything needed to run in a production environment. Current version: **v2.6.0**.
+Crescent.js applications can be deployed on any Node.js hosting platform. The framework bundles everything needed to run in a production environment. Current version: **v3.0.0**.
 
 ### Basic Deployment
 
@@ -28,7 +28,6 @@ crescent app-build   # → <App>-standalone.zip (Tauri My-App-windows/ + src-tau
 ### Vercel
 
 Create a `vercel.json` in your project root:
-
 ```json
 {
   "builds": [

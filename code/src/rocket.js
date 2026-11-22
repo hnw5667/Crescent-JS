@@ -9,6 +9,9 @@ const ImageLayer = require('./phase1/frontend/image_layer');
 const ShapeLayer = require('./phase1/frontend/shape_layer');
 const TextLayer = require('./phase1/frontend/text_layer');
 const InputLayer = require('./phase1/frontend/input_layer');
+const FrameworkLayer = require('./phase1/frontend/framework_layer');
+const parseFrameworkId = FrameworkLayer.parseFrameworkId;
+const normalizeFrameworkName = FrameworkLayer.normalizeFrameworkName;
 const RocketObject = require('./phase1/frontend/object');
 const RocketPage = require('./phase1/frontend/page');
 const Transition = require('./phase1/frontend/transition');
@@ -88,6 +91,17 @@ class Rocket {
   // ===== FRONTEND =====
   layer(config) {
     let layerInstance;
+    // Framework layers (v2.7.0): layer_id is the framework name ('react' /
+    // 'angular') or a named id '<framework>:<name>' (e.g. 'react:hero') so
+    // several layers of the same framework coexist. `code` holds the snippet.
+    const _fwId = config ? parseFrameworkId(config.layer_id) : null;
+    const _fwType = config && typeof config.layer_type === 'string' ? normalizeFrameworkName(config.layer_type) : null;
+    const _isFramework = !!(_fwId || _fwType);
+    if (_isFramework) {
+      layerInstance = new FrameworkLayer(config);
+      this._layers[layerInstance.layer_id] = layerInstance;
+      return layerInstance;
+    }
     switch (config.layer_type) {
       case 'image': layerInstance = new ImageLayer(config); break;
       case 'shape': layerInstance = new ShapeLayer(config); break;
@@ -375,3 +389,4 @@ const rocket = new Rocket();
 // Export both the class and the singleton
 module.exports = rocket;
 module.exports.Rocket = Rocket;
+module.exports.parseFrameworkId = parseFrameworkId;

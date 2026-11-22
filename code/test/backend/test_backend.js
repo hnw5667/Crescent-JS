@@ -38,8 +38,12 @@ const STATE_MARKER = '__STATE__';
 // 2. Run the compiled app in a throwaway cwd so data files stay out of the repo.
 const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'crescent-backend-'));
 try {
+  // NOTE: generous timeout — the app does real PBKDF2 (100k-iteration) password
+  // hashing plus an encrypted HTTP round-trip, which exceeds 60s on slow or
+  // loaded machines. A too-tight cap kills the run, drops __STATE__, and makes
+  // every assertion below fail (the "only 1 test passed" cascade).
   const run = spawnSync(process.execPath, [COMPILED], {
-    encoding: 'utf8', cwd: sandbox, timeout: 60000
+    encoding: 'utf8', cwd: sandbox, timeout: 180000
   });
   test('compiled backend app runs to completion (exit 0)', () => {
     if (run.status !== 0) throw new Error('exit ' + run.status + ' :: ' + (run.stderr || run.stdout || ''));

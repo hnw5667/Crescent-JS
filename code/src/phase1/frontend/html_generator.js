@@ -137,6 +137,14 @@ function layerToStyle(layer) {
     if (isCircle) style['border-radius'] = '50%';
   }
 
+  if (layer.layer_type === 'react' || layer.layer_type === 'angular') {
+    // Framework layers (v2.7.0): optimised to fit like a layer — constrained
+    // box, clipped overflow, content containment.
+    style['overflow'] = 'hidden';
+    style['box-sizing'] = 'border-box';
+    style['contain'] = 'content';
+  }
+
   return style;
 }
 
@@ -153,7 +161,10 @@ function generateSectionHTML(section) {
   const styleStr = styleObjectToString(css);
   const combinedStyle = displayStyle + (styleStr ? (displayStyle ? '' : '') + styleStr : '');
 
-  const dataAttrs = `data-section="${escapeHtml(section.name)}" data-layer-type="${escapeHtml(layerType)}" data-layer-id="${escapeHtml(section.layer_id || section.name)}"`;
+  const fwAttr = (layerType === 'react' || layerType === 'angular')
+    ? ` data-framework="${escapeHtml(String(layerType).toLowerCase())}"`
+    : '';
+  const dataAttrs = `data-section="${escapeHtml(section.name)}" data-layer-type="${escapeHtml(layerType)}" data-layer-id="${escapeHtml(section.layer_id || section.name)}"${fwAttr}`;
 
   let inner = '';
   switch (layerType) {
@@ -276,6 +287,25 @@ function generateSectionHTML(section) {
         const size = section.box_length || 20;
         inner = `<input type="text" name="${escapeHtml(section.layer_id || section.name)}" placeholder="${placeholder}" size="${size}" style="width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:${parseRoundedCorners(section.rounded_corners || '4px')};outline:none;font-family:${escapeHtml(section.written_inner_text_font || section.box_inner_text_font || 'sans-serif')};color:${parseColour(section.colour_text_written || section.colour_text || '0,0,0')};font-size:14px" />`;
       }
+      break;
+    }
+    case 'react':
+    case 'angular': {
+      // Framework layer (v2.7.0): `code` holds the snippet; layer_id is either
+      // the framework name or '<framework>:<name>' so several layers per
+      // framework coexist. Build-time HTML keeps the snippet inert (escaped)
+      // inside a UNIQUE mount (id = sanitize(layer_id) + '-mount') that is
+      // constrained so it fits like a layer; overflow is reported at runtime
+      // by FrameworkLayer.check_overflow().
+      const sectionLayerId = String(section.layer_id || section.name || layerType);
+      const fw = (layerType === 'react' || layerType === 'angular')
+        ? String(layerType).toLowerCase()
+        : (sectionLayerId.indexOf('angular:') === 0 ? 'angular' : 'react');
+      const mountId = sanitizeSectionName(sectionLayerId) + '-mount';
+      const code = section.code != null && typeof section.code === 'string' ? section.code : '';
+      inner = `<div data-framework-content="${fw}" id="${mountId}" style="width:100%;height:100%;max-width:100%;max-height:100%;overflow:hidden;box-sizing:border-box;contain:content"></div>` +
+        `<script type="text/plain" data-framework-code="${mountId}">${escapeHtml(code)}</script>` +
+        `<div data-framework-error-slot="${fw}" style="display:none"></div>`;
       break;
     }
     default: {
